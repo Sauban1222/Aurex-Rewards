@@ -8,6 +8,7 @@ import CaptchaTasksBanner from './components/CaptchaTasksBanner/CaptchaTasksBann
 import ExchangeCenterBanner from './components/ExchangeCenterBanner/ExchangeCenterBanner.jsx'
 import LoginPage from './pages/Login.jsx'
 import ReferEarnPage from './pages/ReferEarn.jsx'
+import SwapCenterPage from './pages/SwapCenter.jsx'
 import { bannerFeatures } from './utils/bannerData.js'
 
 function Logo() {
@@ -21,6 +22,7 @@ function App() {
   const [page, setPage] = useState(() => {
     if (window.location.hash === '#login') return 'login'
     if (window.location.hash === '#refer') return 'refer'
+    if (window.location.hash === '#swap') return 'swap'
     return 'home'
   })
   const dialogRef = useRef(null)
@@ -30,6 +32,7 @@ function App() {
     const syncPage = () => {
       if (window.location.hash === '#login') setPage('login')
       else if (window.location.hash === '#refer') setPage('refer')
+      else if (window.location.hash === '#swap') setPage('swap')
       else setPage('home')
     }
     window.addEventListener('hashchange', syncPage)
@@ -45,6 +48,11 @@ function App() {
   const openFeature = (kind, trigger) => {
     if (kind === 'refer') {
       window.location.hash = '#refer'
+      return
+    }
+
+    if (kind === 'swap') {
+      window.location.hash = '#swap'
       return
     }
 
@@ -93,6 +101,7 @@ function App() {
 
   if (page === 'login') return <LoginPage />
   if (page === 'refer') return <ReferEarnPage />
+  if (page === 'swap') return <SwapCenterPage />
 
   return (
     <div id="home" className="app-shell">
@@ -102,6 +111,7 @@ function App() {
           <nav className={`main-nav ${menuOpen ? 'nav-open' : ''}`} aria-label="Main navigation">
             <a className="nav-link nav-active" href="#home" onClick={() => setMenuOpen(false)}>Overview</a>
             <a className="nav-link" href="#earn" onClick={() => setMenuOpen(false)}>Earn VEs</a>
+            <a className="nav-link" href="#swap" onClick={() => setMenuOpen(false)}>Swap</a>
             <a className="nav-link" href="#refer" onClick={() => setMenuOpen(false)}>Refer &amp; Earn</a>
             <a className="nav-link" href="#redeem" onClick={() => setMenuOpen(false)}>Redeem</a>
           </nav>
