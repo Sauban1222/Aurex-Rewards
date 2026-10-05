@@ -1,11 +1,12 @@
 .surface {
-  --surface-glow: rgba(122, 157, 181, .12);
-  --feature-accent: #a9c98b;
+  --surface-glow: rgba(79, 124, 255, .18);
+  --feature-accent: #92b5ff;
   position: relative;
-  border-color: rgba(206, 214, 232, .1);
+  border-color: rgba(153, 174, 225, .16);
   background:
-    linear-gradient(142deg, rgba(255, 255, 255, .045), transparent 45%),
-    linear-gradient(118deg, #232a3a 0%, #1e2332 55%, #1b1e2c 100%);
+    radial-gradient(ellipse at 83% 40%, var(--surface-glow), transparent 46%),
+    linear-gradient(142deg, rgba(255, 255, 255, .055), transparent 46%),
+    linear-gradient(125deg, #192641 0%, #151e32 54%, #141a2b 100%);
 }
 
 .surface::after {
@@ -26,38 +27,26 @@
 }
 
 .refer {
-  --surface-glow: rgba(124, 58, 237, .18);
-  --feature-accent: #8b5cf6;
+  --surface-glow: rgba(111, 83, 255, .24);
+  --feature-accent: #9d8bff;
 }
 
 .bonus {
-  --surface-glow: rgba(194, 160, 96, .14);
-  --feature-accent: #d4bd83;
-  background:
-    linear-gradient(142deg, rgba(255, 255, 255, .045), transparent 45%),
-    linear-gradient(118deg, #292a32 0%, #222431 55%, #1d202d 100%);
+  --surface-glow: rgba(197, 155, 78, .19);
+  --feature-accent: #dfc080;
 }
 
 .captcha {
-  --surface-glow: rgba(105, 158, 191, .14);
-  --feature-accent: #91c4dc;
-  background:
-    linear-gradient(142deg, rgba(255, 255, 255, .045), transparent 45%),
-    linear-gradient(118deg, #222b37 0%, #1e2533 55%, #1b202d 100%);
+  --surface-glow: rgba(51, 160, 209, .2);
+  --feature-accent: #80d5f0;
 }
 
 .swap {
-  --surface-glow: rgba(89, 173, 171, .13);
-  --feature-accent: #82c5bc;
-  background:
-    linear-gradient(142deg, rgba(255, 255, 255, .045), transparent 45%),
-    linear-gradient(118deg, #222b37 0%, #1e2533 55%, #1b202d 100%);
+  --surface-glow: rgba(48, 153, 209, .2);
+  --feature-accent: #7dd5e8;
 }
 
 .exchange {
-  --surface-glow: rgba(165, 130, 185, .14);
-  --feature-accent: #c1a9d1;
-  background:
-    linear-gradient(142deg, rgba(255, 255, 255, .045), transparent 45%),
-    linear-gradient(118deg, #282735 0%, #222332 55%, #1e202e 100%);
+  --surface-glow: rgba(143, 89, 226, .2);
+  --feature-accent: #bd9cff;
 }
