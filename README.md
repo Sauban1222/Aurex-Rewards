@@ -58,7 +58,7 @@ Open the local URL printed by Vite, usually `http://localhost:5173/`.
 
 ## Netlify Deployment
 
-Connect the GitHub repository (`Sauban1222/Aurex-Rewards`) to Netlify and deploy the `main` branch. The root `netlify.toml` configures Netlify to run `npm run build`, publish `dist/`, use Node.js 20, and build assets for the site root. If `VITE_BASE_PATH` is also set in the Netlify dashboard, remove it or set it to `/` so assets load from the site root.
+Connect the GitHub repository (`Sauban1222/Aurex-Rewards`) to Netlify and deploy the `main` branch. The root `netlify.toml` configures Netlify to run `npm run build`, publish `dist/`, use Node.js 20, and build assets for the site root. Dependencies and build output are ignored by Git so Netlify installs platform-appropriate packages from `package-lock.json` instead of using a local `node_modules` directory. If `VITE_BASE_PATH` is also set in the Netlify dashboard, remove it or set it to `/` so assets load from the site root.
 
 ## Local Verification
 
