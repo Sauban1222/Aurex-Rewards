@@ -58,7 +58,7 @@ Open the local URL printed by Vite, usually `http://localhost:5173/`.
 
 ## Netlify Deployment
 
-Connect the GitHub repository to Netlify and deploy the `main` branch. The root `netlify.toml` configures Netlify to run `npm run build`, publish `dist/`, use Node.js 20, and build assets for the site root. If `VITE_BASE_PATH` is also set in the Netlify dashboard, remove it or set it to `/` so assets do not use the GitHub Pages `/Aurex/` path.
+Connect the GitHub repository (`Sauban1222/Aurex-Rewards`) to Netlify and deploy the `main` branch. The root `netlify.toml` configures Netlify to run `npm run build`, publish `dist/`, use Node.js 20, and build assets for the site root. If `VITE_BASE_PATH` is also set in the Netlify dashboard, remove it or set it to `/` so assets load from the site root.
 
 ## Local Verification
 
@@ -108,11 +108,11 @@ No screenshot files are currently included in the project. To capture the curren
 
 ## Live Demo
 
-GitHub Pages deployment target: [https://sauban1222.github.io/Aurex/](https://sauban1222.github.io/Aurex/). After pushing the deployment workflow, set the repository's **Settings → Pages → Build and deployment → Source** to **GitHub Actions**. The workflow builds the Vite app and deploys `dist/`.
+The live demo is provided by the Netlify site connected to the repository. Use the site URL shown in the Netlify dashboard after the first successful deploy.
 
 ## GitHub Repository
 
-Source code: [https://github.com/Sauban1222/Aurex](https://github.com/Sauban1222/Aurex).
+Source code: [https://github.com/Sauban1222/Aurex-Rewards](https://github.com/Sauban1222/Aurex-Rewards).
 
 ## Author
 
