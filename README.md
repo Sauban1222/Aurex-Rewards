@@ -1,16 +1,16 @@
-# VELOOP Rewards
+# Aurex Rewards
 
 A responsive rewards dashboard concept for exploring ways to earn, convert, and redeem VEs. The five feature banners use illustrative demo content; no rewards, balances, referral links, or task submissions are connected to a backend.
 
 ## Project Overview
 
-VELOOP Rewards presents earning and redemption opportunities in one dashboard. Each banner has its own visual treatment and opens a feature-specific dialog. The Swap Center explains balance conversion, while the Exchange Center focuses on redeeming eligible VEs for supported rewards.
+Aurex Rewards presents earning and redemption opportunities in one dashboard. Each banner has its own visual treatment. Refer & Earn opens a dedicated page with the invite journey, an example share link, referral activity, and program eligibility information. The Swap Center explains balance conversion, while the Exchange Center focuses on redeeming eligible VEs for supported rewards.
 
 ## Banner List
 
 | Banner | Purpose |
 | --- | --- |
-| Refer & Earn | Introduces eligible referral milestones. |
+| Refer & Earn | Explains the invite journey and eligibility. Personalized referral links and tracking are not connected in this preview. |
 | Bonus VEs | Highlights eligible activities and bonus opportunities without promising a fixed amount. |
 | Captcha Tasks | Presents task-based earning, distinct from ad viewing. |
 | Swap Center | Describes conversion between supported reward balances. |
@@ -21,10 +21,12 @@ VELOOP Rewards presents earning and redemption opportunities in one dashboard. E
 - Five individually composed banners using a shared `RewardBanner` shell.
 - Each feature pairs a clear heading and concise value proposition with a direct action.
 - Feature-specific dialogs with keyboard dismissal, focus trapping, and focus restoration.
+- Dedicated Refer & Earn page linked from the primary navigation.
 - Responsive dashboard layouts and touch-sized calls to action.
 - Accessible descriptions for the banner illustrations.
 - Reduced-motion support and lightweight CSS animations.
 - Demo-only task completion feedback; there is no backend integration.
+- Refer & Earn provides copy/share controls for an example site link and clearly indicates that referrals are not tracked in the preview.
 
 ## Technology Stack
 

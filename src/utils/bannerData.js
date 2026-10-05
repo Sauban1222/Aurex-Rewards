@@ -2,16 +2,16 @@ export const referFeature = {
   kind: 'refer',
   icon: 'people',
   eyebrow: 'REFER & EARN',
-  title: 'Invite friends. Earn rewards.',
-  body: 'Invite friends and earn rewards when they complete eligible activities.',
-  value: 'Rewards at eligible friend milestones',
-  illustrationLabel: 'Two profile circles linked by a plus sign represent referring a friend.',
-  button: 'Invite friends',
-  note: 'Rewards unlock at eligible milestones',
+  title: 'Good things grow when shared.',
+  body: 'Invite friends to Aurex. Eligible referral rewards depend on program rules and confirmed milestones.',
+  value: 'Clear milestones. Rewards follow the rules.',
+  illustrationLabel: 'Two friends connected by an invitation and a milestone reward.',
+  button: 'Get your invite link',
+  note: 'Eligibility and terms apply',
   tag: 'SHARE & EARN',
   dialogNote: {
     icon: 'people',
-    text: 'Rewards unlock after eligible referral milestones. Reward details follow the approved referral rules; personal invite links are not connected in this preview.',
+    text: 'A personalized referral link and referral tracking are not connected in this preview. No referral or reward will be recorded.',
   },
 }
 

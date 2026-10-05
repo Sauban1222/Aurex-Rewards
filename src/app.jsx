@@ -7,6 +7,7 @@ import BonusVEsBanner from './components/BonusVEsBanner/BonusVEsBanner.jsx'
 import CaptchaTasksBanner from './components/CaptchaTasksBanner/CaptchaTasksBanner.jsx'
 import ExchangeCenterBanner from './components/ExchangeCenterBanner/ExchangeCenterBanner.jsx'
 import LoginPage from './pages/Login.jsx'
+import ReferEarnPage from './pages/ReferEarn.jsx'
 import { bannerFeatures } from './utils/bannerData.js'
 
 function Logo() {
@@ -17,12 +18,20 @@ function App() {
   const [dialog, setDialog] = useState(null)
   const [toast, setToast] = useState('')
   const [menuOpen, setMenuOpen] = useState(false)
-  const [isLoginPage, setIsLoginPage] = useState(window.location.hash === '#login')
+  const [page, setPage] = useState(() => {
+    if (window.location.hash === '#login') return 'login'
+    if (window.location.hash === '#refer') return 'refer'
+    return 'home'
+  })
   const dialogRef = useRef(null)
   const dialogTriggerRef = useRef(null)
 
   useEffect(() => {
-    const syncPage = () => setIsLoginPage(window.location.hash === '#login')
+    const syncPage = () => {
+      if (window.location.hash === '#login') setPage('login')
+      else if (window.location.hash === '#refer') setPage('refer')
+      else setPage('home')
+    }
     window.addEventListener('hashchange', syncPage)
     return () => window.removeEventListener('hashchange', syncPage)
   }, [])
@@ -34,9 +43,15 @@ function App() {
   }
 
   const openFeature = (kind, trigger) => {
+    if (kind === 'refer') {
+      window.location.hash = '#refer'
+      return
+    }
+
     dialogTriggerRef.current = trigger
     setDialog(kind)
   }
+
   const activeContent = dialog && bannerFeatures[dialog]
 
   useEffect(() => {
@@ -54,7 +69,7 @@ function App() {
       }
 
       if (event.key !== 'Tab' || !modal) return
-      const focusableElements = modal.querySelectorAll('button:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])')
+      const focusableElements = modal.querySelectorAll('button:not([disabled]), a[href], input:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])')
       const firstElement = focusableElements[0]
       const lastElement = focusableElements[focusableElements.length - 1]
 
@@ -76,7 +91,8 @@ function App() {
     }
   }, [dialog])
 
-  if (isLoginPage) return <LoginPage />
+  if (page === 'login') return <LoginPage />
+  if (page === 'refer') return <ReferEarnPage />
 
   return (
     <div id="home" className="app-shell">
@@ -86,6 +102,7 @@ function App() {
           <nav className={`main-nav ${menuOpen ? 'nav-open' : ''}`} aria-label="Main navigation">
             <a className="nav-link nav-active" href="#home" onClick={() => setMenuOpen(false)}>Overview</a>
             <a className="nav-link" href="#earn" onClick={() => setMenuOpen(false)}>Earn VEs</a>
+            <a className="nav-link" href="#refer" onClick={() => setMenuOpen(false)}>Refer &amp; Earn</a>
             <a className="nav-link" href="#redeem" onClick={() => setMenuOpen(false)}>Redeem</a>
           </nav>
           <div className="header-actions">
@@ -147,7 +164,7 @@ function App() {
             <h2 id="dialog-title">{activeContent.title}</h2>
             <p>{activeContent.body}</p>
             {activeContent.dialogNote && <div className="dialog-note"><Icon name={activeContent.dialogNote.icon} size={17} /><span>{activeContent.dialogNote.text}</span></div>}
-            {dialog === 'captcha' ? <Button onClick={confirmTask} icon="check">Mark demo task complete</Button> : dialog === 'refer' ? <Button onClick={() => setDialog(null)}>Done</Button> : dialog === 'swap' ? <Button onClick={() => setDialog(null)}>Got it</Button> : <Button onClick={() => { if (dialog === 'exchange') dialogTriggerRef.current = document.getElementById('redeem-heading'); setDialog(null); document.getElementById('redeem').scrollIntoView({ behavior: 'smooth' }) }}>{dialog === 'exchange' ? 'Explore rewards' : 'Sounds good'}</Button>}
+            {dialog === 'captcha' ? <Button onClick={confirmTask} icon="check">Mark demo task complete</Button> : dialog === 'swap' ? <Button onClick={() => setDialog(null)}>Got it</Button> : <Button onClick={() => { if (dialog === 'exchange') dialogTriggerRef.current = document.getElementById('redeem-heading'); setDialog(null); document.getElementById('redeem').scrollIntoView({ behavior: 'smooth' }) }}>{dialog === 'exchange' ? 'Explore rewards' : 'Sounds good'}</Button>}
             <span className="dialog-footnote">Preview experience · Rewards shown for illustration</span>
           </section>
         </div>
