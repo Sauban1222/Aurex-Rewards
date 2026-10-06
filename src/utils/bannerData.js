@@ -9,10 +9,6 @@ export const referFeature = {
   button: 'Get your invite link',
   note: 'Eligibility and terms apply',
   tag: 'SHARE & EARN',
-  dialogNote: {
-    icon: 'people',
-    text: 'A personalized referral link and referral tracking are not connected in this preview. No referral or reward will be recorded.',
-  },
 }
 
 export const swapFeature = {
@@ -26,10 +22,6 @@ export const swapFeature = {
   button: 'Explore Swaps',
   note: 'Supported balance conversions',
   tag: 'BALANCE ↔ BALANCE',
-  dialogNote: {
-    icon: 'swap',
-    text: 'Swap Center is for conversions between supported reward balances. It is separate from redeeming VEs for supported rewards in the Exchange Center.',
-  },
 }
 
 export const bonusFeature = {
@@ -39,14 +31,10 @@ export const bonusFeature = {
   title: 'Get Extra VEs',
   body: 'Complete eligible activities to unlock more VEs through bonus opportunities.',
   value: 'More VEs through eligible activities',
-  illustrationLabel: 'A bonus reward box, coins, and a bonus badge represent additional VE opportunities.',
+  illustrationLabel: 'An opening glass reward vault releases luminous digital reward coins, tokens, and layered cards.',
   button: 'Explore Bonus',
   note: 'Discover eligible bonus opportunities',
   tag: 'MORE VEs',
-  dialogNote: {
-    icon: 'sparkles',
-    text: 'Explore eligible activities, campaigns, and seasonal promotions for additional VEs.',
-  },
 }
 
 export const captchaFeature = {
@@ -56,14 +44,10 @@ export const captchaFeature = {
   title: 'Captcha Tasks',
   body: 'Complete available CAPTCHA tasks accurately to earn eligible rewards.',
   value: 'Earn from accurate task completion',
-  illustrationLabel: 'A captcha challenge marked complete represents verified task-based earning.',
+  illustrationLabel: 'A glassy laptop displays a completed verification grid with a shield, a success check, and reward tokens.',
   button: 'Start Task',
   note: 'Rewards follow platform rules',
   tag: 'TASK-BASED',
-  dialogNote: {
-    icon: 'shield',
-    text: 'This is a task-based earning opportunity, not ad viewing. Complete available challenges accurately; eligible rewards follow platform rules.',
-  },
 }
 
 export const exchangeFeature = {
@@ -73,20 +57,8 @@ export const exchangeFeature = {
   title: 'Exchange Center',
   body: 'Redeem eligible VEs for rewards currently supported on the platform.',
   value: 'Redeem eligible VEs for supported rewards',
-  illustrationLabel: 'A VE wallet connected to redemption options represents exchanging eligible rewards.',
+  illustrationLabel: 'A luminous rewards wallet connects by directional light paths to three abstract digital redemption cards.',
   button: 'Open Exchange Center',
   note: 'Options depend on eligibility and availability',
   tag: 'EARN → REDEEM',
-  dialogNote: {
-    icon: 'gift',
-    text: 'See which redemption options are currently supported and available for your account. Eligibility and terms apply.',
-  },
-}
-
-export const bannerFeatures = {
-  refer: referFeature,
-  swap: swapFeature,
-  bonus: bonusFeature,
-  captcha: captchaFeature,
-  exchange: exchangeFeature,
 }

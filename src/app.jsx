@@ -1,6 +1,5 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import Icon from './components/Icon.jsx'
-import { Button } from './components/RewardBanner/RewardBanner.jsx'
 import ReferEarnBanner from './components/ReferEarnBanner/ReferEarnBanner.jsx'
 import SwapCenterBanner from './components/SwapCenterBanner/SwapCenterBanner.jsx'
 import BonusVEsBanner from './components/BonusVEsBanner/BonusVEsBanner.jsx'
@@ -9,99 +8,56 @@ import ExchangeCenterBanner from './components/ExchangeCenterBanner/ExchangeCent
 import LoginPage from './pages/Login.jsx'
 import ReferEarnPage from './pages/ReferEarn.jsx'
 import SwapCenterPage from './pages/SwapCenter.jsx'
-import { bannerFeatures } from './utils/bannerData.js'
+import BonusVEsPage from './pages/BonusVEs.jsx'
+import CaptchaTasksPage from './pages/CaptchaTasks.jsx'
+import ExchangeCenterPage from './pages/ExchangeCenter.jsx'
 
 function Logo() {
   return <a className="brand" href="#home" aria-label="Aurex Rewards home"><img className="brand-logo" src={`${import.meta.env.BASE_URL}aurex-symbol.jpg`} alt="" /><span className="brand-wordmark">Aurex<span>rewards</span></span></a>
 }
 
+function getPageFromHash() {
+  const pageByHash = {
+    '#login': 'login',
+    '#refer': 'refer',
+    '#invite-link': 'refer',
+    '#swap': 'swap',
+    '#bonus': 'bonus',
+    '#bonus-opportunities': 'bonus',
+    '#captcha': 'captcha',
+    '#demo-task': 'captcha',
+    '#exchange': 'exchange',
+    '#reward-options': 'exchange',
+    '#home': 'home',
+    '#earn': 'home',
+    '#redeem': 'home',
+  }
+
+  return pageByHash[window.location.hash] ?? null
+}
+
 function App() {
-  const [dialog, setDialog] = useState(null)
   const [toast, setToast] = useState('')
   const [menuOpen, setMenuOpen] = useState(false)
-  const [page, setPage] = useState(() => {
-    if (window.location.hash === '#login') return 'login'
-    if (window.location.hash === '#refer') return 'refer'
-    if (window.location.hash === '#swap') return 'swap'
-    return 'home'
-  })
-  const dialogRef = useRef(null)
-  const dialogTriggerRef = useRef(null)
+  const [page, setPage] = useState(() => getPageFromHash() ?? 'home')
 
   useEffect(() => {
     const syncPage = () => {
-      if (window.location.hash === '#login') setPage('login')
-      else if (window.location.hash === '#refer') setPage('refer')
-      else if (window.location.hash === '#swap') setPage('swap')
-      else setPage('home')
+      const nextPage = getPageFromHash()
+      if (nextPage) setPage(nextPage)
     }
     window.addEventListener('hashchange', syncPage)
     return () => window.removeEventListener('hashchange', syncPage)
   }, [])
 
-  const confirmTask = () => {
-    setDialog(null)
-    setToast('Demo task marked complete. Eligible rewards depend on platform rules.')
-    window.setTimeout(() => setToast(''), 4200)
-  }
-
-  const openFeature = (kind, trigger) => {
-    if (kind === 'refer') {
-      window.location.hash = '#refer'
-      return
-    }
-
-    if (kind === 'swap') {
-      window.location.hash = '#swap'
-      return
-    }
-
-    dialogTriggerRef.current = trigger
-    setDialog(kind)
-  }
-
-  const activeContent = dialog && bannerFeatures[dialog]
-
-  useEffect(() => {
-    if (!dialog) return undefined
-
-    const modal = dialogRef.current
-    const closeButton = modal?.querySelector('.dialog-close')
-    closeButton?.focus()
-
-    const handleKeyDown = (event) => {
-      if (event.key === 'Escape') {
-        event.preventDefault()
-        setDialog(null)
-        return
-      }
-
-      if (event.key !== 'Tab' || !modal) return
-      const focusableElements = modal.querySelectorAll('button:not([disabled]), a[href], input:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])')
-      const firstElement = focusableElements[0]
-      const lastElement = focusableElements[focusableElements.length - 1]
-
-      if (event.shiftKey && document.activeElement === firstElement) {
-        event.preventDefault()
-        lastElement?.focus()
-      } else if (!event.shiftKey && document.activeElement === lastElement) {
-        event.preventDefault()
-        firstElement?.focus()
-      }
-    }
-
-    document.addEventListener('keydown', handleKeyDown)
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown)
-      const focusTarget = dialogTriggerRef.current
-      if (focusTarget?.isConnected) focusTarget.focus({ preventScroll: true })
-      dialogTriggerRef.current = null
-    }
-  }, [dialog])
+  const openFeature = (kind) => { window.location.hash = `#${kind}` }
 
   if (page === 'login') return <LoginPage />
   if (page === 'refer') return <ReferEarnPage />
   if (page === 'swap') return <SwapCenterPage />
+  if (page === 'bonus') return <BonusVEsPage />
+  if (page === 'captcha') return <CaptchaTasksPage />
+  if (page === 'exchange') return <ExchangeCenterPage />
 
   return (
     <div id="home" className="app-shell">
@@ -165,20 +121,6 @@ function App() {
         <footer className="page-footer"><Logo /><span>Good things come around.</span><span className="footer-right">© 2026 Aurex Rewards</span></footer>
       </main>
 
-      {dialog && activeContent && (
-        <div className="dialog-backdrop" role="presentation" onClick={(event) => { if (event.target === event.currentTarget) setDialog(null) }}>
-          <section id="feature-dialog" ref={dialogRef} className="dialog" role="dialog" aria-modal="true" aria-labelledby="dialog-title">
-            <button className="dialog-close" onClick={() => setDialog(null)} aria-label="Close dialog">×</button>
-            <span className="dialog-icon"><Icon name={activeContent.icon} size={21} /></span>
-            <div className="card-eyebrow">{activeContent.eyebrow}</div>
-            <h2 id="dialog-title">{activeContent.title}</h2>
-            <p>{activeContent.body}</p>
-            {activeContent.dialogNote && <div className="dialog-note"><Icon name={activeContent.dialogNote.icon} size={17} /><span>{activeContent.dialogNote.text}</span></div>}
-            {dialog === 'captcha' ? <Button onClick={confirmTask} icon="check">Mark demo task complete</Button> : dialog === 'swap' ? <Button onClick={() => setDialog(null)}>Got it</Button> : <Button onClick={() => { if (dialog === 'exchange') dialogTriggerRef.current = document.getElementById('redeem-heading'); setDialog(null); document.getElementById('redeem').scrollIntoView({ behavior: 'smooth' }) }}>{dialog === 'exchange' ? 'Explore rewards' : 'Sounds good'}</Button>}
-            <span className="dialog-footnote">Preview experience · Rewards shown for illustration</span>
-          </section>
-        </div>
-      )}
       {toast && <div className="toast" role="status"><span className="toast-dot" />{toast}<button aria-label="Dismiss notification" onClick={() => setToast('')}>×</button></div>}
     </div>
   )

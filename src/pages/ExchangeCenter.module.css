@@ -1,0 +1,129 @@
+.page { background: radial-gradient(ellipse at 84% 8%, rgba(109, 78, 205, .16), transparent 32%), #0c1425; }
+
+.hero {
+  min-height: 365px;
+  padding: 42px 46px;
+  background:
+    radial-gradient(ellipse at 80% 45%, rgba(90, 80, 212, .2), transparent 36%),
+    radial-gradient(ellipse at 61% 100%, rgba(45, 147, 191, .1), transparent 42%),
+    linear-gradient(125deg, rgba(25, 43, 73, .98), rgba(15, 27, 49, .98) 63%, rgba(31, 27, 64, .97));
+}
+
+.heroCopy { max-width: 53%; padding-bottom: 15px; }
+.hero h1 { max-width: 480px; font-size: clamp(31px, 3.5vw, 42px); }
+.hero h1 span { background-image: linear-gradient(100deg, #9cafff, #b5a1ff 55%, #7bdeeb); }
+.heroCopy p { max-width: 420px; }
+.heroVisual { position: absolute; top: 50%; right: 1%; width: 48%; height: 92%; transform: translateY(-52%); }
+.heroIllustration { display: block; width: 100%; height: 100%; overflow: visible; filter: drop-shadow(0 15px 25px rgba(2, 7, 19, .3)); }
+
+.exchangeSection { margin-top: 37px; scroll-margin-top: 96px; }
+.sectionHeading { display: flex; align-items: end; justify-content: space-between; gap: 20px; margin-bottom: 15px; }
+.sectionHeading h2 { margin: 8px 0 0; color: #f1f4ff; font: 600 22px/1.2 Sora, Manrope, sans-serif; letter-spacing: -.04em; }
+.demoBadge { display: inline-flex; min-height: 31px; align-items: center; gap: 8px; padding: 0 11px; border: 1px solid rgba(233, 197, 128, .19); border-radius: 8px; background: rgba(177, 135, 68, .08); color: #e8d09b; font-size: 8px; font-weight: 800; letter-spacing: .11em; }
+.demoBadge > span { width: 6px; height: 6px; border-radius: 50%; background: #e3c47d; box-shadow: 0 0 9px rgba(227, 196, 125, .4); }
+
+.exchangeLayout { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(270px, .75fr); align-items: start; gap: 15px; }
+.optionsPanel, .summaryPanel { border: 1px solid rgba(145, 167, 222, .15); border-radius: 16px; background: linear-gradient(145deg, rgba(23, 38, 65, .92), rgba(15, 26, 46, .96)); box-shadow: inset 0 1px 0 rgba(255, 255, 255, .035), 0 16px 38px rgba(2, 7, 19, .19); }
+.optionsPanel { padding: 20px; }
+.balanceBar { display: flex; min-height: 58px; align-items: center; gap: 11px; padding: 10px 12px; border: 1px solid rgba(142, 170, 230, .15); border-radius: 11px; background: linear-gradient(100deg, rgba(39, 59, 97, .7), rgba(24, 35, 63, .62)); }
+.balanceIcon { display: grid; width: 34px; height: 34px; flex: 0 0 auto; place-items: center; border: 1px solid rgba(135, 194, 232, .25); border-radius: 10px; background: rgba(65, 136, 181, .16); color: #9de0ef; }
+.balanceBar > span:nth-child(2) { display: grid; gap: 3px; }
+.balanceBar small, .selectedSummary > span:nth-child(2) small { color: #91a1be; font-size: 7px; font-weight: 800; letter-spacing: .12em; }
+.balanceBar strong { color: #eef3ff; font: 650 16px Manrope, sans-serif; }
+.balanceBar em { color: #9fe0ee; font-size: 9px; font-style: normal; font-weight: 600; }
+.sampleLabel { margin-left: auto; padding: 6px 8px; border: 1px solid rgba(235, 199, 130, .16); border-radius: 6px; color: #ddc792; font-size: 7px; font-weight: 800; letter-spacing: .08em; white-space: nowrap; }
+
+.rewardList { display: grid; gap: 9px; margin-top: 13px; }
+.rewardOption { display: flex; min-height: 74px; align-items: center; gap: 12px; padding: 11px; border: 1px solid rgba(145, 167, 222, .14); border-radius: 11px; background: rgba(20, 32, 54, .65); color: inherit; text-align: left; cursor: pointer; transition: border-color .17s, background .17s, transform .17s; }
+.rewardOption:hover:not(:disabled) { transform: translateY(-1px); border-color: rgba(157, 187, 239, .36); background: rgba(30, 46, 75, .78); }
+.rewardOption:focus-visible, .actionButton:focus-visible, .backButton:focus-visible { outline: 2px solid #8ddfe9; outline-offset: 3px; }
+.rewardOption:disabled { cursor: default; }
+.rewardSelected { border-color: rgba(139, 183, 245, .47); background: linear-gradient(105deg, rgba(46, 70, 111, .64), rgba(42, 44, 92, .45)); box-shadow: inset 0 0 0 1px rgba(155, 183, 255, .08); }
+.rewardIcon { display: grid; width: 39px; height: 39px; flex: 0 0 auto; place-items: center; border: 1px solid rgba(165, 184, 239, .18); border-radius: 11px; background: rgba(109, 97, 188, .18); color: #c0b6ff; }
+.gold { border-color: rgba(231, 194, 116, .22); background: rgba(174, 130, 57, .14); color: #e8cc8d; }
+.cyan { border-color: rgba(114, 215, 229, .21); background: rgba(49, 146, 168, .14); color: #9ce5ed; }
+.violet { border-color: rgba(178, 154, 255, .22); background: rgba(111, 81, 193, .17); color: #c5b5ff; }
+.rewardCopy { display: grid; min-width: 0; flex: 1; gap: 5px; }
+.rewardCopy strong { color: #e8eefc; font: 600 11px Sora, Manrope, sans-serif; }
+.rewardCopy small { color: #96a6c0; font-size: 9px; line-height: 1.4; }
+.rewardCost { color: #e8d49e; font: 700 11px Manrope, sans-serif; white-space: nowrap; }
+.rewardCost small { color: #a5aec1; font-size: 8px; font-weight: 500; }
+.radioMark { display: grid; width: 17px; height: 17px; flex: 0 0 auto; place-items: center; border: 1px solid rgba(171, 190, 227, .43); border-radius: 50%; }
+.radioMark > span { width: 8px; height: 8px; border-radius: 50%; background: #91e1ed; box-shadow: 0 0 8px rgba(113, 214, 231, .5); }
+
+.reviewCard, .successCard { display: flex; align-items: flex-start; gap: 10px; margin-top: 12px; padding: 12px; border: 1px solid rgba(139, 181, 239, .19); border-radius: 10px; background: rgba(48, 82, 132, .13); }
+.reviewIcon, .successIcon { display: grid; width: 29px; height: 29px; flex: 0 0 auto; place-items: center; border: 1px solid rgba(143, 199, 228, .25); border-radius: 9px; background: rgba(67, 135, 175, .14); color: #a1e0eb; }
+.reviewCard > div, .successCard > div { display: grid; gap: 4px; }
+.reviewCard strong, .successCard strong { color: #e1eafa; font-size: 10px; }
+.reviewCard p, .successCard p { margin: 0; color: #b5c4dc; font-size: 9px; }
+.reviewCard small, .successCard small { color: #91a2bd; font-size: 8px; line-height: 1.5; }
+.successCard { border-color: rgba(105, 215, 191, .2); background: rgba(48, 156, 139, .08); }
+.successIcon { border-color: rgba(116, 229, 204, .28); background: rgba(91, 196, 172, .13); color: #9af0d9; }
+.successCard strong { color: #c4f7e9; }
+
+.actionRow { display: flex; min-height: 48px; align-items: center; justify-content: space-between; gap: 12px; margin-top: 13px; padding-top: 12px; border-top: 1px solid rgba(162, 184, 225, .12); }
+.secureNote { display: inline-flex; align-items: center; gap: 6px; color: #93a4c0; font-size: 8px; white-space: nowrap; }
+.secureNote svg { color: #92dce9; }
+.actionButton, .backButton { display: inline-flex; min-height: 36px; align-items: center; justify-content: center; gap: 8px; padding: 0 12px; border: 1px solid rgba(160, 185, 255, .23); border-radius: 8px; background: linear-gradient(108deg, #5868d1, #4e68be); color: #fff; font-size: 9px; font-weight: 700; cursor: pointer; transition: filter .18s, transform .18s; }
+.actionButton:hover:not(:disabled), .backButton:hover { transform: translateY(-1px); filter: brightness(1.1); }
+.actionButton:disabled { opacity: .45; cursor: not-allowed; }
+.backButton { border-color: rgba(158, 180, 224, .17); background: rgba(74, 91, 131, .16); color: #dce5f6; }
+.reviewActions { display: flex; gap: 8px; }
+.notice { min-height: 14px; margin: 4px 0 0; color: #9be2d6; font-size: 9px; line-height: 1.5; }
+
+.summaryPanel { padding: 21px; }
+.panelKicker { color: #a5afff; font-size: 8px; font-weight: 800; letter-spacing: .14em; }
+.summaryPanel h3 { margin: 7px 0 17px; color: #edf2ff; font: 600 15px Sora, Manrope, sans-serif; letter-spacing: -.03em; }
+.steps { display: grid; gap: 0; margin: 0; padding: 0; list-style: none; }
+.steps li { position: relative; display: flex; min-height: 55px; align-items: flex-start; gap: 10px; }
+.steps li:not(:last-child)::after { position: absolute; top: 27px; bottom: 0; left: 11px; width: 1px; background: rgba(143, 163, 204, .2); content: ''; }
+.steps li > span { z-index: 1; display: grid; width: 23px; height: 23px; flex: 0 0 auto; place-items: center; border: 1px solid rgba(149, 167, 207, .22); border-radius: 50%; background: #1b2b48; color: #8d9bb9; font-size: 8px; font-weight: 700; }
+.steps li > div { display: grid; gap: 4px; padding-top: 2px; }
+.steps li strong { color: #bdc9e0; font-size: 9px; }
+.steps li small { color: #8292ad; font-size: 8px; }
+.steps .stepActive > span { border-color: rgba(108, 222, 237, .48); background: rgba(54, 148, 178, .19); color: #9cecf2; }
+.steps .stepActive strong { color: #e3f8ff; }
+.steps .stepDone > span { border-color: rgba(105, 215, 191, .42); background: rgba(48, 156, 139, .17); color: #9af0d9; }
+.selectedSummary { display: flex; align-items: center; gap: 9px; margin-top: 6px; padding: 10px; border: 1px solid rgba(153, 171, 223, .15); border-radius: 10px; background: rgba(28, 40, 68, .55); }
+.selectedSummary .rewardIcon { width: 33px; height: 33px; }
+.selectedSummary > span:nth-child(2) { display: grid; min-width: 0; flex: 1; gap: 4px; }
+.selectedSummary > span:nth-child(2) strong { overflow: hidden; color: #e5ebfa; font-size: 9px; text-overflow: ellipsis; white-space: nowrap; }
+.selectedSummary > b { color: #e8d49e; font: 700 9px Manrope, sans-serif; white-space: nowrap; }
+.selectedSummary > b small { color: #a5aec1; font-size: 7px; font-weight: 500; }
+.emptySummary { display: flex; align-items: center; gap: 9px; margin-top: 6px; padding: 11px; border: 1px dashed rgba(153, 171, 223, .18); border-radius: 9px; color: #9aabc6; font-size: 9px; line-height: 1.5; }
+.emptySummary svg { flex: 0 0 auto; color: #beafff; }
+.termsNote { margin: 12px 0 0; color: #8696b1; font-size: 8px; line-height: 1.55; }
+.terms { margin-top: 22px; }
+
+@media (max-width: 760px) {
+  .hero { min-height: 335px; padding: 34px 30px; }
+  .heroCopy { max-width: 55%; }
+  .heroVisual { right: -3%; width: 52%; height: 84%; }
+  .exchangeLayout { grid-template-columns: minmax(0, 1.1fr) minmax(230px, .8fr); }
+  .optionsPanel { padding: 15px; }
+  .rewardOption { gap: 8px; padding: 9px; }
+}
+
+@media (max-width: 590px) {
+  .hero { min-height: 455px; align-items: flex-start; padding: 29px 22px 215px; }
+  .heroCopy { max-width: 100%; padding-bottom: 0; }
+  .hero h1 { font-size: 33px; }
+  .heroVisual { top: auto; right: 50%; bottom: 17px; width: 108%; height: 220px; transform: translateX(50%); }
+  .heroStatus { padding: 0 14px; font-size: 6px; letter-spacing: .1em; }
+  .exchangeLayout { grid-template-columns: 1fr; }
+  .optionsPanel { padding: 16px; }
+  .summaryPanel { padding: 18px; }
+}
+
+@media (max-width: 380px) {
+  .hero { padding-right: 18px; padding-left: 18px; }
+  .hero h1 { font-size: 30px; }
+  .rewardOption { gap: 7px; }
+  .rewardIcon { width: 34px; height: 34px; }
+  .rewardCopy strong { font-size: 10px; }
+  .rewardCopy small { font-size: 8px; }
+  .rewardCost { font-size: 9px; }
+  .secureNote { font-size: 7px; }
+  .actionButton, .backButton { padding: 0 9px; font-size: 8px; }
+  .sampleLabel { padding: 5px; font-size: 6px; }
+}

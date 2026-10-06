@@ -117,54 +117,12 @@ h1 span { color: #839e48; }
 .swap-balance small { margin-top: 3px; color: #a9afb4; font-size: 6px; }
 .swap-arrow { position: absolute; z-index: 1; top: 69px; left: 82px; display: grid; place-items: center; width: 35px; height: 35px; border: 4px solid #e4eee9; border-radius: 50%; background: #fff; color: #60774d; }
 .swap-convert-label { position: absolute; bottom: 13px; left: 72px; padding: 5px 9px; border: 1px solid rgba(211, 192, 147, .18); border-radius: 5px; background: rgba(44, 47, 62, .84); color: #d9c99a; font-size: 6px; font-weight: 800; letter-spacing: .14em; }
-.bonus-art { position: relative; width: 250px; height: 220px; }
-.bonus-glow { position: absolute; top: 38px; left: 63px; width: 124px; height: 124px; border: 1px solid rgba(143, 133, 79, .14); border-radius: 50%; box-shadow: 0 0 0 15px rgba(255,255,255,.19), 0 0 0 30px rgba(255,255,255,.14); }
-.bonus-box { position: absolute; top: 82px; left: 91px; width: 78px; height: 67px; border: 1px solid #b69a59; border-radius: 8px 8px 13px 13px; background: linear-gradient(145deg, #e1ca82, #c1a452); box-shadow: 0 11px 18px rgba(114, 96, 40, .18); }
-.bonus-box::before { position: absolute; top: -12px; left: -8px; width: 92px; height: 20px; border: 1px solid #b69a59; border-radius: 6px; background: linear-gradient(145deg, #f0dfa2, #d2b965); content: ''; }
-.bonus-box-lid { position: absolute; z-index: 1; top: -12px; left: 34px; width: 12px; height: 78px; background: #f3e5b5; }
-.bonus-box-ribbon { position: absolute; z-index: 2; top: -24px; left: 23px; width: 34px; height: 18px; border: 5px solid #b89d59; border-radius: 50% 50% 4px 50%; transform: rotate(-24deg); }
-.bonus-box-bow { position: absolute; z-index: 2; top: -24px; left: 39px; width: 34px; height: 18px; border: 5px solid #b89d59; border-radius: 50% 50% 50% 4px; transform: rotate(24deg); }
-.bonus-badge { position: absolute; z-index: 3; top: 48px; right: 27px; display: grid; place-items: center; width: 47px; height: 47px; border: 4px solid #f8f3df; border-radius: 50%; background: linear-gradient(145deg, #738a4a, #536e3c); color: #fffbe8; font-size: 7px; font-weight: 800; letter-spacing: .06em; box-shadow: 0 5px 12px rgba(57, 76, 43, .18); transform: rotate(9deg); }
-.bonus-multiplier { position: absolute; z-index: 2; top: 51px; left: 34px; display: grid; place-items: center; width: 33px; height: 33px; border: 3px solid #f8f3df; border-radius: 50%; background: #d7c37f; color: #65552f; font: 800 18px Manrope, sans-serif; box-shadow: 0 5px 10px rgba(114, 96, 40, .13); }
-.bonus-coin { position: absolute; z-index: 2; display: grid; place-items: center; width: 36px; height: 36px; border: 4px solid #f9f6e9; border-radius: 50%; background: linear-gradient(140deg, #e8d880, #c3a946); color: #fffbe8; font: 800 8px Manrope, sans-serif; text-shadow: 0 1px 3px #a28a37; box-shadow: 0 6px 12px rgba(114, 96, 40, .16); }
-.bonus-coin-one { top: 93px; left: 43px; }
-.bonus-coin-two { top: 123px; right: 35px; width: 29px; height: 29px; border-width: 3px; background: #dae99a; color: #71834b; font-size: 15px; text-shadow: none; }
-.bonus-coin-three { top: 67px; right: 37px; width: 26px; height: 26px; border-width: 3px; background: #d8c78f; font-size: 6px; }
-.bonus-star { position: absolute; z-index: 1; color: #b4a25d; }
-.star-one { top: 28px; left: 58px; font-size: 17px; }
-.star-two { top: 111px; right: 13px; color: #8aa15b; font-size: 17px; }
-.star-three { top: 77px; left: 64px; color: #d1bb70; font-size: 14px; }
-.bonus-meter { position: absolute; bottom: 21px; left: 48px; display: flex; align-items: center; gap: 7px; width: 153px; padding: 7px 9px; border: 1px solid rgba(143, 133, 79, .14); border-radius: 7px; background: rgba(255, 253, 244, .84); box-shadow: 0 5px 12px rgba(114, 96, 40, .08); }
-.bonus-meter-label { flex: 0 0 auto; color: #84764c; font-size: 6px; font-weight: 800; letter-spacing: .08em; }
-.bonus-meter-track { position: relative; overflow: hidden; flex: 1 1 auto; height: 5px; border-radius: 5px; background: #ece6d4; }
-.bonus-meter-fill { display: block; width: 68%; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #c4d87f, #8da653); transform-origin: left; animation: bonus-progress 2.8s ease-in-out infinite alternate; }
-.bonus-meter-spark { color: #b49b4d; font-size: 10px; animation: bonus-twinkle 1.8s ease-in-out infinite; }
-.captcha-art { position: relative; width: 198px; height: 167px; }
-.captcha-ticket { position: absolute; top: 29px; left: 28px; width: 140px; height: 111px; padding: 16px 14px; border: 1px solid #dce8e2; border-radius: 9px; background: #fff; box-shadow: 0 9px 18px rgba(43, 74, 62, .09); transform: rotate(-5deg); }
-.captcha-check { position: absolute; top: 13px; right: 13px; display: grid; place-items: center; width: 25px; height: 25px; border-radius: 8px; background: #e8f3e7; color: #5e875b; }
-.captcha-line { display: block; height: 5px; margin: 4px 0; border-radius: 4px; background: #e9efea; }
-.line-long { width: 66px; margin-top: 6px; }
-.line-short { width: 45px; }
-.captcha-reward { display: inline-block; margin-top: 11px; padding: 5px 7px; border-radius: 5px; background: #edf4e5; color: #688047; font-size: 7px; font-weight: 700; }
-.captcha-stamp { position: absolute; right: 12px; bottom: 19px; color: #8bb598; font-size: 7px; font-weight: 700; letter-spacing: .14em; transform: rotate(-8deg); }
-.captcha-sparkle { position: absolute; top: 24px; right: 17px; color: #8fae91; font-size: 19px; }
-.exchange-art { position: relative; width: 190px; height: 165px; }
-.exchange-orbit { position: absolute; top: 40px; left: 39px; width: 111px; height: 79px; border: 1px solid rgba(130, 101, 153, .2); border-radius: 50%; transform: rotate(-32deg); }
-.orbit-right { transform: rotate(32deg); }
-.exchange-wallet { position: absolute; top: 51px; left: 1px; width: 77px; height: 59px; padding: 9px 8px; border: 1px solid rgba(221, 220, 204, .16); border-radius: 8px; background: linear-gradient(145deg, #394c3d, #303b38); color: #f4f0df; box-shadow: 0 8px 17px rgba(17, 23, 33, .2); transform: rotate(-5deg); }
-.exchange-wallet-icon { position: absolute; top: 7px; right: 7px; color: #d6c38d; }
-.exchange-wallet-label { display: block; margin-bottom: 9px; color: #c2c5bd; font-size: 5px; font-weight: 700; letter-spacing: .1em; }
-.exchange-wallet-value { display: flex; align-items: baseline; gap: 4px; color: #f0dfaa; font: 800 16px Manrope, sans-serif; letter-spacing: -.04em; }
-.exchange-wallet-value span { color: #c8cbc4; font: 600 6px 'DM Sans', sans-serif; letter-spacing: .04em; }
-.exchange-transfer { position: absolute; z-index: 2; top: 66px; left: 76px; display: grid; place-items: center; width: 30px; height: 30px; border: 4px solid #24283a; border-radius: 50%; background: #d8c796; color: #34394a; box-shadow: 0 5px 12px rgba(17, 23, 33, .17); }
-.exchange-options { position: absolute; top: 33px; right: 0; width: 76px; height: 102px; }
-.exchange-reward-card { position: absolute; display: flex; align-items: center; justify-content: center; gap: 5px; border: 1px solid rgba(235, 229, 215, .16); border-radius: 7px; background: linear-gradient(145deg, #555b70, #393f52); color: #eee7d1; box-shadow: 0 8px 16px rgba(17, 23, 33, .19); font-size: 5px; font-weight: 800; letter-spacing: .07em; }
-.exchange-gift { top: 0; right: 0; width: 70px; height: 57px; transform: rotate(6deg); }
-.exchange-reward-icon { display: grid; place-items: center; width: 22px; height: 22px; border-radius: 6px; background: rgba(221, 204, 153, .16); color: #e2d09b; }
-.exchange-upi { right: 5px; bottom: 1px; width: 64px; height: 39px; gap: 6px; border-color: rgba(202, 215, 190, .18); background: linear-gradient(145deg, #394c4a, #303d46); transform: rotate(-4deg); }
-.exchange-upi-mark { color: #d3e3b7; font: 800 8px Manrope, sans-serif; letter-spacing: .02em; }
-.exchange-path { position: absolute; bottom: 3px; left: 3px; display: flex; align-items: center; justify-content: space-around; gap: 4px; width: 184px; padding: 6px 7px; border: 1px solid rgba(220, 222, 224, .12); border-radius: 6px; background: rgba(38, 42, 58, .82); color: #c8cbd3; font-size: 5px; font-weight: 800; letter-spacing: .08em; box-shadow: 0 5px 13px rgba(17, 23, 33, .14); }
-.exchange-path svg { flex: 0 0 auto; color: #d5c38e; }
+.bonus-art { position: relative; width: min(100%, 380px); height: auto; aspect-ratio: 20 / 17; }
+.bonus-illustration { display: block; width: 100%; height: 100%; overflow: visible; filter: drop-shadow(0 14px 24px rgba(4, 8, 22, .26)); }
+.captcha-art { position: relative; width: min(100%, 360px); height: auto; aspect-ratio: 11 / 8; }
+.captcha-illustration { display: block; width: 100%; height: 100%; overflow: visible; filter: drop-shadow(0 12px 20px rgba(3, 8, 20, .25)); }
+.exchange-art { position: relative; width: min(100%, 420px); height: auto; aspect-ratio: 23 / 15; }
+.exchange-illustration { display: block; width: 100%; height: 100%; overflow: visible; filter: drop-shadow(0 13px 22px rgba(3, 8, 20, .26)); }
 .card-detail { position: absolute; z-index: 3; right: 25px; bottom: 19px; left: 25px; display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 32px; padding-top: 13px; border-top: 1px solid rgba(218, 226, 210, .12); }
 .detail-note { display: inline-flex; min-width: 0; align-items: center; gap: 7px; overflow: hidden; color: #b6bfad; font-size: 9px; font-weight: 500; text-overflow: ellipsis; white-space: nowrap; }
 .detail-note svg { flex: 0 0 auto; color: #c8df8c; }
@@ -290,17 +248,6 @@ body { background: #161827; }
 .swap-balance { border-color: rgba(196, 202, 218, .19); }
 .swap-destination { border-color: rgba(211, 192, 147, .22); }
 .swap-arrow { border-color: #24283a; background: #d8c796; color: #34394a; }
-.bonus-glow { border-color: rgba(228, 205, 123, .2); box-shadow: 0 0 0 13px rgba(228, 205, 123, .035), 0 0 0 27px rgba(228, 205, 123, .025); }
-.bonus-coin { border-color: #302d2a; }
-.captcha-ticket { border-color: #35454a; background: #29383d; }
-.captcha-line { background: #3c4b4e; }
-.captcha-reward { background: #34453d; color: #d3e4aa; }
-.captcha-check { background: #35463e; color: #a8d0a8; }
-.exchange-orbit { border-color: rgba(207, 185, 220, .23); }
-.exchange-wallet { border-color: rgba(207, 185, 220, .2); }
-.exchange-transfer { border-color: #2b2635; }
-.exchange-reward-card { border-color: rgba(207, 185, 220, .2); }
-.exchange-path { border-color: rgba(207, 185, 220, .17); }
 .page-footer { border-top-color: #2d3042; color: #9b9ead; }
 .page-footer .brand { color: #e5e6ee; }
 .dialog { border-color: #3a3d50; background: #202232; color: #f0f1f7; }
@@ -359,19 +306,6 @@ h1 span { color: #d0bd8c; }
 .tiny-star { color: #c8b988; }
 .swap-source { background: linear-gradient(145deg, #3d4a45, #303a40); }
 .swap-destination { background: linear-gradient(145deg, #474253, #363748); }
-.bonus-glow { border-color: rgba(213, 191, 135, .17); box-shadow: 0 0 0 13px rgba(213, 191, 135, .025), 0 0 0 27px rgba(213, 191, 135, .018); }
-.bonus-coin { background: linear-gradient(140deg, #ddcb94, #aa8d4e); color: #fff9e8; }
-.bonus-star, .star-two { color: #cdbb89; }
-.captcha-ticket { border-color: #505565; background: #303543; }
-.captcha-line { background: #484d5d; }
-.captcha-reward { background: #464456; color: #e1d3aa; }
-.captcha-check { background: #3c4854; color: #c9d4de; }
-.captcha-stamp, .captcha-sparkle { color: #bac7d2; }
-.exchange-orbit { border-color: rgba(197, 177, 213, .23); }
-.exchange-wallet-icon { color: #d5c99f; }
-.exchange-reward-icon { color: #e0d2a6; }
-.exchange-upi { background: linear-gradient(145deg, #39464a, #303d46); }
-.exchange-path svg { color: #d5c99f; }
 .dialog-icon { background: #3e4050; color: #e0d1a3; }
 .dialog-note svg { color: #d2bf8b; }
 
@@ -388,35 +322,6 @@ h1 span { color: #d0bd8c; }
 .refer-chip svg { color: #d8c58f; }
 .refer-plus { border-color: #242838; background: #d0be8e; }
 .orbit-one, .orbit-two { border-color: rgba(190, 198, 216, .22); }
-.captcha-art { width: 300px; height: 240px; }
-.captcha-challenge { position: absolute; top: 13px; left: 6px; width: 288px; padding: 13px; border: 1px solid #53596a; border-radius: 13px; background: linear-gradient(145deg, #383d4c, #2b3040); box-shadow: 0 15px 38px rgba(5, 7, 16, .22), inset 0 1px 0 rgba(255,255,255,.045); transform: rotate(-2deg); }
-.challenge-heading { display: flex; align-items: center; gap: 8px; padding-bottom: 10px; border-bottom: 1px solid rgba(224, 228, 241, .09); }
-.challenge-lock { display: grid; flex: 0 0 auto; place-items: center; width: 27px; height: 27px; border: 1px solid rgba(210, 194, 148, .18); border-radius: 8px; background: #444657; color: #d9c897; }
-.challenge-heading strong, .challenge-heading small { display: block; }
-.challenge-heading strong { color: #e5e5ea; font-size: 7px; letter-spacing: .11em; }
-.challenge-heading small { margin-top: 3px; color: #aeb3c0; font-size: 7px; }
-.challenge-step { margin-left: auto; align-self: start; color: #aaafbd; font-size: 7px; }
-.challenge-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; margin: 10px 0; }
-.challenge-tile { position: relative; overflow: hidden; height: 54px; border: 1px solid #5a6170; border-radius: 5px; background: linear-gradient(155deg, #89939a 0 38%, #646f79 39% 100%); }
-.challenge-tile::before, .challenge-tile::after { position: absolute; bottom: 0; left: 0; width: 100%; height: 55%; background: #596676; clip-path: polygon(0 100%, 43% 10%, 68% 67%, 83% 37%, 100% 72%, 100% 100%); content: ''; }
-.challenge-tile::after { bottom: 0; height: 35%; background: rgba(186, 194, 188, .55); clip-path: polygon(0 100%, 24% 28%, 44% 79%, 68% 13%, 100% 100%); }
-.tile-city { background: linear-gradient(155deg, #8a9299, #707a84); }
-.tile-city::before { background: #59616d; clip-path: polygon(0 100%, 0 49%, 17% 49%, 17% 29%, 33% 29%, 33% 55%, 50% 55%, 50% 15%, 70% 15%, 70% 43%, 86% 43%, 86% 28%, 100% 28%, 100% 100%); }
-.tile-city::after { height: 28%; background: #a9b2ae; clip-path: polygon(0 100%, 23% 30%, 44% 100%, 72% 18%, 100% 100%); }
-.tile-water { background: linear-gradient(165deg, #919a9c 0 44%, #647884 45% 100%); }
-.tile-water::before { height: 40%; background: #b6b8a9; clip-path: polygon(0 100%, 33% 0, 64% 100%); }
-.tile-water::after { height: 20%; background: #aebdc1; clip-path: none; opacity: .55; }
-.tile-hill { background: linear-gradient(160deg, #a3a295 0 43%, #727e70 44% 100%); }
-.tile-hill::before { height: 46%; background: #53685e; clip-path: ellipse(68% 65% at 59% 100%); }
-.tile-hill::after { height: 28%; background: #bdba9e; clip-path: ellipse(48% 65% at 14% 100%); }
-.tile-selected { border: 2px solid #d2c08f; }
-.tile-check { position: absolute; z-index: 1; top: 4px; left: 4px; display: grid; place-items: center; width: 15px; height: 15px; border-radius: 4px; background: #d4c391; color: #333747; }
-.challenge-footer { display: flex; align-items: center; gap: 8px; }
-.challenge-footer > span:first-child { display: inline-flex; align-items: center; gap: 4px; color: #bfc4cd; font-size: 7px; }
-.challenge-footer > span:first-child svg { color: #b9c6d3; }
-.challenge-reward { margin-left: auto; color: #e1d3a9; font-size: 8px; font-weight: 700; }
-.challenge-submit { display: inline-flex; align-items: center; gap: 4px; padding: 6px 8px; border-radius: 5px; background: #555a6d; color: #f2eee1; font-size: 6px; font-weight: 700; letter-spacing: .08em; }
-.captcha-sparkle { top: 2px; right: -5px; }
 
 @media (min-width: 761px) {
   .card-copy { max-width: 43%; }
@@ -462,41 +367,15 @@ h1 span { color: #d0bd8c; }
 
 .avatar-b { animation: reward-float 4s ease-in-out infinite; }
 .refer-chip { animation: reward-float 4s ease-in-out 1.1s infinite; }
-.bonus-coin { animation: reward-float 3.8s ease-in-out infinite; }
-.bonus-coin-two { animation: reward-float 3.8s ease-in-out .65s infinite; }
-.bonus-coin-three { animation: reward-float 3.8s ease-in-out 1.15s infinite; }
-.challenge-tile.tile-selected { animation: verification-highlight 3.6s ease-in-out infinite; }
-.challenge-tile.tile-selected:nth-child(3) { animation-delay: 1.2s; }
-.challenge-tile.tile-selected:nth-child(5) { animation-delay: 2.4s; }
-.challenge-flow { display: flex; align-items: center; justify-content: center; gap: 5px; margin: 0 0 9px; padding: 6px 7px; border: 1px solid rgba(224, 228, 241, .08); border-radius: 6px; background: rgba(255, 255, 255, .025); color: #c2c6d1; font-size: 6px; font-weight: 700; letter-spacing: .07em; }
-.challenge-flow > svg { flex: 0 0 auto; color: #8795a4; }
-.challenge-flow .challenge-reward { display: inline-flex; align-items: center; gap: 4px; margin-left: 0; color: #e1d3a9; font-size: 6px; }
-.challenge-coin { display: grid; place-items: center; width: 15px; height: 15px; border: 2px solid #f0e3b7; border-radius: 50%; background: #c3a95f; color: #363747; font-size: 5px; letter-spacing: 0; }
 .swap-source { animation: reward-float 4.2s ease-in-out infinite; }
 .swap-destination { animation: reward-float 4.2s ease-in-out .9s infinite; }
-.exchange-wallet { animation: reward-float 4s ease-in-out infinite; }
-.exchange-gift { animation: reward-float 4s ease-in-out .7s infinite; }
-.exchange-upi { animation: reward-float 4s ease-in-out 1.4s infinite; }
 
 @keyframes reward-float {
   0%, 100% { translate: 0 0; }
   50% { translate: 0 -6px; }
 }
 
-@keyframes verification-highlight {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(210, 192, 143, 0); }
-  50% { box-shadow: 0 0 0 3px rgba(210, 192, 143, .16); }
-}
 
-@keyframes bonus-progress {
-  from { transform: scaleX(.58); }
-  to { transform: scaleX(1); }
-}
-
-@keyframes bonus-twinkle {
-  0%, 100% { opacity: .6; transform: scale(.85); }
-  50% { opacity: 1; transform: scale(1.15); }
-}
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
@@ -673,9 +552,7 @@ h1 span { color: #d0bd8c; }
 .card-swap .card-art { animation-delay: -2.4s; }
 .card-exchange .card-art { animation-delay: -3.2s; }
 .card-art::before { animation: banner-halo 4s ease-in-out infinite; transform-origin: center; }
-.card-bonus .bonus-badge { animation: bonus-badge-bob 3.2s ease-in-out infinite; }
-.card-captcha .captcha-challenge { animation: captcha-card-bob 4.2s ease-in-out infinite; }
-.card-swap .swap-arrow, .card-exchange .exchange-transfer { animation: transfer-pulse 2.8s ease-in-out infinite; }
+.card-swap .swap-arrow { animation: transfer-pulse 2.8s ease-in-out infinite; }
 .card-refer .refer-plus { animation: refer-plus-pulse 2.4s ease-in-out infinite; }
 .feature-card .button { font-size: 14px; }
 .feature-card p { font-size: 16px; line-height: 1.58; }
@@ -750,16 +627,6 @@ h1 span { color: #d0bd8c; }
 @keyframes banner-halo {
   0%, 100% { opacity: .52; scale: .96; }
   50% { opacity: 1; scale: 1.035; }
-}
-
-@keyframes bonus-badge-bob {
-  0%, 100% { translate: 0 0; }
-  50% { translate: 0 -7px; }
-}
-
-@keyframes captcha-card-bob {
-  0%, 100% { translate: 0 0; }
-  50% { translate: 0 -5px; }
 }
 
 @keyframes transfer-pulse {

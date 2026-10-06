@@ -18,7 +18,12 @@ function RewardBanner({ feature, illustration, className = '', onAction }) {
         <h3 id={titleId}>{title}</h3>
         <p id={descriptionId}>{body}</p>
         <div className="card-value" id={valueId}><span className="value-mark"><Icon name={icon} size={14} /></span><span>{value}</span></div>
-        <Button variant={kind === 'refer' ? 'light' : 'dark'} onClick={(event) => onAction(kind, event.currentTarget)} aria-haspopup="dialog" aria-controls="feature-dialog">{button}</Button>
+        <Button
+          variant={kind === 'refer' ? 'light' : 'dark'}
+          onClick={() => onAction(kind)}
+        >
+          {button}
+        </Button>
       </div>
       <div className={`card-art art-${kind}`} role="img" aria-label={illustrationLabel}>{illustration}</div>
       <div className="card-detail">
