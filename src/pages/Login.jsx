@@ -5,7 +5,7 @@ function LoginPage() {
   const [showPassword, setShowPassword] = useState(false)
   const [message, setMessage] = useState('')
   const [isRegistering, setIsRegistering] = useState(false)
-  const logoSrc = `${import.meta.env.BASE_URL}aurex-symbol.jpg`
+  const logoSrc = '/aurex-logo.svg'
 
   const handleSubmit = (event) => {
     event.preventDefault()
@@ -23,11 +23,10 @@ function LoginPage() {
   return (
     <main className={styles.page}>
       <div className={styles.topbar}>
-        <a className={styles.brand} href="#home" aria-label="Aurex Rewards home">
-          <img className={styles.brandImage} src={logoSrc} alt="" />
-          <span className={styles.brandWordmark}>Aurex<span>rewards</span></span>
+        <a className={styles.brand} href="/" aria-label="Aurex Rewards home">
+          <img className={`${styles.brandImage} brand-logo`} src={logoSrc} alt="" width="150" height="42" />
         </a>
-        <a className={styles.backLink} href="#home">Back to rewards</a>
+        <a className={styles.backLink} href="/">Back to rewards</a>
       </div>
 
       <section className={`${styles.layout} ${isRegistering ? styles.registerLayout : ''}`} aria-labelledby="login-title">

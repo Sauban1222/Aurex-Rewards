@@ -1,12 +1,9 @@
 .surface {
-  --surface-glow: rgba(79, 124, 255, .18);
-  --feature-accent: #92b5ff;
+  --surface-glow: transparent;
+  --feature-accent: var(--color-accent);
   position: relative;
-  border-color: rgba(153, 174, 225, .16);
-  background:
-    radial-gradient(ellipse at 83% 40%, var(--surface-glow), transparent 46%),
-    linear-gradient(142deg, rgba(255, 255, 255, .055), transparent 46%),
-    linear-gradient(125deg, #192641 0%, #151e32 54%, #141a2b 100%);
+  border-color: var(--color-border);
+  background: linear-gradient(145deg, var(--color-surface-raised), var(--color-surface) 76%);
 }
 
 .surface::after {
@@ -17,36 +14,26 @@
   left: 0;
   height: 1px;
   background: linear-gradient(90deg, transparent, var(--feature-accent), transparent);
-  opacity: .5;
+  opacity: .32;
   content: '';
 }
 
-.surface::before {
-  background: radial-gradient(ellipse at 77% 47%, var(--surface-glow), transparent 54%);
-  opacity: .9;
-}
-
 .refer {
-  --surface-glow: rgba(111, 83, 255, .24);
-  --feature-accent: #9d8bff;
+  --feature-accent: #b8a5d1;
 }
 
 .bonus {
-  --surface-glow: rgba(197, 155, 78, .19);
   --feature-accent: #dfc080;
 }
 
 .captcha {
-  --surface-glow: rgba(51, 160, 209, .2);
-  --feature-accent: #80d5f0;
+  --feature-accent: #9bc9d5;
 }
 
 .swap {
-  --surface-glow: rgba(48, 153, 209, .2);
-  --feature-accent: #7dd5e8;
+  --feature-accent: #9fcac3;
 }
 
 .exchange {
-  --surface-glow: rgba(143, 89, 226, .2);
-  --feature-accent: #bd9cff;
+  --feature-accent: #c1b0d0;
 }

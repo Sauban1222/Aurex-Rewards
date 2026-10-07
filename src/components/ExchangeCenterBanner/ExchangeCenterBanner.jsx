@@ -1,6 +1,6 @@
 import RewardBanner from '../RewardBanner/RewardBanner.jsx'
 import ExchangeIllustration from './ExchangeIllustration.jsx'
-import { exchangeFeature } from '../../utils/bannerData.js'
+import { exchangeFeature } from '../../data/bannerData.js'
 
 function ExchangeCenterBanner({ onAction }) {
   const illustration = (

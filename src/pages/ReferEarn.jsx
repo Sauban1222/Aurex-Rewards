@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useCopyToClipboard } from '../hooks/useRewardHooks.js'
 import Icon from '../components/Icon.jsx'
 import styles from './ReferEarn.module.css'
 
@@ -25,13 +26,14 @@ const steps = [
 
 function ReferEarnPage() {
   const [feedback, setFeedback] = useState('')
+  const { copyToClipboard } = useCopyToClipboard()
   const inviteLink = new URL(import.meta.env.BASE_URL, window.location.origin).href
-  const logo = `${import.meta.env.BASE_URL}aurex-symbol.jpg`
+  const logo = '/aurex-logo.svg'
 
   const copyInviteLink = async () => {
     try {
-      await navigator.clipboard.writeText(inviteLink)
-      setFeedback('Preview link copied. It is not personalized and will not track referrals.')
+      await copyToClipboard(inviteLink)
+      setFeedback('Copied. This preview link is not personalized and will not track referrals.')
     } catch {
       setFeedback('Clipboard access was unavailable. Select the link and copy it manually.')
     }
@@ -60,20 +62,19 @@ function ReferEarnPage() {
   return (
     <main className={styles.page}>
       <header className={styles.header}>
-        <a className={styles.brand} href="#home" aria-label="Aurex Rewards home">
-          <img src={logo} alt="" />
-          <span>Aurex<small>Rewards</small></span>
+        <a className={styles.brand} href="/" aria-label="Aurex Rewards home">
+          <img className="brand-logo" src={logo} alt="" width="150" height="42" />
         </a>
         <nav className={styles.headerNav} aria-label="Page navigation">
-          <a href="#home">Overview</a>
-          <a className={styles.activeLink} href="#refer" aria-current="page">Refer &amp; Earn</a>
-          <a href="#login">Log in</a>
+          <a href="/">Overview</a>
+          <a className={styles.activeLink} href="/refer" aria-current="page">Refer &amp; Earn</a>
+          <a href="/login">Log in</a>
         </nav>
       </header>
 
       <div className={styles.content}>
         <div className={styles.breadcrumb}>
-          <a href="#home">Overview</a><span>/</span><span>Refer &amp; Earn</span>
+          <a href="/">Overview</a><span>/</span><span>Refer &amp; Earn</span>
         </div>
 
         <section className={styles.hero} aria-labelledby="refer-title">
@@ -149,7 +150,7 @@ function ReferEarnPage() {
         </aside>
 
         <footer className={styles.footer}>
-          <a className={styles.footerBrand} href="#home"><img src={logo} alt="" /> Aurex Rewards</a>
+          <a className={styles.footerBrand} href="/"><img src={logo} alt="Aurex Rewards" width="150" height="42" /></a>
           <span>© 2026 Aurex Rewards</span>
         </footer>
       </div>

@@ -73,22 +73,21 @@ function SwapCenterPage() {
     <div id="swap" className={`app-shell ${styles.page}`}>
       <header className="topbar">
         <div className="topbar-inner">
-          <a className="brand" href="#home" aria-label="Aurex Rewards home">
-            <img className="brand-logo" src={`${import.meta.env.BASE_URL}aurex-symbol.jpg`} alt="" />
-            <span className="brand-wordmark">Aurex<span>rewards</span></span>
+          <a className="brand" href="/" aria-label="Aurex Rewards home">
+            <img className="brand-logo" src="/aurex-logo.svg" alt="" width="150" height="42" />
           </a>
           <nav className={`main-nav ${styles.nav}`} aria-label="Main navigation">
-            <a className="nav-link" href="#home">Overview</a>
-            <a className="nav-link" href="#refer">Refer &amp; Earn</a>
-            <a className="nav-link" href="#redeem">Redeem</a>
+            <a className="nav-link" href="/">Overview</a>
+            <a className="nav-link" href="/refer">Refer &amp; Earn</a>
+            <a className="nav-link" href="/exchange">Redeem</a>
           </nav>
-          <a className="login-link" href="#login">Log in</a>
+          <a className="login-link" href="/login">Log in</a>
         </div>
       </header>
 
       <main className={styles.content}>
         <nav className={styles.breadcrumb} aria-label="Breadcrumb">
-          <a href="#home">Overview</a><span>/</span><span aria-current="page">Swap Center</span>
+          <a href="/">Overview</a><span>/</span><span aria-current="page">Swap Center</span>
         </nav>
 
         <section className={styles.heading}>
@@ -227,7 +226,7 @@ function SwapCenterPage() {
         </div>
 
         <footer className={styles.footer}>
-          <a href="#home"><span className={styles.footerLogo}>A</span> Aurex Rewards</a>
+          <a href="/"><span className={styles.footerLogo}>A</span> Aurex Rewards</a>
           <span>Sample interface · No real conversions are processed</span>
           <span>© 2026 Aurex Rewards</span>
         </footer>

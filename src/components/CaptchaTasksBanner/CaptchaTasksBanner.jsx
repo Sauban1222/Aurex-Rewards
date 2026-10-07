@@ -1,6 +1,6 @@
 import RewardBanner from '../RewardBanner/RewardBanner.jsx'
 import CaptchaIllustration from './CaptchaIllustration.jsx'
-import { captchaFeature } from '../../utils/bannerData.js'
+import { captchaFeature } from '../../data/bannerData.js'
 
 function CaptchaTasksBanner({ onAction }) {
   const illustration = (

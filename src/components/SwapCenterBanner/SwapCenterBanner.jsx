@@ -1,5 +1,5 @@
 import RewardBanner from '../RewardBanner/RewardBanner.jsx'
-import { swapFeature } from '../../utils/bannerData.js'
+import { swapFeature } from '../../data/bannerData.js'
 
 function SwapCenterBanner({ onAction }) {
   const illustration = (

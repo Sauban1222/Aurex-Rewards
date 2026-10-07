@@ -1,5 +1,5 @@
 import RewardBanner from '../RewardBanner/RewardBanner.jsx'
-import { referFeature } from '../../utils/bannerData.js'
+import { referFeature } from '../../data/bannerData.js'
 
 function ReferEarnBanner({ onAction }) {
   const illustration = (

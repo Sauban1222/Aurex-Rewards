@@ -2,29 +2,29 @@
 
 :root {
   font-family: 'DM Sans', sans-serif;
-  color: #edf4ff;
-  background: #071421;
+  color: var(--color-text);
+  background: var(--color-page);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-optical-sizing: auto;
   font-weight: 400;
-  --bg: #071421;
-  --bg-strong: #020d18;
+  --bg: var(--color-page);
+  --bg-strong: #111321;
   --panel: rgba(10, 18, 32, 0.72);
   --panel-strong: rgba(14, 22, 36, 0.9);
   --panel-soft: rgba(19, 29, 45, 0.7);
   --line: rgba(157, 184, 221, 0.18);
-  --text: #edf4ff;
-  --text-soft: #aab9d1;
-  --text-muted: #7d8ca4;
-  --cyan: #8ad9ff;
-  --blue: #75a9ff;
-  --violet: #8e7cff;
-  --gold: #dcc286;
-  --gold-soft: #f3d79a;
-  --shadow: rgba(2, 7, 16, 0.52);
+  --text: var(--color-text);
+  --text-soft: var(--color-text-muted);
+  --text-muted: var(--color-text-subtle);
+  --cyan: #9bc9d5;
+  --blue: #9faec2;
+  --violet: #b8a5d1;
+  --gold: var(--color-accent);
+  --gold-soft: var(--color-accent-soft);
+  --shadow: var(--color-shadow);
 }
 
 * { box-sizing: border-box; }
@@ -39,7 +39,7 @@ body {
   color: var(--text);
 }
 button, a { font: inherit; }
-button { cursor: pointer; }
+button { min-height: 44px; cursor: pointer; }
 a { color: inherit; text-decoration: none; }
 button:focus-visible, a:focus-visible { outline: 3px solid var(--gold-soft); outline-offset: 3px; }
 
@@ -670,13 +670,13 @@ h1 span { color: #d0bd8c; }
 }
 
 @keyframes transfer-pulse {
-  0%, 100% { scale: 1; box-shadow: 0 5px 12px rgba(17, 23, 33, .17); }
-  50% { scale: 1.08; box-shadow: 0 0 0 7px rgba(202, 190, 154, .09), 0 7px 16px rgba(17, 23, 33, .22); }
+  0%, 100% { scale: 1; }
+  50% { scale: 1.08; }
 }
 
 @keyframes refer-plus-pulse {
-  0%, 100% { scale: 1; box-shadow: 0 0 0 0 rgba(208, 190, 142, 0); }
-  50% { scale: 1.1; box-shadow: 0 0 0 6px rgba(208, 190, 142, .12); }
+  0%, 100% { scale: 1; }
+  50% { scale: 1.1; }
 }
 
 :root {
@@ -859,6 +859,106 @@ button:focus-visible, a:focus-visible { outline-color: #8b5cf6; }
 
 @media (prefers-reduced-motion: reduce) {
   .welcome-action, .welcome-action svg, .login-link { transition: none; }
+}
+
+.feature-card.is-visible .card-copy {
+  animation: banner-copy-enter .75s cubic-bezier(.2, .75, .25, 1) both;
+}
+
+.feature-card:not(.is-visible) .card-copy {
+  animation: none;
+}
+
+.feature-card:not(.is-visible) .card-art,
+.feature-card:not(.is-visible) .card-art::before {
+  animation-play-state: paused;
+}
+
+.feature-card .card-art::before {
+  background: transparent;
+  animation: none;
+}
+
+.feature-card .card-art svg [filter] {
+  filter: none !important;
+}
+
+.feature-card .card-art svg {
+  filter: saturate(.65);
+}
+
+.welcome-row {
+  border-color: var(--color-border);
+  background: linear-gradient(135deg, var(--color-surface-raised), var(--color-surface)) !important;
+  box-shadow: 0 12px 28px var(--color-shadow);
+}
+
+.welcome-row::before,
+.welcome-row::after {
+  display: none;
+}
+
+.welcome-row h1 span {
+  background: none;
+  color: var(--color-accent-soft);
+}
+
+.welcome-kicker,
+.live-dot,
+.toast-dot {
+  color: var(--color-accent-soft);
+}
+
+.live-dot,
+.toast-dot {
+  background: var(--color-accent);
+  box-shadow: none;
+}
+
+.welcome-action {
+  border-color: var(--color-accent);
+  background: var(--color-accent);
+  box-shadow: none;
+  color: #242333;
+}
+
+.welcome-action:hover {
+  background: var(--color-accent-soft);
+  box-shadow: none;
+}
+
+.balance-card {
+  border-color: var(--color-border);
+  background: var(--color-surface);
+  box-shadow: none;
+}
+
+.balance-amount span,
+.balance-change {
+  color: var(--color-accent-soft);
+}
+
+.nav-active::after {
+  background: var(--color-accent);
+}
+
+.nav-link:hover,
+.nav-active,
+.text-link,
+.eyebrow-icon,
+.detail-note svg {
+  color: var(--color-accent-soft);
+}
+
+.login-link {
+  border-color: var(--color-border);
+  background: var(--color-surface-raised);
+  color: var(--color-text);
+}
+
+.login-link:hover {
+  border-color: #5b5d6b;
+  background: #303245;
 }
 
 .refer-art {
@@ -1060,4 +1160,166 @@ body,
   }
   .nav-link:hover, .nav-active { background: rgba(111, 113, 213, .14); }
   .welcome-row { backdrop-filter: blur(12px); }
+}
+
+:root {
+  color: var(--color-text);
+  background: var(--color-page);
+}
+
+body,
+.app-shell,
+.app-shell[class] {
+  background: var(--color-page);
+  color: var(--color-text);
+}
+
+.feature-card {
+  border-color: var(--color-border);
+  background: linear-gradient(145deg, var(--color-surface-raised), var(--color-surface));
+  box-shadow: 0 10px 26px var(--color-shadow);
+}
+
+.feature-card:hover {
+  border-color: #5b5d6b;
+  box-shadow: 0 13px 30px var(--color-shadow);
+}
+
+.feature-card h3,
+.card-value {
+  color: var(--color-text);
+}
+
+.feature-card p,
+.detail-note {
+  color: var(--color-text-muted);
+}
+
+.card-eyebrow,
+.section-kicker,
+.section-aside {
+  color: var(--color-text-subtle);
+}
+
+.feature-card .button-dark {
+  background: var(--color-accent);
+  color: #242333;
+}
+
+.feature-card .button-dark:hover {
+  background: var(--color-accent-soft);
+}
+
+.feature-card .button-light {
+  border: 1px solid var(--color-accent);
+  background: var(--color-surface-raised);
+  color: var(--color-text);
+}
+
+.feature-card .button-light:hover {
+  background: #303245;
+}
+
+.button:focus-visible,
+a:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 3px;
+}
+
+.brand .brand-logo {
+  width: 150px !important;
+  height: 42px !important;
+  flex: 0 0 auto;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  object-fit: contain;
+}
+
+.brandImage.brand-logo {
+  width: 150px !important;
+  height: 42px !important;
+}
+
+.brand-logo {
+  display: block;
+  flex: 0 0 auto;
+  width: 150px !important;
+  height: 42px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  object-fit: contain;
+}
+
+.page-footer .brand-logo {
+  width: 112px;
+  height: 32px;
+}
+
+.page-footer img {
+  width: 112px;
+  height: 32px;
+  object-fit: contain;
+}
+
+.login-link,
+.welcome-action,
+.text-link,
+.nav-link,
+.backLink,
+.primaryAction,
+.secondaryAction,
+.copyButton,
+.shareButton,
+.verifyButton,
+.resetButton,
+.actionButton,
+.backButton {
+  min-height: 44px;
+}
+
+.mobile-menu,
+.balance-more,
+.shareButton {
+  min-width: 44px;
+}
+
+.placeholder-label {
+  display: block;
+  margin-top: 3px;
+  color: var(--color-text-subtle);
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: .08em;
+}
+
+.feature-card .card-art,
+.feature-card .card-art > div,
+.feature-card .card-art svg {
+  filter: none;
+}
+
+@media (min-width: 591px) and (max-width: 1023px) {
+  .feature-card {
+    height: 500px;
+    min-height: 500px;
+    max-height: 540px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card-copy,
+  .card-art,
+  .card-art::before,
+  .card-swap .swap-arrow,
+  .card-refer .refer-plus,
+  .avatar-b,
+  .refer-chip,
+  .swap-source,
+  .swap-destination {
+    animation: none !important;
+  }
 }

@@ -2,9 +2,7 @@
   min-height: 100vh;
   padding: 0 6vw;
   color: #f1f2f7;
-  background:
-    radial-gradient(ellipse at 17% 67%, rgba(124, 58, 237, .14), transparent 38%),
-    #161827;
+  background: var(--color-page);
 }
 
 .topbar {

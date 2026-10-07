@@ -1,5 +1,5 @@
 import RewardBanner from '../RewardBanner/RewardBanner.jsx'
-import { bonusFeature } from '../../utils/bannerData.js'
+import { bonusFeature } from '../../data/bannerData.js'
 
 function RewardCoin({ cx, cy, radius, fill, stroke = '#b9c9ff', opacity = 1 }) {
   return (

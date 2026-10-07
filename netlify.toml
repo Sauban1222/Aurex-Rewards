@@ -5,3 +5,8 @@ publish = "dist"
 [build.environment]
 NODE_VERSION = "20"
 VITE_BASE_PATH = "/"
+
+[[redirects]]
+from = "/*"
+to = "/index.html"
+status = 200

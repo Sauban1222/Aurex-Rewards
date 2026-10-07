@@ -2,29 +2,28 @@ import Icon from '../components/Icon.jsx'
 import styles from './BonusVEs.module.css'
 
 function BonusVEsPage() {
-  const logo = `${import.meta.env.BASE_URL}aurex-symbol.jpg`
+  const logo = '/aurex-logo.svg'
 
   return (
     <div id="bonus" className={`app-shell ${styles.page}`}>
       <header className="topbar">
         <div className="topbar-inner">
-          <a className="brand" href="#home" aria-label="Aurex Rewards home">
-            <img className="brand-logo" src={logo} alt="" />
-            <span className="brand-wordmark">Aurex<span>rewards</span></span>
+          <a className="brand" href="/" aria-label="Aurex Rewards home">
+            <img className="brand-logo" src={logo} alt="" width="150" height="42" />
           </a>
           <nav className={`main-nav ${styles.nav}`} aria-label="Main navigation">
-            <a className="nav-link" href="#home">Overview</a>
-            <a className="nav-link" href="#refer">Refer &amp; Earn</a>
-            <a className="nav-link" href="#swap">Swap</a>
-            <a className="nav-link" href="#redeem">Redeem</a>
+            <a className="nav-link" href="/">Overview</a>
+            <a className="nav-link" href="/refer">Refer &amp; Earn</a>
+            <a className="nav-link" href="/swap">Swap</a>
+            <a className="nav-link" href="/exchange">Redeem</a>
           </nav>
-          <a className="login-link" href="#login">Log in</a>
+          <a className="login-link" href="/login">Log in</a>
         </div>
       </header>
 
       <main className={styles.content}>
         <nav className={styles.breadcrumb} aria-label="Breadcrumb">
-          <a href="#home">Overview</a><span>/</span><span aria-current="page">Bonus VEs</span>
+          <a href="/">Overview</a><span>/</span><span aria-current="page">Bonus VEs</span>
         </nav>
 
         <section className={styles.hero} aria-labelledby="bonus-title">
@@ -64,7 +63,7 @@ function BonusVEsPage() {
             <span className={styles.emptyIcon}><Icon name="sparkles" size={22} /></span>
             <strong>No live campaigns in this preview</strong>
             <p>Bonus campaigns and account-specific eligibility are not connected here. Check back when offers are available on the platform.</p>
-            <a className={styles.secondaryAction} href="#home">Back to earning opportunities <Icon name="arrow" size={15} /></a>
+            <a className={styles.secondaryAction} href="/#earn">Back to earning opportunities <Icon name="arrow" size={15} /></a>
           </div>
         </section>
 
@@ -89,7 +88,7 @@ function BonusVEsPage() {
         </aside>
 
         <footer className={styles.footer}>
-          <a className={styles.footerBrand} href="#home"><img src={logo} alt="" /> Aurex Rewards</a>
+          <a className={styles.footerBrand} href="/"><img src={logo} alt="" width="150" height="42" /> Aurex Rewards</a>
           <span>© 2026 Aurex Rewards</span>
         </footer>
       </main>

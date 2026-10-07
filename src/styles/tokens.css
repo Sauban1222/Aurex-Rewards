@@ -1,0 +1,13 @@
+:root {
+  --color-page: #161827;
+  --color-surface: #1d1f2f;
+  --color-surface-raised: #25283a;
+  --color-border: #373a4c;
+  --color-text: #f0f1f7;
+  --color-text-muted: #b5b7c4;
+  --color-text-subtle: #a0a3b2;
+  --color-accent: #c9b57b;
+  --color-accent-soft: #e0d2a6;
+  --color-focus: #e4cc8b;
+  --color-shadow: rgba(5, 7, 17, .2);
+}

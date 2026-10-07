@@ -1,4 +1,6 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
+import { useCountUp } from './hooks/useRewardHooks.js'
+import { useLocation, useNavigate } from 'react-router-dom'
 import Icon from './components/Icon.jsx'
 import ReferEarnBanner from './components/ReferEarnBanner/ReferEarnBanner.jsx'
 import SwapCenterBanner from './components/SwapCenterBanner/SwapCenterBanner.jsx'
@@ -11,53 +13,28 @@ import SwapCenterPage from './pages/SwapCenter.jsx'
 import BonusVEsPage from './pages/BonusVEs.jsx'
 import CaptchaTasksPage from './pages/CaptchaTasks.jsx'
 import ExchangeCenterPage from './pages/ExchangeCenter.jsx'
+import NotFoundPage from './pages/NotFound.jsx'
 
 function Logo() {
-  return <a className="brand" href="#home" aria-label="Aurex Rewards home"><img className="brand-logo" src={`${import.meta.env.BASE_URL}aurex-symbol.jpg`} alt="" /><span className="brand-wordmark">Aurex<span>rewards</span></span></a>
-}
-
-function getPageFromHash() {
-  const pageByHash = {
-    '#login': 'login',
-    '#refer': 'refer',
-    '#invite-link': 'refer',
-    '#swap': 'swap',
-    '#bonus': 'bonus',
-    '#bonus-opportunities': 'bonus',
-    '#captcha': 'captcha',
-    '#demo-task': 'captcha',
-    '#exchange': 'exchange',
-    '#reward-options': 'exchange',
-    '#home': 'home',
-    '#earn': 'home',
-    '#redeem': 'home',
-  }
-
-  return pageByHash[window.location.hash] ?? null
+  return <a className="brand" href="/" aria-label="Aurex Rewards home"><img className="brand-logo" src="/aurex-logo.svg" alt="" width="150" height="42" /></a>
 }
 
 function App() {
   const [toast, setToast] = useState('')
   const [menuOpen, setMenuOpen] = useState(false)
-  const [page, setPage] = useState(() => getPageFromHash() ?? 'home')
+  const navigate = useNavigate()
+  const { pathname } = useLocation()
+  const previewBalance = useCountUp(1260)
 
-  useEffect(() => {
-    const syncPage = () => {
-      const nextPage = getPageFromHash()
-      if (nextPage) setPage(nextPage)
-    }
-    window.addEventListener('hashchange', syncPage)
-    return () => window.removeEventListener('hashchange', syncPage)
-  }, [])
+  if (pathname === '/login') return <LoginPage />
+  if (pathname === '/refer') return <ReferEarnPage />
+  if (pathname === '/swap') return <SwapCenterPage />
+  if (pathname === '/bonus') return <BonusVEsPage />
+  if (pathname === '/captcha') return <CaptchaTasksPage />
+  if (pathname === '/exchange') return <ExchangeCenterPage />
+  if (pathname !== '/') return <NotFoundPage />
 
-  const openFeature = (kind) => { window.location.hash = `#${kind}` }
-
-  if (page === 'login') return <LoginPage />
-  if (page === 'refer') return <ReferEarnPage />
-  if (page === 'swap') return <SwapCenterPage />
-  if (page === 'bonus') return <BonusVEsPage />
-  if (page === 'captcha') return <CaptchaTasksPage />
-  if (page === 'exchange') return <ExchangeCenterPage />
+  const openFeature = (kind) => navigate(`/${kind}`)
 
   return (
     <div id="home" className="app-shell">
@@ -65,15 +42,15 @@ function App() {
         <div className="topbar-inner">
           <Logo />
           <nav className={`main-nav ${menuOpen ? 'nav-open' : ''}`} aria-label="Main navigation">
-            <a className="nav-link nav-active" href="#home" onClick={() => setMenuOpen(false)}>Overview</a>
-            <a className="nav-link" href="#earn" onClick={() => setMenuOpen(false)}>Earn VEs</a>
-            <a className="nav-link" href="#swap" onClick={() => setMenuOpen(false)}>Swap</a>
-            <a className="nav-link" href="#refer" onClick={() => setMenuOpen(false)}>Refer &amp; Earn</a>
-            <a className="nav-link" href="#redeem" onClick={() => setMenuOpen(false)}>Redeem</a>
+            <a className="nav-link nav-active" href="/" onClick={() => setMenuOpen(false)}>Overview</a>
+            <a className="nav-link" href="/#earn" onClick={() => setMenuOpen(false)}>Earn VEs</a>
+            <a className="nav-link" href="/swap" onClick={() => setMenuOpen(false)}>Swap</a>
+            <a className="nav-link" href="/refer" onClick={() => setMenuOpen(false)}>Refer &amp; Earn</a>
+            <a className="nav-link" href="/exchange" onClick={() => setMenuOpen(false)}>Redeem</a>
           </nav>
           <div className="header-actions">
             <button className="help-link" onClick={() => setToast('Our support team is here to help.')}>Need help?</button>
-            <a className="login-link" href="#login">Log in</a>
+            <a className="login-link" href="/login">Log in</a>
           </div>
           <button className="mobile-menu" aria-label="Toggle navigation" aria-expanded={menuOpen} onClick={() => setMenuOpen(!menuOpen)}><Icon name="menu" /></button>
         </div>
@@ -89,8 +66,8 @@ function App() {
           </div>
           <div className="balance-card">
             <div className="balance-top"><span className="balance-label"><Icon name="wallet" size={16} /> YOUR VE BALANCE</span><button aria-label="Balance details" className="balance-more" onClick={() => setToast('Your VE balance is ready to use across Aurex Rewards.')}>•••</button></div>
-            <div className="balance-amount">1,260 <span>VEs</span></div>
-            <div className="balance-footer"><span className="balance-change"><Icon name="arrowUp" size={13} /> 120 this week</span><span className="balance-footer-label">KEEP IT GOING</span></div>
+            <div className="balance-amount">{previewBalance.toLocaleString('en-US')} <span>VEs</span></div>
+            <div className="balance-footer"><span className="balance-change"><Icon name="arrowUp" size={13} /> 120 this week</span><span className="balance-footer-label">SAMPLE BALANCE</span></div>
             <span className="balance-watermark">V</span>
           </div>
         </section>

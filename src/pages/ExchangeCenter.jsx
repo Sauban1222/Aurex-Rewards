@@ -17,7 +17,7 @@ function ExchangeCenterPage() {
   const [notice, setNotice] = useState('')
   const selectedReward = rewards.find((reward) => reward.id === selectedId)
   const remainingBalance = selectedReward ? previewBalance - selectedReward.cost : previewBalance
-  const logo = `${import.meta.env.BASE_URL}aurex-symbol.jpg`
+  const logo = '/aurex-logo.svg'
 
   const chooseReward = (rewardId) => {
     setSelectedId(rewardId)
@@ -48,24 +48,23 @@ function ExchangeCenterPage() {
     <div id="exchange" className={`app-shell ${layout.page} ${styles.page}`}>
       <header className="topbar">
         <div className="topbar-inner">
-          <a className="brand" href="#home" aria-label="Aurex Rewards home">
-            <img className="brand-logo" src={logo} alt="" />
-            <span className="brand-wordmark">Aurex<span>rewards</span></span>
+          <a className="brand" href="/" aria-label="Aurex Rewards home">
+            <img className="brand-logo" src={logo} alt="" width="150" height="42" />
           </a>
           <nav className={`main-nav ${layout.nav}`} aria-label="Main navigation">
-            <a className="nav-link" href="#home">Overview</a>
-            <a className="nav-link" href="#captcha">Earn VEs</a>
-            <a className="nav-link" href="#swap">Swap</a>
-            <a className="nav-link" href="#refer">Refer &amp; Earn</a>
-            <a className="nav-link nav-active" href="#exchange" aria-current="page">Redeem</a>
+            <a className="nav-link" href="/">Overview</a>
+            <a className="nav-link" href="/captcha">Earn VEs</a>
+            <a className="nav-link" href="/swap">Swap</a>
+            <a className="nav-link" href="/refer">Refer &amp; Earn</a>
+            <a className="nav-link nav-active" href="/exchange" aria-current="page">Redeem</a>
           </nav>
-          <a className="login-link" href="#login">Log in</a>
+          <a className="login-link" href="/login">Log in</a>
         </div>
       </header>
 
       <main className={layout.content}>
         <nav className={layout.breadcrumb} aria-label="Breadcrumb">
-          <a href="#home">Overview</a><span>/</span><a href="#redeem">Redeem</a><span>/</span><span aria-current="page">Exchange Center</span>
+          <a href="/">Overview</a><span>/</span><a href="/exchange">Redeem</a><span>/</span><span aria-current="page">Exchange Center</span>
         </nav>
 
         <section className={`${layout.hero} ${styles.hero}`} aria-labelledby="exchange-title">
@@ -179,7 +178,7 @@ function ExchangeCenterPage() {
         </aside>
 
         <footer className={layout.footer}>
-          <a className={layout.footerBrand} href="#home"><img src={logo} alt="" /> Aurex Rewards</a>
+          <a className={layout.footerBrand} href="/"><img src={logo} alt="Aurex Rewards" width="150" height="42" /></a>
           <span>© 2026 Aurex Rewards</span>
         </footer>
       </main>
