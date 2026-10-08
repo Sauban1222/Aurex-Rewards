@@ -8,12 +8,13 @@
   position: sticky;
   z-index: 8;
   top: 0;
-  min-height: 190px;
+  height: 64px;
+  min-height: 64px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 12px max(32px, calc((100vw - 1180px) / 2));
-  border-bottom: 1px solid rgba(218, 222, 245, .08);
+  border-bottom: 1px solid var(--border-soft);
   background: rgba(25, 27, 42, .9);
   backdrop-filter: blur(16px);
 }
@@ -177,7 +178,7 @@
 }
 
 @media (max-width: 590px) {
-  .header { min-height: 150px; padding: 12px 17px; }
+  .header { height: 56px; min-height: 56px; padding: 0 17px; }
   .brand { gap: 8px; font-size: 12px; }
   .brand img { width: 34px; height: 34px; }
   .headerNav { gap: 14px; }
@@ -203,6 +204,13 @@
   .stepCard h3 { margin-top: 12px; }
   .activitySection { padding: 15px; }
   .footer { margin-top: 27px; }
+}
+
+@media (max-width: 767px) {
+  .header {
+    height: 56px;
+    min-height: 56px;
+  }
 }
 
 @media (max-width: 360px) {

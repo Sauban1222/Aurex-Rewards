@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import logo from '../assets/aurex-logo.webp'
+import Logo from '../components/Logo/Logo.jsx'
 import styles from './Login.module.css'
 
 function LoginPage() {
@@ -22,14 +22,13 @@ function LoginPage() {
 
   return (
     <main className={styles.page}>
+      <a className="skip-link" href="#main-content">Skip to content</a>
       <div className={styles.topbar}>
-        <a className={styles.brand} href="/" aria-label="Aurex Rewards home">
-          <img className={`${styles.brandImage} brand-logo`} src={logo} alt="Aurex Rewards" width="600" height="459" />
-        </a>
+        <Logo />
         <a className={styles.backLink} href="/">Back to rewards</a>
       </div>
 
-      <section className={`${styles.layout} ${isRegistering ? styles.registerLayout : ''}`} aria-labelledby="login-title">
+      <section id="main-content" className={`${styles.layout} ${isRegistering ? styles.registerLayout : ''}`} aria-labelledby="login-title" tabIndex="-1">
         <div className={styles.intro}>
           <span className={styles.eyebrow}>{isRegistering ? 'JOIN AUREX' : 'WELCOME BACK'}</span>
           <h1 id="login-title">{isRegistering ? 'Good things start here.' : 'Your rewards are waiting.'}</h1>

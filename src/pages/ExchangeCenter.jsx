@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import logo from '../assets/aurex-logo.webp'
 import Icon from '../components/Icon.jsx'
+import Logo from '../components/Logo/Logo.jsx'
 import ExchangeIllustration from '../components/ExchangeCenterBanner/ExchangeIllustration.jsx'
 import layout from './BonusVEs.module.css'
 import styles from './ExchangeCenter.module.css'
@@ -46,11 +46,10 @@ function ExchangeCenterPage() {
 
   return (
     <div id="exchange" className={`app-shell ${layout.page} ${styles.page}`}>
+      <a className="skip-link" href="#main-content">Skip to content</a>
       <header className="topbar">
         <div className="topbar-inner">
-          <a className="brand" href="/" aria-label="Aurex Rewards home">
-            <img className="brand-logo" src={logo} alt="Aurex Rewards" width="600" height="459" />
-          </a>
+          <Logo />
           <nav className={`main-nav ${layout.nav}`} aria-label="Main navigation">
             <a className="nav-link" href="/">Overview</a>
             <a className="nav-link" href="/captcha">Earn VEs</a>
@@ -62,7 +61,7 @@ function ExchangeCenterPage() {
         </div>
       </header>
 
-      <main className={layout.content}>
+      <main id="main-content" className={layout.content} tabIndex="-1">
         <nav className={layout.breadcrumb} aria-label="Breadcrumb">
           <a href="/">Overview</a><span>/</span><a href="/exchange">Redeem</a><span>/</span><span aria-current="page">Exchange Center</span>
         </nav>
@@ -178,7 +177,7 @@ function ExchangeCenterPage() {
         </aside>
 
         <footer className={layout.footer}>
-          <a className={layout.footerBrand} href="/"><img src="/icon-192.png" alt="" width="32" height="32" /> Aurex Rewards</a>
+          <Logo variant="footer" />
           <span>© 2026 Aurex Rewards</span>
         </footer>
       </main>

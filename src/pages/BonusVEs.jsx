@@ -1,15 +1,14 @@
 import Icon from '../components/Icon.jsx'
-import logo from '../assets/aurex-logo.webp'
+import Logo from '../components/Logo/Logo.jsx'
 import styles from './BonusVEs.module.css'
 
 function BonusVEsPage() {
   return (
     <div id="bonus" className={`app-shell ${styles.page}`}>
+      <a className="skip-link" href="#main-content">Skip to content</a>
       <header className="topbar">
         <div className="topbar-inner">
-          <a className="brand" href="/" aria-label="Aurex Rewards home">
-            <img className="brand-logo" src={logo} alt="Aurex Rewards" width="600" height="459" />
-          </a>
+          <Logo />
           <nav className={`main-nav ${styles.nav}`} aria-label="Main navigation">
             <a className="nav-link" href="/">Overview</a>
             <a className="nav-link" href="/refer">Refer &amp; Earn</a>
@@ -20,7 +19,7 @@ function BonusVEsPage() {
         </div>
       </header>
 
-      <main className={styles.content}>
+      <main id="main-content" className={styles.content} tabIndex="-1">
         <nav className={styles.breadcrumb} aria-label="Breadcrumb">
           <a href="/">Overview</a><span>/</span><span aria-current="page">Bonus VEs</span>
         </nav>
@@ -87,7 +86,7 @@ function BonusVEsPage() {
         </aside>
 
         <footer className={styles.footer}>
-          <a className={styles.footerBrand} href="/"><img src="/icon-192.png" alt="" width="32" height="32" /> Aurex Rewards</a>
+          <Logo variant="footer" />
           <span>© 2026 Aurex Rewards</span>
         </footer>
       </main>

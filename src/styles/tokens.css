@@ -3,6 +3,7 @@
   --color-surface: #1d1f2f;
   --color-surface-raised: #25283a;
   --color-border: #373a4c;
+  --border-soft: var(--color-border);
   --color-text: #f0f1f7;
   --color-text-muted: #b5b7c4;
   --color-text-subtle: #a0a3b2;

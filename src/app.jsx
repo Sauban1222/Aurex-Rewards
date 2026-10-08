@@ -1,7 +1,6 @@
 import { useState } from 'react'
-import { useCountUp } from './hooks/useRewardHooks.js'
 import { useLocation, useNavigate } from 'react-router-dom'
-import logo from './assets/aurex-logo.webp'
+import Logo from './components/Logo/Logo.jsx'
 import Icon from './components/Icon.jsx'
 import ReferEarnBanner from './components/ReferEarnBanner/ReferEarnBanner.jsx'
 import SwapCenterBanner from './components/SwapCenterBanner/SwapCenterBanner.jsx'
@@ -16,17 +15,13 @@ import CaptchaTasksPage from './pages/CaptchaTasks.jsx'
 import ExchangeCenterPage from './pages/ExchangeCenter.jsx'
 import NotFoundPage from './pages/NotFound.jsx'
 
-function Logo() {
-  return <a className="brand" href="/" aria-label="Aurex Rewards home"><img className="brand-logo" src={logo} alt="Aurex Rewards" width="600" height="459" /></a>
-}
-
 function App() {
   const [toast, setToast] = useState('')
   const [menuOpen, setMenuOpen] = useState(false)
   const navigate = useNavigate()
   const { pathname } = useLocation()
-  const previewBalance = useCountUp(1260)
 
+  if (pathname === '/404') return <NotFoundPage />
   if (pathname === '/login') return <LoginPage />
   if (pathname === '/refer') return <ReferEarnPage />
   if (pathname === '/swap') return <SwapCenterPage />
@@ -39,6 +34,7 @@ function App() {
 
   return (
     <div id="home" className="app-shell">
+      <a className="skip-link" href="#main-content">Skip to content</a>
       <header className="topbar">
         <div className="topbar-inner">
           <Logo />
@@ -57,20 +53,10 @@ function App() {
         </div>
       </header>
 
-      <main className="page-content">
-        <section className="welcome-row" aria-labelledby="welcome-title">
-          <div>
-            <div className="welcome-kicker"><span className="live-dot" /> YOUR REWARDS, IN MOTION</div>
-            <h1 id="welcome-title">A little good goes <span>a long way.</span></h1>
-            <p className="welcome-copy">Make the most of every VE. Your next reward is closer than you think.</p>
-            <a className="welcome-action" href="#earn">Explore opportunities <Icon name="arrow" size={16} /></a>
-          </div>
-          <div className="balance-card">
-            <div className="balance-top"><span className="balance-label"><Icon name="wallet" size={16} /> DEMO BALANCE</span><button aria-label="Balance details" className="balance-more" onClick={() => setToast('Your VE balance is a sample preview for Aurex Rewards.')}>•••</button></div>
-            <div className="balance-amount">{previewBalance.toLocaleString('en-US')} <span>VEs</span></div>
-            <div className="balance-footer"><span className="balance-change"><Icon name="arrowUp" size={13} /> 120 this week</span><span className="balance-footer-label">SAMPLE BALANCE</span></div>
-            <span className="balance-watermark">V</span>
-          </div>
+      <main id="main-content" className="page-content">
+        <section className="home-intro" aria-labelledby="welcome-title">
+          <h1 id="welcome-title">Earn, swap and redeem rewards</h1>
+          <p>Explore the ways Aurex Rewards helps you make the most of every opportunity.</p>
         </section>
 
         <section id="earn" className="section-block" aria-labelledby="earn-heading">
@@ -96,7 +82,15 @@ function App() {
           </div>
         </section>
 
-        <footer className="page-footer"><Logo /><span>Good things come around.</span><span className="footer-right">© 2026 Aurex Rewards</span></footer>
+        <footer className="page-footer">
+          <Logo variant="footer" />
+          <nav className="footer-links" aria-label="Footer">
+            <a href="/">Overview</a>
+            <a href="#earn">Earn rewards</a>
+            <a href="#redeem">Swap &amp; redeem</a>
+          </nav>
+          <span className="footer-right">© 2026 Aurex Rewards</span>
+        </footer>
       </main>
 
       {toast && <div className="toast" role="status"><span className="toast-dot" />{toast}<button aria-label="Dismiss notification" onClick={() => setToast('')}>×</button></div>}

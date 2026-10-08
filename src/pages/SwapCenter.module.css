@@ -243,7 +243,6 @@
 .footer { display: flex; align-items: center; gap: 17px; margin-top: 28px; padding: 19px 0 25px; border-top: 1px solid rgba(154, 175, 223, .13); color: #8592ab; font-size: 9px; }
 .footer > a { display: inline-flex; align-items: center; gap: 8px; color: #dce4f8; font-weight: 700; }
 .footer > span:last-child { margin-left: auto; }
-.footerLogo { display: grid; width: 24px; height: 24px; place-items: center; border: 1px solid rgba(130, 158, 240, .34); border-radius: 50%; background: #182541; color: #b7c2ff; font: 800 11px Manrope, sans-serif; }
 .srOnly { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; clip-path: inset(50%); }
 
 @media (max-width: 760px) {

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useCopyToClipboard } from '../hooks/useRewardHooks.js'
-import logo from '../assets/aurex-logo.webp'
+import Logo from '../components/Logo/Logo.jsx'
 import Icon from '../components/Icon.jsx'
 import styles from './ReferEarn.module.css'
 
@@ -61,10 +61,9 @@ function ReferEarnPage() {
 
   return (
     <main className={styles.page}>
+      <a className="skip-link" href="#main-content">Skip to content</a>
       <header className={styles.header}>
-        <a className={styles.brand} href="/" aria-label="Aurex Rewards home">
-          <img className="brand-logo" src={logo} alt="Aurex Rewards" width="600" height="459" />
-        </a>
+        <Logo />
         <nav className={styles.headerNav} aria-label="Page navigation">
           <a href="/">Overview</a>
           <a className={styles.activeLink} href="/refer" aria-current="page">Refer &amp; Earn</a>
@@ -77,7 +76,7 @@ function ReferEarnPage() {
           <a href="/">Overview</a><span>/</span><span>Refer &amp; Earn</span>
         </div>
 
-        <section className={styles.hero} aria-labelledby="refer-title">
+        <section id="main-content" className={styles.hero} aria-labelledby="refer-title" tabIndex="-1">
           <div className={styles.heroGlow} />
           <div className={styles.heroCopy}>
             <span className={styles.eyebrow}><Icon name="people" size={16} /> AUREX REFERRALS</span>
@@ -150,7 +149,7 @@ function ReferEarnPage() {
         </aside>
 
         <footer className={styles.footer}>
-          <a className={styles.footerBrand} href="/"><img src="/icon-192.png" alt="" width="32" height="32" /> Aurex Rewards</a>
+          <Logo variant="footer" />
           <span>© 2026 Aurex Rewards</span>
         </footer>
       </div>
