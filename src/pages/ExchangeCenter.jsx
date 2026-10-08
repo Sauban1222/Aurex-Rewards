@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import logo from '../assets/aurex-logo.webp'
 import Icon from '../components/Icon.jsx'
 import ExchangeIllustration from '../components/ExchangeCenterBanner/ExchangeIllustration.jsx'
 import layout from './BonusVEs.module.css'
@@ -17,7 +18,6 @@ function ExchangeCenterPage() {
   const [notice, setNotice] = useState('')
   const selectedReward = rewards.find((reward) => reward.id === selectedId)
   const remainingBalance = selectedReward ? previewBalance - selectedReward.cost : previewBalance
-  const logo = '/aurex-logo.svg'
 
   const chooseReward = (rewardId) => {
     setSelectedId(rewardId)
@@ -49,7 +49,7 @@ function ExchangeCenterPage() {
       <header className="topbar">
         <div className="topbar-inner">
           <a className="brand" href="/" aria-label="Aurex Rewards home">
-            <img className="brand-logo" src={logo} alt="" width="150" height="42" />
+            <img className="brand-logo" src={logo} alt="Aurex Rewards" width="600" height="459" />
           </a>
           <nav className={`main-nav ${layout.nav}`} aria-label="Main navigation">
             <a className="nav-link" href="/">Overview</a>
@@ -178,7 +178,7 @@ function ExchangeCenterPage() {
         </aside>
 
         <footer className={layout.footer}>
-          <a className={layout.footerBrand} href="/"><img src={logo} alt="Aurex Rewards" width="150" height="42" /></a>
+          <a className={layout.footerBrand} href="/"><img src="/icon-192.png" alt="" width="32" height="32" /> Aurex Rewards</a>
           <span>© 2026 Aurex Rewards</span>
         </footer>
       </main>

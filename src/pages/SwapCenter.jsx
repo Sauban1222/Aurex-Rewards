@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import Icon from '../components/Icon.jsx'
+import logo from '../assets/aurex-logo.webp'
 import styles from './SwapCenter.module.css'
 
 const assets = [
@@ -74,7 +75,7 @@ function SwapCenterPage() {
       <header className="topbar">
         <div className="topbar-inner">
           <a className="brand" href="/" aria-label="Aurex Rewards home">
-            <img className="brand-logo" src="/aurex-logo.svg" alt="" width="150" height="42" />
+            <img className="brand-logo" src={logo} alt="Aurex Rewards" width="600" height="459" />
           </a>
           <nav className={`main-nav ${styles.nav}`} aria-label="Main navigation">
             <a className="nav-link" href="/">Overview</a>

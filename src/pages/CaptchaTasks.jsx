@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import logo from '../assets/aurex-logo.webp'
 import Icon from '../components/Icon.jsx'
 import CaptchaIllustration from '../components/CaptchaTasksBanner/CaptchaIllustration.jsx'
 import layout from './BonusVEs.module.css'
@@ -39,7 +40,6 @@ function CaptchaTasksPage() {
   const [selectedTiles, setSelectedTiles] = useState([])
   const [complete, setComplete] = useState(false)
   const [feedback, setFeedback] = useState('')
-  const logo = '/aurex-logo.svg'
 
   const toggleTile = (index) => {
     setSelectedTiles((current) => current.includes(index)
@@ -72,7 +72,7 @@ function CaptchaTasksPage() {
       <header className="topbar">
         <div className="topbar-inner">
           <a className="brand" href="/" aria-label="Aurex Rewards home">
-            <img className="brand-logo" src={logo} alt="" width="150" height="42" />
+            <img className="brand-logo" src={logo} alt="Aurex Rewards" width="600" height="459" />
           </a>
           <nav className={`main-nav ${layout.nav}`} aria-label="Main navigation">
             <a className="nav-link" href="/">Overview</a>
@@ -172,7 +172,7 @@ function CaptchaTasksPage() {
         </aside>
 
         <footer className={layout.footer}>
-          <a className={layout.footerBrand} href="/"><img src={logo} alt="Aurex Rewards" width="150" height="42" /></a>
+          <a className={layout.footerBrand} href="/"><img src="/icon-192.png" alt="" width="32" height="32" /> Aurex Rewards</a>
           <span>© 2026 Aurex Rewards</span>
         </footer>
       </main>

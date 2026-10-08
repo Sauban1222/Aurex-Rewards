@@ -1,0 +1,26 @@
+:root {
+  /* Aurex design tokens */
+  --aurex-bg: #161827;
+  --aurex-surface: #1d1f2f;
+  --aurex-surface-deep: #25283a;
+  --aurex-purple: #7c3aed;
+  --aurex-violet: #8b5cf6;
+  --aurex-blue: #3b82f6;
+  --aurex-cyan: #06b6d4;
+  --aurex-gold: #c9b57b;
+  --aurex-text: #f0f1f7;
+  --aurex-muted: #b5b7c4;
+
+  /* Legacy variable mapping for existing styles (keeps compatibility) */
+  --color-page: var(--aurex-bg);
+  --color-surface: var(--aurex-surface);
+  --color-surface-raised: var(--aurex-surface-deep);
+  --color-border: rgba(55,58,76,0.8);
+  --color-text: var(--aurex-text);
+  --color-text-muted: var(--aurex-muted);
+  --color-text-subtle: #a0a3b2;
+  --color-accent: var(--aurex-gold);
+  --color-accent-soft: #e0d2a6;
+  --color-focus: var(--aurex-gold);
+  --color-shadow: rgba(5, 7, 17, .2);
+}

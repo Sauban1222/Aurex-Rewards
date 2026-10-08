@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useCountUp } from './hooks/useRewardHooks.js'
 import { useLocation, useNavigate } from 'react-router-dom'
+import logo from './assets/aurex-logo.webp'
 import Icon from './components/Icon.jsx'
 import ReferEarnBanner from './components/ReferEarnBanner/ReferEarnBanner.jsx'
 import SwapCenterBanner from './components/SwapCenterBanner/SwapCenterBanner.jsx'
@@ -16,7 +17,7 @@ import ExchangeCenterPage from './pages/ExchangeCenter.jsx'
 import NotFoundPage from './pages/NotFound.jsx'
 
 function Logo() {
-  return <a className="brand" href="/" aria-label="Aurex Rewards home"><img className="brand-logo" src="/aurex-logo.svg" alt="" width="150" height="42" /></a>
+  return <a className="brand" href="/" aria-label="Aurex Rewards home"><img className="brand-logo" src={logo} alt="Aurex Rewards" width="600" height="459" /></a>
 }
 
 function App() {
@@ -65,7 +66,7 @@ function App() {
             <a className="welcome-action" href="#earn">Explore opportunities <Icon name="arrow" size={16} /></a>
           </div>
           <div className="balance-card">
-            <div className="balance-top"><span className="balance-label"><Icon name="wallet" size={16} /> YOUR VE BALANCE</span><button aria-label="Balance details" className="balance-more" onClick={() => setToast('Your VE balance is ready to use across Aurex Rewards.')}>•••</button></div>
+            <div className="balance-top"><span className="balance-label"><Icon name="wallet" size={16} /> DEMO BALANCE</span><button aria-label="Balance details" className="balance-more" onClick={() => setToast('Your VE balance is a sample preview for Aurex Rewards.')}>•••</button></div>
             <div className="balance-amount">{previewBalance.toLocaleString('en-US')} <span>VEs</span></div>
             <div className="balance-footer"><span className="balance-change"><Icon name="arrowUp" size={13} /> 120 this week</span><span className="balance-footer-label">SAMPLE BALANCE</span></div>
             <span className="balance-watermark">V</span>

@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useCopyToClipboard } from '../hooks/useRewardHooks.js'
+import logo from '../assets/aurex-logo.webp'
 import Icon from '../components/Icon.jsx'
 import styles from './ReferEarn.module.css'
 
@@ -28,7 +29,6 @@ function ReferEarnPage() {
   const [feedback, setFeedback] = useState('')
   const { copyToClipboard } = useCopyToClipboard()
   const inviteLink = new URL(import.meta.env.BASE_URL, window.location.origin).href
-  const logo = '/aurex-logo.svg'
 
   const copyInviteLink = async () => {
     try {
@@ -63,7 +63,7 @@ function ReferEarnPage() {
     <main className={styles.page}>
       <header className={styles.header}>
         <a className={styles.brand} href="/" aria-label="Aurex Rewards home">
-          <img className="brand-logo" src={logo} alt="" width="150" height="42" />
+          <img className="brand-logo" src={logo} alt="Aurex Rewards" width="600" height="459" />
         </a>
         <nav className={styles.headerNav} aria-label="Page navigation">
           <a href="/">Overview</a>
@@ -150,7 +150,7 @@ function ReferEarnPage() {
         </aside>
 
         <footer className={styles.footer}>
-          <a className={styles.footerBrand} href="/"><img src={logo} alt="Aurex Rewards" width="150" height="42" /></a>
+          <a className={styles.footerBrand} href="/"><img src="/icon-192.png" alt="" width="32" height="32" /> Aurex Rewards</a>
           <span>© 2026 Aurex Rewards</span>
         </footer>
       </div>

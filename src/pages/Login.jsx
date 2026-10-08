@@ -1,11 +1,11 @@
 import { useState } from 'react'
+import logo from '../assets/aurex-logo.webp'
 import styles from './Login.module.css'
 
 function LoginPage() {
   const [showPassword, setShowPassword] = useState(false)
   const [message, setMessage] = useState('')
   const [isRegistering, setIsRegistering] = useState(false)
-  const logoSrc = '/aurex-logo.svg'
 
   const handleSubmit = (event) => {
     event.preventDefault()
@@ -24,7 +24,7 @@ function LoginPage() {
     <main className={styles.page}>
       <div className={styles.topbar}>
         <a className={styles.brand} href="/" aria-label="Aurex Rewards home">
-          <img className={`${styles.brandImage} brand-logo`} src={logoSrc} alt="" width="150" height="42" />
+          <img className={`${styles.brandImage} brand-logo`} src={logo} alt="Aurex Rewards" width="600" height="459" />
         </a>
         <a className={styles.backLink} href="/">Back to rewards</a>
       </div>

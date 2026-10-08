@@ -6,7 +6,7 @@ export const referFeature = {
   body: 'Invite friends to Aurex Rewards and discover eligible referral rewards together.',
   value: 'Placeholder rewards; eligibility and terms apply.',
   illustrationLabel: 'Two friends connected by an invitation and a milestone reward.',
-  button: 'Invite Now',
+  button: 'Invite Friends',
   note: 'Personalized links are a preview only',
   tag: 'SHARE & EARN',
 }
@@ -45,7 +45,7 @@ export const captchaFeature = {
   body: 'Complete simple CAPTCHA tasks accurately. Eligible rewards depend on verified completion and program terms.',
   value: 'Reward values are placeholders.',
   illustrationLabel: 'A laptop displays a completed verification grid with a shield, a success check, and reward tokens.',
-  button: 'Start Task',
+  button: 'Start Tasks',
   note: 'Task completion is a preview only',
   tag: 'TASK-BASED',
 }
