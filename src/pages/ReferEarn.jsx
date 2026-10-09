@@ -1,39 +1,29 @@
 import { useState } from 'react'
+import { ArrowDown, ArrowRight, Check, Copy, Gift, Share2, UserPlus, Users, UserCheck } from 'lucide-react'
+import AppPageShell, { workspaceStyles as shell } from '../components/AppPageShell.jsx'
 import { useCopyToClipboard } from '../hooks/useRewardHooks.js'
-import Logo from '../components/Logo/Logo.jsx'
-import Icon from '../components/Icon.jsx'
-import styles from './ReferEarn.module.css'
+import { useRewards } from '../state/RewardsContext.jsx'
+import styles from './Workspace.module.css'
 
-const steps = [
-  {
-    number: '01',
-    title: 'Share your invite',
-    description: 'Send your Aurex invite to a friend using a channel that works for you.',
-    icon: 'arrow',
-  },
-  {
-    number: '02',
-    title: 'Your friend joins',
-    description: 'They create an account using your personalized referral link.',
-    icon: 'people',
-  },
-  {
-    number: '03',
-    title: 'Check the criteria',
-    description: 'Referral rewards depend on confirmed milestones and program terms.',
-    icon: 'check',
-  },
+const referralSteps = [
+  { label: 'You', icon: Users },
+  { label: 'Invite', icon: Share2 },
+  { label: 'Friend joins', icon: UserPlus },
+  { label: 'Eligibility', icon: UserCheck },
+  { label: 'Reward', icon: Gift },
 ]
 
 function ReferEarnPage() {
   const [feedback, setFeedback] = useState('')
   const { copyToClipboard } = useCopyToClipboard()
-  const inviteLink = new URL(import.meta.env.BASE_URL, window.location.origin).href
+  const { invitesShared, recordInvite } = useRewards()
+  const inviteLink = new URL('/login', window.location.origin).href
 
   const copyInviteLink = async () => {
     try {
       await copyToClipboard(inviteLink)
-      setFeedback('Copied. This preview link is not personalized and will not track referrals.')
+      recordInvite()
+      setFeedback('Aurex link copied. Friend sign-ups are not tracked yet.')
     } catch {
       setFeedback('Clipboard access was unavailable. Select the link and copy it manually.')
     }
@@ -41,119 +31,85 @@ function ReferEarnPage() {
 
   const shareInviteLink = async () => {
     if (!navigator.share) {
-      setFeedback('Sharing is not available in this browser. You can copy the preview link instead.')
+      setFeedback('Sharing is not available in this browser. Copy the Aurex link instead.')
       return
     }
-
     try {
-      await navigator.share({
-        title: 'Aurex Rewards',
-        text: 'Take a look at Aurex Rewards.',
-        url: inviteLink,
-      })
-      setFeedback('Preview link shared. It is not personalized and will not track referrals.')
+      await navigator.share({ title: 'Aurex Rewards', text: 'Take a look at Aurex Rewards.', url: inviteLink })
+      recordInvite()
+      setFeedback('Aurex link shared. Friend sign-ups are not tracked yet.')
     } catch (error) {
-      if (error.name !== 'AbortError') {
-        setFeedback('Could not open sharing. You can copy the preview link instead.')
-      }
+      if (error.name !== 'AbortError') setFeedback('Could not open sharing. Copy the Aurex link instead.')
     }
   }
 
   return (
-    <main className={styles.page}>
-      <a className="skip-link" href="#main-content">Skip to content</a>
-      <header className={styles.header}>
-        <Logo />
-        <nav className={styles.headerNav} aria-label="Page navigation">
-          <a href="/">Overview</a>
-          <a className={styles.activeLink} href="/refer" aria-current="page">Refer &amp; Earn</a>
-          <a href="/login">Log in</a>
-        </nav>
-      </header>
+    <AppPageShell
+      title="Refer & Earn"
+      category="Referral workspace"
+      description="Invite friends and track your referral progress."
+      accent="violet"
+      icon={Users}
+    >
+      <div className={styles.stack}>
+        <div className={shell.twoColumn}>
+          <section className={styles.panel} aria-labelledby="invite-heading">
+            <div className={styles.panelHead}>
+              <div><span className={styles.kicker}>YOUR INVITE</span><h2 id="invite-heading">Share Aurex with a friend</h2></div>
+            </div>
+            <p className={styles.muted}>Share the Aurex sign-up page. Referral tracking is not available yet.</p>
+            <span className={styles.kicker}>AUREX LINK</span>
+            <div className={styles.linkBox}>
+                <span className={styles.linkText}>{inviteLink}</span>
+                <button className={styles.primaryButton} type="button" onClick={copyInviteLink}><Copy size={15} /> Copy invite link</button>
+                <button className={styles.secondaryButton} type="button" onClick={shareInviteLink} aria-label="Share invite"><Share2 size={15} /> Share invite</button>
+              </div>
+              <p className={styles.small} role="status" aria-live="polite">{feedback}</p>
+          </section>
 
-      <div className={styles.content}>
-        <div className={styles.breadcrumb}>
-          <a href="/">Overview</a><span>/</span><span>Refer &amp; Earn</span>
+          <aside className={styles.panel} aria-labelledby="progress-heading">
+            <div className={styles.panelHead}>
+              <div><span className={styles.kicker}>REFERRAL PROGRESS</span><h2 id="progress-heading">A clear path to rewards</h2></div>
+            </div>
+            <div className={styles.flow} aria-label="You, invite, friend joins, eligibility, reward">
+              {referralSteps.map(({ label, icon: StepIcon }, index) => (
+                <span className={styles.flowStep} key={label}>
+                  <span className={styles.flowStepIcon}><StepIcon size={17} /></span>
+                  {label}
+                </span>
+              )).flatMap((step, index) => index < referralSteps.length - 1
+                ? [step, <ArrowRight key={`arrow-${index}`} className={styles.flowArrow} size={14} aria-hidden="true" />]
+                : [step])}
+            </div>
+            <div className={shell.statRow}>
+              {[[`Links shared · this browser`, String(invitesShared)], ['Friend joins', 'Not tracked'], ['Eligible rewards', 'Not tracked']].map(([label, value]) => (
+                <div className={styles.stat} key={label}><span className={styles.statLabel}>{label}</span><strong className={styles.statValue}>{value}</strong></div>
+              ))}
+            </div>
+            <p className={`${styles.small} ${styles.muted}`}>Share count is saved in this browser. Friend sign-ups and reward eligibility are not connected.</p>
+          </aside>
         </div>
 
-        <section id="main-content" className={styles.hero} aria-labelledby="refer-title" tabIndex="-1">
-          <div className={styles.heroGlow} />
-          <div className={styles.heroCopy}>
-            <span className={styles.eyebrow}><Icon name="people" size={16} /> AUREX REFERRALS</span>
-            <h1 id="refer-title">Good things grow <span>when shared.</span></h1>
-            <p>Invite friends to explore Aurex. When the referral program is connected, eligible rewards will follow its published rules and milestones.</p>
-            <a className={styles.primaryAction} href="#invite-link">Get your invite link <Icon name="arrow" size={17} /></a>
-          </div>
-          <div className={styles.heroVisual} aria-hidden="true">
-            <div className={styles.orbit} />
-            <div className={`${styles.person} ${styles.personOne}`}><span>A</span><small>YOU</small></div>
-            <div className={styles.connection}><Icon name="people" size={22} /></div>
-            <div className={`${styles.person} ${styles.personTwo}`}><span>+</span><small>FRIEND</small></div>
-            <div className={styles.rewardPill}><Icon name="gift" size={16} /> ELIGIBLE REWARDS</div>
-          </div>
-          <div className={styles.heroStatus}><span /> PREVIEW MODE · REFERRAL TRACKING NOT CONNECTED</div>
-        </section>
-
-        <section className={styles.inviteSection} id="invite-link" aria-labelledby="invite-heading">
-          <div className={styles.sectionHeading}>
-            <div><span className={styles.eyebrow}>YOUR INVITE</span><h2 id="invite-heading">Share Aurex with a friend</h2></div>
-            <span className={styles.unavailable}><span /> Link tracking unavailable</span>
-          </div>
-          <div className={styles.inviteCard}>
-            <div className={styles.inviteIcon}><Icon name="gift" size={21} /></div>
-            <div className={styles.inviteDetails}>
-              <strong>Example site link</strong>
-              <p>This preview link opens Aurex. It is not a personal referral link.</p>
+        <div className={shell.twoColumn}>
+          <section className={styles.panel} aria-labelledby="activity-heading">
+            <div className={styles.panelHead}><div><span className={styles.kicker}>REFERRAL ACTIVITY</span><h2 id="activity-heading">Recent activity</h2></div></div>
+            <div className={styles.activityEmpty}>
+              <span className={styles.emptyIcon}><Users size={18} /></span>
+              <div><strong>No friend sign-ups to show</strong><p>Link shares are counted locally; referral sign-ups cannot currently be tracked.</p></div>
             </div>
-            <div className={styles.linkControls}>
-              <label className={styles.srOnly} htmlFor="aurex-example-link">Example Aurex site link</label>
-              <input id="aurex-example-link" value={inviteLink} readOnly onFocus={(event) => event.currentTarget.select()} />
-              <button type="button" className={styles.copyButton} onClick={copyInviteLink}><Icon name="copy" size={16} /> Copy link</button>
-              <button type="button" className={styles.shareButton} onClick={shareInviteLink} aria-label="Share preview link"><Icon name="arrow" size={17} /></button>
-            </div>
-            <p className={styles.feedback} role="status" aria-live="polite">{feedback}</p>
-          </div>
-        </section>
-
-        <section className={styles.stepsSection} aria-labelledby="steps-heading">
-          <div className={styles.sectionHeading}>
-            <div><span className={styles.eyebrow}>SIMPLE &amp; TRANSPARENT</span><h2 id="steps-heading">How Refer &amp; Earn works</h2></div>
-            <p className={styles.sectionIntro}>Three clear steps. Rewards and eligibility are always subject to the program terms.</p>
-          </div>
-          <ol className={styles.steps}>
-            {steps.map((step) => (
-              <li key={step.number} className={styles.stepCard}>
-                <div className={styles.stepTop}><span>{step.number}</span><Icon name={step.icon} size={19} /></div>
-                <h3>{step.title}</h3>
-                <p>{step.description}</p>
-              </li>
-            ))}
-          </ol>
-        </section>
-
-        <section className={styles.activitySection} aria-labelledby="activity-heading">
-          <div className={styles.activityHeading}>
-            <span className={styles.activityIcon}><Icon name="people" size={18} /></span>
-            <div><span className={styles.eyebrow}>YOUR ACTIVITY</span><h2 id="activity-heading">Referral activity</h2></div>
-          </div>
-          <div className={styles.emptyState}>
-            <span className={styles.emptyIcon}><Icon name="people" size={21} /></span>
-            <strong>No referral activity yet</strong>
-            <p>Referral tracking is not connected in this preview, so invites and progress cannot be recorded.</p>
-          </div>
-        </section>
-
-        <aside className={styles.terms}>
-          <Icon name="shield" size={18} />
-          <p><strong>Good to know</strong><span>Referral rewards, qualifying actions, and timing depend on the official program terms. This preview does not create invite codes, track referrals, or issue rewards.</span></p>
-        </aside>
-
-        <footer className={styles.footer}>
-          <Logo variant="footer" />
-          <span>© 2026 Aurex Rewards</span>
-        </footer>
+          </section>
+          <section className={styles.panel} aria-labelledby="how-heading">
+            <div className={styles.panelHead}><div><span className={styles.kicker}>HOW IT WORKS</span><h2 id="how-heading">From invite to reward</h2></div></div>
+            <ol className={styles.steps}>
+              {['Share your invite', 'Friend joins', 'Criteria confirmed', 'Eligible reward'].map((step, index) => (
+                <li key={step}><span className={styles.stepNumber}>{String(index + 1).padStart(2, '0')}</span><strong>{step}</strong><ArrowDown size={14} className={styles.muted} aria-hidden="true" /></li>
+              ))}
+            </ol>
+            <div className={styles.subtleNotice}><Check size={16} /><span>Referral rewards and eligibility follow the published program terms.</span></div>
+          </section>
+        </div>
       </div>
-    </main>
+    </AppPageShell>
   )
 }
 

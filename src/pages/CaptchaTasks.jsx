@@ -1,29 +1,19 @@
 import { useState } from 'react'
-import Icon from '../components/Icon.jsx'
-import Logo from '../components/Logo/Logo.jsx'
-import CaptchaIllustration from '../components/CaptchaTasksBanner/CaptchaIllustration.jsx'
-import layout from './BonusVEs.module.css'
-import styles from './CaptchaTasks.module.css'
+import { ArrowRight, Check, ClipboardCheck, Clock3, ShieldCheck, Sparkles } from 'lucide-react'
+import { Link } from 'react-router-dom'
+import AppPageShell, { workspaceStyles as shell } from '../components/AppPageShell.jsx'
+import { useRewards } from '../state/RewardsContext.jsx'
+import styles from './Workspace.module.css'
 
 const correctTiles = [1, 4]
 const symbols = ['ring', 'shield', 'diamond', 'spark', 'shield', 'ring']
 
 function TaskTile({ index, symbol, selected, disabled, onClick }) {
   return (
-    <button
-      className={`${styles.tile} ${styles[symbol]} ${selected ? styles.tileSelected : ''}`}
-      type="button"
-      aria-label={`Tile ${index + 1}${selected ? ', selected' : ''}`}
-      aria-pressed={selected}
-      disabled={disabled}
-      onClick={onClick}
-    >
-      <span className={styles.tileCheckbox}>{selected && <Icon name="check" size={13} />}</span>
+    <button className={`${styles.taskTile} ${styles[symbol]} ${selected ? styles.tileSelected : ''}`} type="button" aria-label={`Tile ${index + 1}${selected ? ', selected' : ''}`} aria-pressed={selected} disabled={disabled} onClick={onClick}>
+      <span className={styles.tileCheckbox}>{selected && <Check size={14} />}</span>
       {symbol === 'shield' ? (
-        <svg viewBox="0 0 40 44" aria-hidden="true">
-          <path d="M20 3 35 9v11c0 10-6 17-15 21C11 37 5 30 5 20V9z" />
-          <path className={styles.symbolDetail} d="m13 21 5 5 10-11" />
-        </svg>
+        <svg viewBox="0 0 40 44" aria-hidden="true"><path d="M20 3 35 9v11c0 10-6 17-15 21C11 37 5 30 5 20V9z" /><path className={styles.symbolDetail} d="m13 21 5 5 10-11" /></svg>
       ) : symbol === 'diamond' ? (
         <svg viewBox="0 0 40 44" aria-hidden="true"><path d="m20 4 15 18-15 18L5 22z" /><path className={styles.symbolDetail} d="m5 22 30 0M20 4l-5 18 5 18 5-18z" /></svg>
       ) : symbol === 'spark' ? (
@@ -31,151 +21,89 @@ function TaskTile({ index, symbol, selected, disabled, onClick }) {
       ) : (
         <svg viewBox="0 0 40 44" aria-hidden="true"><circle cx="20" cy="22" r="14" /><circle className={styles.symbolDetail} cx="20" cy="22" r="7" /></svg>
       )}
-      <span className={styles.tileShine} />
     </button>
   )
 }
 
 function CaptchaTasksPage() {
+  const { captchaCompletedOn, completeCaptcha } = useRewards()
+  const today = new Date().toISOString().slice(0, 10)
   const [selectedTiles, setSelectedTiles] = useState([])
-  const [complete, setComplete] = useState(false)
+  const [complete, setComplete] = useState(captchaCompletedOn === today)
   const [feedback, setFeedback] = useState('')
-
+  const [earnedNow, setEarnedNow] = useState(false)
   const toggleTile = (index) => {
-    setSelectedTiles((current) => current.includes(index)
-      ? current.filter((tile) => tile !== index)
-      : [...current, index])
+    setSelectedTiles((current) => current.includes(index) ? current.filter((tile) => tile !== index) : [...current, index])
     setFeedback('')
   }
-
   const verifyTask = () => {
-    const isCorrect = selectedTiles.length === correctTiles.length
-      && correctTiles.every((tile) => selectedTiles.includes(tile))
-
+    const isCorrect = selectedTiles.length === correctTiles.length && correctTiles.every((tile) => selectedTiles.includes(tile))
     if (!isCorrect) {
-      setFeedback('Not quite. Select each shield symbol and try again.')
+      setFeedback('Some selections are incorrect. Review the task and try again.')
       return
     }
-
+    const earned = completeCaptcha()
     setComplete(true)
-    setFeedback('Demo verification complete. No VEs have been added.')
+    setEarnedNow(earned)
+    setFeedback(earned ? '10 VEs have been added to your wallet.' : 'You have already completed today’s task. Your wallet was not credited again.')
   }
-
-  const resetTask = () => {
-    setSelectedTiles([])
-    setComplete(false)
-    setFeedback('')
-  }
-
   return (
-    <div id="captcha" className={`app-shell ${layout.page} ${styles.page}`}>
-      <a className="skip-link" href="#main-content">Skip to content</a>
-      <header className="topbar">
-        <div className="topbar-inner">
-          <Logo />
-          <nav className={`main-nav ${layout.nav}`} aria-label="Main navigation">
-            <a className="nav-link" href="/">Overview</a>
-            <a className="nav-link nav-active" href="/captcha" aria-current="page">Earn VEs</a>
-            <a className="nav-link" href="/swap">Swap</a>
-            <a className="nav-link" href="/refer">Refer &amp; Earn</a>
-            <a className="nav-link" href="/exchange">Redeem</a>
-          </nav>
-          <a className="login-link" href="/login">Log in</a>
-        </div>
-      </header>
-
-      <main id="main-content" className={layout.content} tabIndex="-1">
-        <nav className={layout.breadcrumb} aria-label="Breadcrumb">
-          <a href="/">Overview</a><span>/</span><span>Earn VEs</span><span>/</span><span aria-current="page">Captcha Tasks</span>
-        </nav>
-
-        <section className={`${layout.hero} ${styles.hero}`} aria-labelledby="captcha-title">
-          <div className={layout.heroCopy}>
-            <span className={layout.eyebrow}><Icon name="shield" size={16} /> TASK-BASED EARNING</span>
-            <h1 id="captcha-title">Verify with care. <span>Earn with confidence.</span></h1>
-            <p>Complete verification tasks accurately. Eligible rewards depend on successfully verified completion and platform terms.</p>
-            <a className={layout.primaryAction} href="#demo-task">Try the demo task <Icon name="arrow" size={17} /></a>
-          </div>
-          <div className={styles.heroVisual} aria-hidden="true">
-            <CaptchaIllustration className={styles.heroIllustration} />
-          </div>
-          <div className={layout.heroStatus}><span /> DEMO PREVIEW · NO ACCOUNT OR REWARD CONNECTION</div>
+    <AppPageShell title="Captcha Tasks" category="Earn VEs · Verification tasks" description="Complete verification tasks accurately to qualify for eligible rewards." accent="teal" icon={ShieldCheck}>
+      <div className={styles.stack}>
+        <section className={`${styles.statRow} ${styles.taskStats}`} aria-label="Task summary">
+          {[
+            ['Available tasks', complete ? '0' : '1'],
+            ['Completed today', complete ? '1' : '0'],
+            ['Accuracy', complete ? '100%' : '—'],
+            ['Reward status', complete ? 'Credited' : 'Pending'],
+          ].map(([label, value]) => <div className={styles.stat} key={label}><span className={styles.statLabel}>{label}</span><strong className={styles.statValue}>{value}</strong></div>)}
         </section>
-
-        <section className={styles.taskSection} id="demo-task" aria-labelledby="task-heading">
-          <div className={styles.sectionHeading}>
-            <div>
-              <span className={styles.eyebrow}>PRACTICE TASK</span>
-              <h2 id="task-heading">Complete a verification</h2>
-            </div>
-            <span className={styles.demoBadge}><span /> DEMO TASK</span>
-          </div>
-
-          <div className={styles.taskLayout}>
-            <section className={styles.taskPanel} aria-label="Verification demo">
-              <div className={styles.taskHeading}>
-                <span className={styles.taskIcon}><Icon name="shield" size={18} /></span>
-                <div><strong>Select every shield</strong><span>Choose all matching symbols to verify this demo task.</span></div>
-                <span className={styles.taskCount}>{selectedTiles.length} / 2</span>
+        <div className={shell.twoColumn}>
+          <section className={styles.panel} aria-labelledby="task-heading">
+            {complete ? (
+              <div className={styles.resultState} role="status">
+                <span className={styles.resultIcon}><Check size={22} /></span>
+                <h2 id="task-heading">Verification complete</h2>
+                <p className={styles.muted}>{earnedNow ? 'Your task has been successfully verified.' : 'This task has already been completed today.'}</p>
+                <div className={styles.subtleNotice}><ShieldCheck size={16} /><span>{feedback || (earnedNow ? '10 VEs were added to your wallet.' : 'The daily reward has already been credited.')}</span></div>
+                <Link className={styles.primaryButton} to="/wallet">View wallet <ArrowRight size={16} /></Link>
               </div>
-
-              <div className={styles.tileGrid} aria-label="Symbol verification tiles">
-                {symbols.map((symbol, index) => (
-                  <TaskTile
-                    key={index}
-                    index={index}
-                    symbol={symbol}
-                    selected={selectedTiles.includes(index)}
-                    disabled={complete}
-                    onClick={() => toggleTile(index)}
-                  />
-                ))}
-              </div>
-
-              <div className={styles.taskActions}>
-                <span className={styles.secureNote}><Icon name="shield" size={14} /> Practice interaction only</span>
-                {complete ? (
-                  <button className={styles.resetButton} type="button" onClick={resetTask}>Try again</button>
-                ) : (
-                  <button className={styles.verifyButton} type="button" onClick={verifyTask} disabled={selectedTiles.length === 0}>
-                    Verify selection <Icon name="arrow" size={15} />
-                  </button>
-                )}
-              </div>
-              <p className={`${styles.feedback} ${feedback && !complete ? styles.feedbackError : ''}`} role="status" aria-live="polite">{feedback}</p>
-
-              {complete && (
-                <div className={styles.completion} role="status">
-                  <span className={styles.completionIcon}><Icon name="check" size={19} /></span>
-                  <span><strong>Verification successful</strong><small>This demo does not record a task or add VEs to your balance.</small></span>
+            ) : (
+              <>
+                <div className={styles.panelHead}>
+                  <div><span className={styles.kicker}>TASK 01 · PROGRESS 1 OF 1</span><h2 id="task-heading">Verification task</h2></div>
+                  <span className={styles.badge}><i className={styles.availableDot} /> Available</span>
                 </div>
-              )}
-            </section>
+                <div className={styles.taskMeta}><span><Clock3 size={15} /> Short task</span><span><Sparkles size={15} /> Eligible reward</span></div>
+                <div className={styles.instruction}><span className={styles.kicker}>INSTRUCTION</span><strong>Select all shield symbols.</strong><small>{selectedTiles.length} of 2 selected</small></div>
+                <div className={styles.tileGrid} role="group" aria-label="Verification task symbols">
+                  {symbols.map((symbol, index) => <TaskTile key={index} index={index} symbol={symbol} selected={selectedTiles.includes(index)} disabled={complete} onClick={() => toggleTile(index)} />)}
+                </div>
+                {feedback && <p className={styles.formError} role="alert">{feedback}</p>}
+                <div className={styles.taskFooter}>
+                  <span className={styles.small}><ShieldCheck size={15} /> One reward per day · 10 VEs</span>
+                  <button className={styles.primaryButton} type="button" onClick={verifyTask} disabled={selectedTiles.length === 0}>Verify selection <ArrowRight size={16} /></button>
+                </div>
+              </>
+            )}
+          </section>
 
-            <aside className={styles.progressPanel} aria-label="Task completion steps">
-              <span className={styles.panelKicker}>YOUR TASK</span>
-              <h3>Every step matters</h3>
-              <ol className={styles.progressList}>
-                <li className={styles.progressActive}><span>1</span><div><strong>Complete task</strong><small>Select the matching symbols</small></div></li>
-                <li className={complete ? styles.progressDone : ''}><span>{complete ? <Icon name="check" size={13} /> : '2'}</span><div><strong>Verify selection</strong><small>Check your answers</small></div></li>
-                <li className={complete ? styles.progressActive : ''}><span>3</span><div><strong>Reward eligibility</strong><small>Subject to platform rules</small></div></li>
+          <aside className={styles.sideColumn}>
+            <section className={styles.panel} aria-labelledby="how-tasks-heading">
+              <div className={styles.panelHead}><div><span className={styles.kicker}>HOW TASKS WORK</span><h2 id="how-tasks-heading">A straightforward process</h2></div><ClipboardCheck size={18} className={styles.accentIcon} /></div>
+              <ol className={styles.steps}>
+                {['Open a task', 'Follow the instruction', 'Submit your selection', 'Verification completes'].map((step, index) => <li key={step}><span className={styles.stepNumber}>{index + 1}</span><strong>{step}</strong></li>)}
               </ol>
-              <div className={styles.rewardHint}><Icon name="sparkles" size={16} /><span>Eligible VEs follow verified task completion and the published terms.</span></div>
-            </aside>
-          </div>
-        </section>
-
-        <aside className={`${layout.terms} ${styles.terms}`}>
-          <Icon name="shield" size={18} />
-          <p><strong>Good to know</strong><span>This interactive challenge is a demonstration only. It does not use a live CAPTCHA service, record task completions, or issue VEs. Real task availability and rewards depend on the platform.</span></p>
-        </aside>
-
-        <footer className={layout.footer}>
-          <Logo variant="footer" />
-          <span>© 2026 Aurex Rewards</span>
-        </footer>
-      </main>
-    </div>
+              <div className={styles.subtleNotice}><Sparkles size={16} /><span>Complete the task accurately to add 10 VEs to your Aurex wallet. One completion is allowed per day.</span></div>
+            </section>
+            <section className={styles.panel} aria-labelledby="task-history-heading">
+              <div className={styles.panelHead}><div><span className={styles.kicker}>HISTORY</span><h2 id="task-history-heading">Task history</h2></div></div>
+              {complete ? <div className={styles.activityEmpty}><span className={styles.emptyIcon}><Check size={17} /></span><div><strong>Verification task</strong><p>Completed today · 10 VEs credited</p></div></div> : <div className={styles.activityEmpty}><span className={styles.emptyIcon}><ClipboardCheck size={17} /></span><div><strong>No completed tasks</strong><p>Complete the task to earn 10 VEs.</p></div></div>}
+            </section>
+          </aside>
+        </div>
+      </div>
+    </AppPageShell>
   )
 }
 

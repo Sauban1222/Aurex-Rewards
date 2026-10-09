@@ -1,33 +1,31 @@
 import { useState } from 'react'
-import Icon from '../components/Icon.jsx'
-import Logo from '../components/Logo/Logo.jsx'
-import styles from './SwapCenter.module.css'
+import { ArrowDownUp, ArrowRightLeft, Check, HelpCircle, ShieldCheck, Wallet } from 'lucide-react'
+import AppPageShell, { workspaceStyles as shell } from '../components/AppPageShell.jsx'
+import { useRewards } from '../state/RewardsContext.jsx'
+import styles from './Workspace.module.css'
 
+const RATE_VE_TO_SVE = 0.65
 const assets = [
-  { id: 've', name: 'Aurex VEs', symbol: 'VE', balance: 1260, tone: 'blue', units: 1 },
-  { id: 'credits', name: 'Partner credits', symbol: 'PC', balance: 840, tone: 'violet', units: 1.25 },
+  { id: 've', name: 'Aurex VEs', symbol: 'VE' },
+  { id: 'sve', name: 'SVE Balance', symbol: 'SVE' },
 ]
-
-const formatAmount = (value) => new Intl.NumberFormat('en-US', {
-  minimumFractionDigits: 0,
-  maximumFractionDigits: 2,
-}).format(value)
+const formatAmount = (value) => new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 }).format(value)
 
 function SwapCenterPage() {
+  const { ve, sve, swap } = useRewards()
   const [fromId, setFromId] = useState('ve')
-  const [toId, setToId] = useState('credits')
-  const [amount, setAmount] = useState('100')
+  const [toId, setToId] = useState('sve')
+  const [amount, setAmount] = useState('')
   const [stage, setStage] = useState('edit')
   const [error, setError] = useState('')
-  const [activity, setActivity] = useState(null)
-  const [notice, setNotice] = useState('')
-
+  const [receipt, setReceipt] = useState(null)
+  const balances = { ve, sve }
   const fromAsset = assets.find((asset) => asset.id === fromId)
   const toAsset = assets.find((asset) => asset.id === toId)
   const numericAmount = Number(amount)
-  const rate = toAsset.units / fromAsset.units
-  const estimatedOutput = Number.isFinite(numericAmount) ? numericAmount * rate : 0
-  const isAmountValid = numericAmount > 0 && numericAmount <= fromAsset.balance
+  const rate = fromId === 've' ? RATE_VE_TO_SVE : 1 / RATE_VE_TO_SVE
+  const estimatedOutput = Number.isFinite(numericAmount) ? Number((numericAmount * rate).toFixed(2)) : 0
+  const isAmountValid = numericAmount > 0 && numericAmount <= balances[fromId]
 
   const setPair = (nextFromId, nextToId) => {
     setFromId(nextFromId)
@@ -35,203 +33,120 @@ function SwapCenterPage() {
     setAmount('')
     setStage('edit')
     setError('')
-    setNotice('')
+    setReceipt(null)
   }
 
   const reviewSwap = (event) => {
     event.preventDefault()
     if (!isAmountValid) {
-      setError(numericAmount > fromAsset.balance
-        ? `The sample ${fromAsset.symbol} balance is ${formatAmount(fromAsset.balance)}.`
+      setError(numericAmount > balances[fromId]
+        ? `Your available balance is ${formatAmount(balances[fromId])} ${fromAsset.symbol}.`
         : 'Enter an amount greater than zero.')
       return
     }
     setError('')
     setStage('review')
-    setNotice('')
   }
 
-  const confirmDemoSwap = () => {
-    setActivity({
-      input: numericAmount,
-      output: estimatedOutput,
-      from: fromAsset,
-      to: toAsset,
-    })
+  const confirmSwap = () => {
+    const result = swap({ from: fromId, amount: numericAmount, output: estimatedOutput })
+    if (!result.ok) {
+      setError(result.message)
+      setStage('edit')
+      return
+    }
+    setReceipt({ input: numericAmount, output: estimatedOutput, from: fromAsset, to: toAsset })
+    setError('')
     setStage('complete')
-    setNotice('Demo swap complete. No balances were changed.')
   }
 
   const resetSwap = () => {
     setStage('edit')
+    setAmount('')
     setError('')
-    setNotice('')
+    setReceipt(null)
   }
 
-  const switchPair = () => setPair(toId, fromId)
-
   return (
-    <div id="swap" className={`app-shell ${styles.page}`}>
-      <a className="skip-link" href="#main-content">Skip to content</a>
-      <header className="topbar">
-        <div className="topbar-inner">
-          <Logo />
-          <nav className={`main-nav ${styles.nav}`} aria-label="Main navigation">
-            <a className="nav-link" href="/">Overview</a>
-            <a className="nav-link" href="/refer">Refer &amp; Earn</a>
-            <a className="nav-link" href="/exchange">Redeem</a>
-          </nav>
-          <a className="login-link" href="/login">Log in</a>
-        </div>
-      </header>
-
-      <main id="main-content" className={styles.content} tabIndex="-1">
-        <nav className={styles.breadcrumb} aria-label="Breadcrumb">
-          <a href="/">Overview</a><span>/</span><span aria-current="page">Swap Center</span>
-        </nav>
-
-        <section className={styles.heading}>
-          <div>
-            <span className={styles.eyebrow}><Icon name="swap" size={15} /> BALANCE CONVERSION</span>
-            <h1>Swap Center</h1>
-            <p>Convert between supported reward balances with a clear quote before you continue.</p>
-          </div>
-          <span className={styles.previewBadge}><span /> DEMO PREVIEW</span>
+    <AppPageShell title="Swap Center" category="Balance conversion" description="Convert between VE and SVE wallet balances at the displayed rate." accent="cyan" icon={ArrowDownUp}>
+      <div className={shell.twoColumn}>
+        <section className={styles.panel} aria-labelledby="swap-heading">
+          {stage === 'complete' && receipt ? (
+            <div className={styles.resultState} role="status">
+              <span className={styles.resultIcon}><Check size={22} /></span>
+              <span className={styles.kicker}>WALLET UPDATED</span>
+              <h2 id="swap-heading">Conversion complete</h2>
+              <p className={styles.resultAmounts}>{formatAmount(receipt.input)} {receipt.from.symbol} <ArrowRightLeft size={18} /> {formatAmount(receipt.output)} {receipt.to.symbol}</p>
+              <p className={styles.muted}>Your balances and wallet activity have been updated in this browser.</p>
+              <button className={styles.primaryButton} type="button" onClick={resetSwap}>Make another conversion</button>
+            </div>
+          ) : (
+            <>
+              <div className={styles.panelHead}>
+                <div><span className={styles.kicker}>WALLET CONVERSION</span><h2 id="swap-heading">{stage === 'review' ? 'Review conversion' : 'Choose balances'}</h2></div>
+                <span className={styles.badge}><Wallet size={14} /> Aurex wallet</span>
+              </div>
+              <form className={styles.swapForm} onSubmit={reviewSwap} noValidate>
+                <div className={styles.assetInput}>
+                  <div className={styles.assetLabel}><label htmlFor="swap-amount">You send</label><span>Available: {formatAmount(balances[fromId])} {fromAsset.symbol}</span></div>
+                  <div className={styles.assetControls}>
+                    <input id="swap-amount" type="number" inputMode="decimal" min="0.01" max={balances[fromId]} step="0.01" value={amount} disabled={stage !== 'edit'} onChange={(event) => { setAmount(event.target.value); setError('') }} />
+                    <select aria-label="Source balance" value={fromId} disabled={stage !== 'edit'} onChange={(event) => setPair(event.target.value, event.target.value === toId ? fromId : toId)}>
+                      {assets.map((asset) => <option key={asset.id} value={asset.id}>{asset.symbol} / {asset.name}</option>)}
+                    </select>
+                  </div>
+                  {stage === 'edit' && <button className={styles.maxLink} type="button" onClick={() => { setAmount(String(balances[fromId])); setError('') }} disabled={balances[fromId] <= 0}>Use maximum</button>}
+                </div>
+                <div className={styles.swapDirection}>
+                  <span />
+                  <button type="button" aria-label="Switch conversion direction" disabled={stage !== 'edit'} onClick={() => setPair(toId, fromId)}><ArrowDownUp size={18} /></button>
+                  <span />
+                </div>
+                <div className={`${styles.assetInput} ${styles.receiveInput}`}>
+                  <div className={styles.assetLabel}><label htmlFor="swap-estimate">You receive</label><span>Available: {formatAmount(balances[toId])} {toAsset.symbol}</span></div>
+                  <div className={styles.assetControls}>
+                    <output id="swap-estimate">{formatAmount(estimatedOutput)}</output>
+                    <select aria-label="Destination balance" value={toId} disabled={stage !== 'edit'} onChange={(event) => setPair(fromId, event.target.value === fromId ? toId : event.target.value)}>
+                      {assets.map((asset) => <option key={asset.id} value={asset.id}>{asset.symbol} / {asset.name}</option>)}
+                    </select>
+                  </div>
+                </div>
+                <div className={styles.quoteLine}><span>Conversion rate</span><strong>1 VE = 0.65 SVE</strong></div>
+                <div className={styles.quoteLine}><span>Reverse rate</span><strong>1 SVE ≈ 1.54 VE</strong></div>
+                {error && <p className={styles.formError} role="alert">{error}</p>}
+                <div className={styles.formActions}>
+                  {stage === 'edit' && <button className={styles.primaryButton} type="submit" disabled={!amount || numericAmount <= 0}>Review conversion <ArrowRightLeft size={16} /></button>}
+                  {stage === 'review' && <><button className={styles.secondaryButton} type="button" onClick={() => setStage('edit')}>Edit amount</button><button className={styles.primaryButton} type="button" onClick={confirmSwap}>Confirm conversion <Check size={16} /></button></>}
+                </div>
+              </form>
+            </>
+          )}
         </section>
 
-        <div className={styles.layout}>
-          <section className={styles.swapPanel} aria-labelledby="swap-form-heading">
-            <div className={styles.panelHeading}>
-              <div>
-                <span className={styles.panelKicker}>CONVERSION</span>
-                <h2 id="swap-form-heading">{stage === 'review' ? 'Review your swap' : stage === 'complete' ? 'Swap preview complete' : 'Choose balances'}</h2>
-              </div>
-              <span className={styles.secureMark}><Icon name="shield" size={15} /> No wallet connection</span>
+        <aside className={styles.sideColumn}>
+          <section className={styles.panel} aria-labelledby="quote-heading">
+            <div className={styles.panelHead}><div><span className={styles.kicker}>CONVERSION SUMMARY</span><h2 id="quote-heading">Wallet balances</h2></div><Wallet size={18} className={styles.accentIcon} /></div>
+            <div className={styles.quoteAmounts}>
+              <div><span>You send</span><strong>{formatAmount(numericAmount || 0)} <small>{fromAsset.symbol}</small></strong></div>
+              <ArrowDownUp size={17} className={styles.accentIcon} />
+              <div><span>You receive</span><strong>{formatAmount(estimatedOutput)} <small>{toAsset.symbol}</small></strong></div>
             </div>
-
-            <form onSubmit={reviewSwap} noValidate>
-              <div className={styles.assetCard}>
-                <div className={styles.assetTop}>
-                  <label htmlFor="swap-from">You send</label>
-                  <span>Sample balance: {formatAmount(fromAsset.balance)} {fromAsset.symbol}</span>
-                </div>
-                <div className={styles.assetInputRow}>
-                  <input
-                    id="swap-amount"
-                    aria-label={`Amount of ${fromAsset.name} to swap`}
-                    className={styles.amountInput}
-                    type="number"
-                    inputMode="decimal"
-                    min="0.01"
-                    max={fromAsset.balance}
-                    step="0.01"
-                    value={amount}
-                    onChange={(event) => { setAmount(event.target.value); setStage('edit'); setError(''); setNotice('') }}
-                    disabled={stage !== 'edit'}
-                  />
-                  <label className={styles.srOnly} htmlFor="swap-from">Asset to swap from</label>
-                  <span className={`${styles.assetIcon} ${styles[fromAsset.tone]}`} aria-hidden="true">{fromAsset.symbol === 'VE' ? 'V' : '✦'}</span>
-                  <select id="swap-from" value={fromId} disabled={stage !== 'edit'} onChange={(event) => setPair(event.target.value, event.target.value === toId ? fromId : toId)}>
-                    {assets.map((asset) => <option key={asset.id} value={asset.id}>{asset.symbol} · {asset.name}</option>)}
-                  </select>
-                </div>
-                <button className={styles.maxButton} type="button" disabled={stage !== 'edit'} onClick={() => { setAmount(String(fromAsset.balance)); setError('') }}>MAX</button>
-              </div>
-
-              <div className={styles.switchRow}>
-                <span />
-                <button className={styles.switchButton} type="button" aria-label="Switch conversion direction" onClick={switchPair} disabled={stage !== 'edit'}>
-                  <Icon name="swap" size={18} />
-                </button>
-                <span />
-              </div>
-
-              <div className={`${styles.assetCard} ${styles.receiveCard}`}>
-                <div className={styles.assetTop}>
-                  <label htmlFor="swap-to">You receive (estimated)</label>
-                  <span>Sample balance: {formatAmount(toAsset.balance)} {toAsset.symbol}</span>
-                </div>
-                <div className={styles.assetInputRow}>
-                  <output className={styles.outputAmount} htmlFor="swap-amount">{formatAmount(estimatedOutput)}</output>
-                  <span className={`${styles.assetIcon} ${styles[toAsset.tone]}`} aria-hidden="true">{toAsset.symbol === 'VE' ? 'V' : '✦'}</span>
-                  <label className={styles.srOnly} htmlFor="swap-to">Asset to swap to</label>
-                  <select id="swap-to" value={toId} disabled={stage !== 'edit'} onChange={(event) => setPair(fromId, event.target.value === fromId ? toId : event.target.value)}>
-                    {assets.map((asset) => <option key={asset.id} value={asset.id}>{asset.symbol} · {asset.name}</option>)}
-                  </select>
-                </div>
-              </div>
-
-              <div className={styles.rateRow}>
-                <span><Icon name="swap" size={14} /> Indicative sample rate</span>
-                <strong>1 {fromAsset.symbol} ≈ {formatAmount(rate)} {toAsset.symbol}</strong>
-              </div>
-
-              {error && <p className={styles.error} role="alert">{error}</p>}
-
-              {stage === 'edit' && (
-                <button className={styles.primaryButton} type="submit" disabled={!amount || numericAmount <= 0 || numericAmount > fromAsset.balance}>
-                  Review demo swap <Icon name="arrow" size={17} />
-                </button>
-              )}
-              {stage === 'review' && (
-                <div className={styles.actions}>
-                  <button className={styles.secondaryButton} type="button" onClick={resetSwap}>Edit amount</button>
-                  <button className={styles.primaryButton} type="button" onClick={confirmDemoSwap}>Confirm demo swap <Icon name="check" size={17} /></button>
-                </div>
-              )}
-              {stage === 'complete' && (
-                <button className={styles.primaryButton} type="button" onClick={resetSwap}>Start another demo swap <Icon name="arrow" size={17} /></button>
-              )}
-            </form>
-
-            {notice && <p className={styles.notice} role="status" aria-live="polite"><Icon name="check" size={15} />{notice}</p>}
+            <dl className={styles.quoteDetails}>
+              <div><dt>VE balance</dt><dd>{formatAmount(ve)} VEs</dd></div>
+              <div><dt>SVE balance</dt><dd>{formatAmount(sve)} SVEs</dd></div>
+              <div><dt>Fee</dt><dd>No fee</dd></div>
+            </dl>
+            <p className={styles.subtleNotice}><HelpCircle size={16} /> Conversions update the wallet saved in this browser. No external transfer is made.</p>
           </section>
-
-          <aside className={styles.sideColumn}>
-            <section className={styles.summaryCard} aria-labelledby="summary-heading">
-              <div className={styles.summaryHeader}>
-                <span className={styles.summaryIcon}><Icon name="wallet" size={18} /></span>
-                <div><span className={styles.panelKicker}>QUOTE DETAILS</span><h2 id="summary-heading">Your estimate</h2></div>
-              </div>
-              <div className={styles.summaryAmounts}>
-                <div><span>You send</span><strong>{formatAmount(numericAmount || 0)} <small>{fromAsset.symbol}</small></strong></div>
-                <Icon name="arrow" size={18} />
-                <div><span>Estimated receive</span><strong>{formatAmount(estimatedOutput)} <small>{toAsset.symbol}</small></strong></div>
-              </div>
-              <div className={styles.summaryLine}><span>Sample rate</span><strong>1 {fromAsset.symbol} ≈ {formatAmount(rate)} {toAsset.symbol}</strong></div>
-              <div className={styles.summaryLine}><span>Rate source</span><strong>Illustrative only</strong></div>
-              <div className={styles.summaryLine}><span>Transaction fee</span><strong>Not calculated</strong></div>
-              <p className={styles.estimateNote}>This estimate uses a fixed example rate. It is not a live market quote or a promise of value.</p>
-            </section>
-
-            <section className={styles.noticeCard} aria-labelledby="preview-heading">
-              <span className={styles.noticeIcon}><Icon name="shield" size={18} /></span>
-              <h2 id="preview-heading">Preview mode</h2>
-              <p>These balances and rates are examples. Aurex is not connected to a swap provider, and confirming will not move funds or update your account.</p>
-            </section>
-
-            <section className={styles.activityCard} aria-labelledby="activity-heading">
-              <div className={styles.activityHeading}><span className={styles.panelKicker}>RECENT ACTIVITY</span><h2 id="activity-heading">Swap history</h2></div>
-              {activity ? (
-                <div className={styles.activityItem}>
-                  <span className={styles.activityIcon}><Icon name="check" size={16} /></span>
-                  <div><strong>Demo conversion</strong><span>{formatAmount(activity.input)} {activity.from.symbol} → {formatAmount(activity.output)} {activity.to.symbol}</span></div>
-                  <small>Just now</small>
-                </div>
-              ) : (
-                <p className={styles.emptyActivity}>Your demo swap history will appear here after a preview confirmation.</p>
-              )}
-            </section>
-          </aside>
-        </div>
-
-        <footer className={styles.footer}>
-          <Logo variant="footer" />
-          <span>Sample interface · No real conversions are processed</span>
-          <span>© 2026 Aurex Rewards</span>
-        </footer>
-      </main>
-    </div>
+          <section className={styles.panel} aria-labelledby="steps-heading">
+            <div className={styles.panelHead}><div><span className={styles.kicker}>HOW CONVERSION WORKS</span><h2 id="steps-heading">Four clear steps</h2></div></div>
+            <ol className={styles.steps}>
+              {['Choose VE or SVE', 'Enter an amount', 'Review the rate', 'Confirm conversion'].map((item, index) => <li key={item}><span className={styles.stepNumber}>{index + 1}</span><strong>{item}</strong></li>)}
+            </ol>
+          </section>
+        </aside>
+      </div>
+    </AppPageShell>
   )
 }
 

@@ -1,7 +1,8 @@
 import { useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import Logo from './components/Logo/Logo.jsx'
 import Icon from './components/Icon.jsx'
+import AccountMenu from './components/AccountMenu.jsx'
 import ReferEarnBanner from './components/ReferEarnBanner/ReferEarnBanner.jsx'
 import SwapCenterBanner from './components/SwapCenterBanner/SwapCenterBanner.jsx'
 import BonusVEsBanner from './components/BonusVEsBanner/BonusVEsBanner.jsx'
@@ -13,13 +14,17 @@ import SwapCenterPage from './pages/SwapCenter.jsx'
 import BonusVEsPage from './pages/BonusVEs.jsx'
 import CaptchaTasksPage from './pages/CaptchaTasks.jsx'
 import ExchangeCenterPage from './pages/ExchangeCenter.jsx'
+import WalletPage from './pages/Wallet.jsx'
 import NotFoundPage from './pages/NotFound.jsx'
+import { useRewards } from './state/RewardsContext.jsx'
+import { ArrowUpRight, Wallet } from 'lucide-react'
 
 function App() {
   const [toast, setToast] = useState('')
   const [menuOpen, setMenuOpen] = useState(false)
   const navigate = useNavigate()
   const { pathname } = useLocation()
+  const { ve, sve } = useRewards()
 
   if (pathname === '/404') return <NotFoundPage />
   if (pathname === '/login') return <LoginPage />
@@ -28,6 +33,7 @@ function App() {
   if (pathname === '/bonus') return <BonusVEsPage />
   if (pathname === '/captcha') return <CaptchaTasksPage />
   if (pathname === '/exchange') return <ExchangeCenterPage />
+  if (pathname === '/wallet') return <WalletPage />
   if (pathname !== '/') return <NotFoundPage />
 
   const openFeature = (kind) => navigate(`/${kind}`)
@@ -39,15 +45,16 @@ function App() {
         <div className="topbar-inner">
           <Logo />
           <nav className={`main-nav ${menuOpen ? 'nav-open' : ''}`} aria-label="Main navigation">
-            <a className="nav-link nav-active" href="/" onClick={() => setMenuOpen(false)}>Overview</a>
-            <a className="nav-link" href="/#earn" onClick={() => setMenuOpen(false)}>Earn VEs</a>
-            <a className="nav-link" href="/swap" onClick={() => setMenuOpen(false)}>Swap</a>
-            <a className="nav-link" href="/refer" onClick={() => setMenuOpen(false)}>Refer &amp; Earn</a>
-            <a className="nav-link" href="/exchange" onClick={() => setMenuOpen(false)}>Redeem</a>
+            <Link className="nav-link nav-active" to="/" onClick={() => setMenuOpen(false)}>Overview</Link>
+            <Link className="nav-link" to="/#earn" onClick={() => setMenuOpen(false)}>Earn VEs</Link>
+            <Link className="nav-link" to="/wallet" onClick={() => setMenuOpen(false)}>Wallet</Link>
+            <Link className="nav-link" to="/swap" onClick={() => setMenuOpen(false)}>Swap</Link>
+            <Link className="nav-link" to="/refer" onClick={() => setMenuOpen(false)}>Refer &amp; Earn</Link>
+            <Link className="nav-link" to="/exchange" onClick={() => setMenuOpen(false)}>Redeem</Link>
           </nav>
           <div className="header-actions">
             <button className="help-link" onClick={() => setToast('Our support team is here to help.')}>Need help?</button>
-            <a className="login-link" href="/login">Log in</a>
+            <AccountMenu />
           </div>
           <button className="mobile-menu" aria-label="Toggle navigation" aria-expanded={menuOpen} onClick={() => setMenuOpen(!menuOpen)}><Icon name="menu" /></button>
         </div>
@@ -57,6 +64,27 @@ function App() {
         <section className="home-intro" aria-labelledby="welcome-title">
           <h1 id="welcome-title">Earn, swap and redeem rewards</h1>
           <p>Explore the ways Aurex Rewards helps you make the most of every opportunity.</p>
+        </section>
+
+        <section className="home-wallet-card" aria-labelledby="home-wallet-title">
+          <div className="home-wallet-heading">
+            <span className="home-wallet-icon"><Wallet size={19} aria-hidden="true" /></span>
+            <div>
+              <h2 id="home-wallet-title">Your wallet</h2>
+              <p>Available reward balance</p>
+            </div>
+          </div>
+          <dl className="home-wallet-balances" aria-label="Available reward balances">
+            <div>
+              <dt>VE balance</dt>
+              <dd>{ve.toLocaleString('en-US', { maximumFractionDigits: 2 })} <span>VEs</span></dd>
+            </div>
+            <div>
+              <dt>SVE balance</dt>
+              <dd>{sve.toLocaleString('en-US', { maximumFractionDigits: 2 })} <span>SVEs</span></dd>
+            </div>
+          </dl>
+          <Link className="home-wallet-link" to="/wallet">View wallet <ArrowUpRight size={16} aria-hidden="true" /></Link>
         </section>
 
         <section id="earn" className="section-block" aria-labelledby="earn-heading">

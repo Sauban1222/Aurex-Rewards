@@ -1,96 +1,75 @@
-import Icon from '../components/Icon.jsx'
-import Logo from '../components/Logo/Logo.jsx'
-import styles from './BonusVEs.module.css'
+import { ArrowRight, BadgeCheck, CalendarCheck, CheckCircle2, Compass, Gift, Sparkles, Users, Wallet } from 'lucide-react'
+import { Link } from 'react-router-dom'
+import AppPageShell, { workspaceStyles as shell } from '../components/AppPageShell.jsx'
+import { useRewards } from '../state/RewardsContext.jsx'
+import styles from './Workspace.module.css'
 
 function BonusVEsPage() {
+  const { ve, activity, captchaCompletedOn } = useRewards()
+  const today = new Date().toISOString().slice(0, 10)
+  const taskComplete = captchaCompletedOn === today
+  const completedTasks = activity.filter((item) => item.type === 'earn')
+  const opportunities = [
+    { title: 'Daily verification task', description: 'Complete the daily symbol verification accurately.', icon: CalendarCheck, status: taskComplete ? 'Completed today' : 'Available', reward: '10 VEs', action: taskComplete ? 'View wallet' : 'Start task', to: taskComplete ? '/wallet' : '/captcha' },
+    { title: 'Invite friends', description: 'Share Aurex with friends and follow your referral progress.', icon: Users, status: 'Available', reward: 'Referral program', action: 'Refer & earn', to: '/refer' },
+    { title: 'Convert your balance', description: 'Move between VE and SVE balances at the current conversion rate.', icon: Wallet, status: 'Wallet tool', reward: '1 VE = 0.65 SVE', action: 'Open swap', to: '/swap' },
+  ]
+
   return (
-    <div id="bonus" className={`app-shell ${styles.page}`}>
-      <a className="skip-link" href="#main-content">Skip to content</a>
-      <header className="topbar">
-        <div className="topbar-inner">
-          <Logo />
-          <nav className={`main-nav ${styles.nav}`} aria-label="Main navigation">
-            <a className="nav-link" href="/">Overview</a>
-            <a className="nav-link" href="/refer">Refer &amp; Earn</a>
-            <a className="nav-link" href="/swap">Swap</a>
-            <a className="nav-link" href="/exchange">Redeem</a>
-          </nav>
-          <a className="login-link" href="/login">Log in</a>
+    <AppPageShell title="Bonus VEs" category="Earn VEs" description="Find activities and manage the ways you grow your Aurex wallet." accent="gold" icon={Sparkles}>
+      <div className={styles.stack}>
+        <section className={styles.statRow} aria-label="Rewards overview">
+          {[
+            ['VE balance', ve.toLocaleString('en-US', { maximumFractionDigits: 2 }), 'VEs'],
+            ['Daily task', taskComplete ? 'Complete' : 'Available', 'today'],
+            ['VE credits', completedTasks.length.toLocaleString('en-US'), 'earned'],
+          ].map(([label, value, unit]) => (
+            <div className={styles.stat} key={label}><span className={styles.statLabel}>{label}</span><strong className={styles.statValue}>{value} <small>{unit}</small></strong></div>
+          ))}
+        </section>
+
+        <section aria-labelledby="opportunities-heading">
+          <div className={shell.sectionHead}><div><span className={styles.kicker}>YOUR REWARDS</span><h2 id="opportunities-heading">Ways to earn and use VEs</h2></div></div>
+          <div className={styles.opportunityGrid}>
+            {opportunities.map(({ title, description, icon: OpportunityIcon, status, reward, action, to }) => (
+              <article className={styles.opportunityCard} key={title}>
+                <div className={styles.opportunityTop}><span className={styles.opportunityIcon}><OpportunityIcon size={19} /></span><span className={styles.opportunityStatus}><i />{status}</span></div>
+                <h3>{title}</h3>
+                <p>{description}</p>
+                <div className={styles.opportunityFoot}><span>{reward}</span><Link to={to}>{action}<ArrowRight size={15} /></Link></div>
+              </article>
+            ))}
+          </div>
+          <p className={styles.termsText}>Referral activity is not yet connected. Daily task rewards are credited to this browser’s wallet.</p>
+        </section>
+
+        <div className={shell.twoColumn}>
+          <section className={styles.panel} aria-labelledby="recent-heading">
+            <div className={styles.panelHead}><div><span className={styles.kicker}>WALLET ACTIVITY</span><h2 id="recent-heading">Recent VE earnings</h2></div><Link className={styles.panelLink} to="/wallet">View wallet <ArrowRight size={14} /></Link></div>
+            {completedTasks.length ? (
+              <ul className={styles.list}>
+                {completedTasks.slice(0, 4).map((item) => (
+                  <li className={styles.listItem} key={item.id}>
+                    <span className={styles.listIcon}><BadgeCheck size={17} /></span>
+                    <div><strong>{item.title}</strong><p>{new Date(item.createdAt).toLocaleString()}</p></div>
+                    <span className={`${styles.listAside} ${styles.ledgerCredit}`}>+{item.amount} {item.asset}</span>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <div className={styles.activityEmpty}><span className={styles.emptyIcon}><Gift size={17} /></span><div><strong>No VE earnings yet</strong><p>Complete the daily verification task to earn 10 VEs.</p></div></div>
+            )}
+          </section>
+          <section className={styles.panel} aria-labelledby="how-bonus-heading">
+            <div className={styles.panelHead}><div><span className={styles.kicker}>HOW EARNING WORKS</span><h2 id="how-bonus-heading">From activity to wallet</h2></div></div>
+            <ol className={styles.steps}>
+              {[['Find an activity', Compass], ['Complete the task', CalendarCheck], ['Verify your work', CheckCircle2], ['Receive VEs', Gift]].map(([label, StepIcon], index) => <li key={label}><span className={styles.stepNumber}><StepIcon size={14} /></span><strong>{label}</strong><span className={styles.listAside}>{String(index + 1).padStart(2, '0')}</span></li>)}
+            </ol>
+            <div className={styles.subtleNotice}><CheckCircle2 size={16} /><span>Earned task VEs are stored in this browser and appear in your wallet.</span></div>
+          </section>
         </div>
-      </header>
-
-      <main id="main-content" className={styles.content} tabIndex="-1">
-        <nav className={styles.breadcrumb} aria-label="Breadcrumb">
-          <a href="/">Overview</a><span>/</span><span aria-current="page">Bonus VEs</span>
-        </nav>
-
-        <section className={styles.hero} aria-labelledby="bonus-title">
-          <div className={styles.heroCopy}>
-            <span className={styles.eyebrow}><Icon name="sparkles" size={16} /> REWARD OPPORTUNITIES</span>
-            <h1 id="bonus-title">Bonus VEs, <span>when opportunity opens.</span></h1>
-            <p>Discover eligible activities and promotions that may offer additional VEs. Availability and rewards depend on the published program terms.</p>
-            <a className={styles.primaryAction} href="#bonus-opportunities">Explore opportunities <Icon name="arrow" size={17} /></a>
-          </div>
-
-          <div className={styles.heroVisual} aria-hidden="true">
-            <div className={styles.visualOrbit} />
-            <div className={styles.visualCard}>
-              <span className={styles.visualCardIcon}><Icon name="sparkles" size={19} /></span>
-              <span className={styles.visualCardLine} />
-              <span className={`${styles.visualCardLine} ${styles.shortLine}`} />
-              <span className={styles.visualCardPill} />
-            </div>
-            <span className={`${styles.token} ${styles.tokenOne}`}>V</span>
-            <span className={`${styles.token} ${styles.tokenTwo}`}>✦</span>
-            <span className={styles.visualSparkle}>✧</span>
-          </div>
-
-          <div className={styles.heroStatus}><span /> PREVIEW MODE · CAMPAIGNS NOT CONNECTED</div>
-        </section>
-
-        <section className={styles.opportunities} id="bonus-opportunities" aria-labelledby="opportunities-heading">
-          <div className={styles.sectionHeading}>
-            <div>
-              <span className={styles.eyebrow}>YOUR OPPORTUNITIES</span>
-              <h2 id="opportunities-heading">Available bonus activities</h2>
-            </div>
-            <span className={styles.previewBadge}><span /> DEMO PREVIEW</span>
-          </div>
-
-          <div className={styles.emptyState}>
-            <span className={styles.emptyIcon}><Icon name="sparkles" size={22} /></span>
-            <strong>No live campaigns in this preview</strong>
-            <p>Bonus campaigns and account-specific eligibility are not connected here. Check back when offers are available on the platform.</p>
-            <a className={styles.secondaryAction} href="/#earn">Back to earning opportunities <Icon name="arrow" size={15} /></a>
-          </div>
-        </section>
-
-        <section className={styles.howItWorks} aria-labelledby="how-it-works-heading">
-          <div className={styles.sectionHeading}>
-            <div>
-              <span className={styles.eyebrow}>CLEAR &amp; TRANSPARENT</span>
-              <h2 id="how-it-works-heading">How bonus rewards work</h2>
-            </div>
-            <p>Offers vary. Always review the eligibility and terms shown with each activity.</p>
-          </div>
-          <ol className={styles.steps}>
-            <li><span>01</span><Icon name="shield" size={18} /><h3>Find an eligible offer</h3><p>Review the activity details, availability, and qualification rules.</p></li>
-            <li><span>02</span><Icon name="check" size={18} /><h3>Complete the requirements</h3><p>Follow the listed steps within the activity’s stated timeframe.</p></li>
-            <li><span>03</span><Icon name="sparkles" size={18} /><h3>Rewards follow the rules</h3><p>Any bonus VEs depend on verified completion and program terms.</p></li>
-          </ol>
-        </section>
-
-        <aside className={styles.terms}>
-          <Icon name="shield" size={18} />
-          <p><strong>Good to know</strong><span>This preview does not connect to live campaigns, confirm eligibility, track activity, or issue bonus VEs. Check the official offer details before participating.</span></p>
-        </aside>
-
-        <footer className={styles.footer}>
-          <Logo variant="footer" />
-          <span>© 2026 Aurex Rewards</span>
-        </footer>
-      </main>
-    </div>
+      </div>
+    </AppPageShell>
   )
 }
 

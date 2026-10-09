@@ -1,17 +1,39 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import Logo from '../components/Logo/Logo.jsx'
+import { useRewards } from '../state/RewardsContext.jsx'
 import styles from './Login.module.css'
 
 function LoginPage() {
+  const navigate = useNavigate()
+  const { registerAccount, loginAccount } = useRewards()
   const [showPassword, setShowPassword] = useState(false)
   const [message, setMessage] = useState('')
   const [isRegistering, setIsRegistering] = useState(false)
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault()
-    setMessage(isRegistering
-      ? 'Registration is a preview only. No account was created and your details were not sent or saved.'
-      : 'Sign-in is not connected yet. Your details have not been sent.')
+    const form = new FormData(event.currentTarget)
+    const email = String(form.get('email') || '').trim().toLowerCase()
+    const password = String(form.get('password') || '')
+    try {
+      const result = isRegistering
+        ? await registerAccount({
+          name: String(form.get('name') || '').trim(),
+          username: String(form.get('username') || '').trim(),
+          mobile: String(form.get('mobile') || '').trim(),
+          email,
+        }, password)
+        : await loginAccount(email, password)
+      if (!result.ok) {
+        setMessage(result.message)
+        return
+      }
+      navigate('/wallet', { replace: true })
+    } catch (error) {
+      console.error('Unable to authenticate this local account.', error)
+      setMessage(error.message || 'Unable to continue. Please try again.')
+    }
   }
 
   const changeMode = (registering) => {
@@ -33,18 +55,12 @@ function LoginPage() {
           <span className={styles.eyebrow}>{isRegistering ? 'JOIN AUREX' : 'WELCOME BACK'}</span>
           <h1 id="login-title">{isRegistering ? 'Good things start here.' : 'Your rewards are waiting.'}</h1>
           <p>{isRegistering ? 'Create your account to discover new ways to earn, swap, and redeem.' : 'Sign in to pick up where you left off and keep your rewards moving.'}</p>
-          <div className={styles.rewardCard} aria-hidden="true">
-            <span className={styles.cardLabel}>YOUR AUREX BALANCE</span>
-            <strong>1,260 <span>VEs</span></strong>
-            <span className={styles.cardFoot}>A little good goes a long way.</span>
-            <span className={styles.cardMark}>A</span>
-          </div>
         </div>
 
         <div className={styles.formPanel}>
           <span className={styles.formEyebrow}>{isRegistering ? 'CREATE YOUR ACCOUNT' : 'YOUR ACCOUNT'}</span>
           <h2>{isRegistering ? 'Join Aurex' : 'Log in to Aurex'}</h2>
-          <p className={styles.formCopy}>{isRegistering ? 'Add your details to get started.' : 'Enter your account details to continue.'}</p>
+          <p className={styles.formCopy}>{isRegistering ? 'Your account and wallet stay saved in this browser.' : 'Enter the email address for your Aurex account.'}</p>
           <form className={styles.form} onSubmit={handleSubmit}>
             {isRegistering ? (
               <div className={styles.registrationFields}>
@@ -91,7 +107,7 @@ function LoginPage() {
                 <div className={styles.field}>
                   <div className={styles.passwordLabel}>
                     <label htmlFor="aurex-password">Password</label>
-                    <button type="button" onClick={() => setMessage('Password reset is not available in this preview.')}>
+                    <button type="button" onClick={() => setMessage('Password reset is unavailable for browser-stored accounts.')}>
                       Forgot password?
                     </button>
                   </div>
@@ -126,7 +142,7 @@ function LoginPage() {
           </p>
         </div>
       </section>
-      <footer className={styles.footer}>© 2026 Aurex Rewards <span>Preview experience</span></footer>
+      <footer className={styles.footer}>© 2026 Aurex Rewards <span>Account details are stored on this device</span></footer>
     </main>
   )
 }

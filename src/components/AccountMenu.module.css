@@ -1,0 +1,12 @@
+.login { display: inline-flex; min-height: 40px; align-items: center; margin-left: 20px; padding: 0 15px; border: 1px solid rgba(221, 225, 245, .16); border-radius: 9px; color: #f0f1f7; font-size: 13px; font-weight: 600; }
+.login:hover { border-color: rgba(var(--accent-rgb), .6); }
+.account { position: relative; margin-left: 18px; }
+.account summary { display: flex; min-height: 42px; align-items: center; gap: 7px; color: #afb2c1; cursor: pointer; list-style: none; }
+.account summary::-webkit-details-marker { display: none; }
+.avatar { display: grid; width: 36px; height: 36px; place-items: center; border: 1px solid rgba(var(--accent-rgb), .45); border-radius: 50%; background: linear-gradient(145deg, rgba(var(--accent-rgb), .25), #242638); color: #fff; font-size: 15px; font-weight: 700; }
+.menu { position: absolute; z-index: 15; top: calc(100% + 10px); right: 0; display: grid; width: 220px; gap: 4px; padding: 8px; border: 1px solid rgba(221, 225, 245, .13); border-radius: 11px; background: #202233; box-shadow: 0 16px 34px rgba(0, 0, 0, .32); }
+.menu > * { display: flex; min-height: 40px; align-items: center; gap: 9px; padding: 0 10px; border: 0; border-radius: 7px; background: none; color: #dfe0e8; font-size: 12px; text-align: left; }
+.menu > a:hover, .menu > button:hover { background: #2b2d40; }
+.identity { overflow: hidden; border-bottom: 1px solid rgba(221, 225, 245, .1); color: #aeb0bf; text-overflow: ellipsis; white-space: nowrap; }
+.menu svg { flex: 0 0 auto; color: var(--accent); }
+@media (max-width: 680px) { .login { margin-left: auto; } .account { margin-left: auto; } }

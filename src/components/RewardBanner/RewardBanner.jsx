@@ -22,7 +22,7 @@ function RewardBanner({ feature, illustration, className = '', onAction }) {
         <div className="card-eyebrow"><span className="eyebrow-icon"><Icon name={icon} size={15} /></span>{eyebrow}</div>
         <h2 id={titleId}>{title}</h2>
         <p id={descriptionId}>{body}</p>
-        <div className="card-value" id={valueId}><span className="value-mark"><Icon name={icon} size={14} /></span><span>{value}<small className="placeholder-label">PLACEHOLDER</small></span></div>
+        <div className="card-value" id={valueId}><span className="value-mark"><Icon name={icon} size={14} /></span><span>{value}</span></div>
         <Button
           variant={kind === 'refer' ? 'light' : 'dark'}
           onClick={() => onAction(kind)}

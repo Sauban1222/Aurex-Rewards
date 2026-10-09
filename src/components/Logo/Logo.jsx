@@ -1,12 +1,13 @@
 import fullLogo from '../../assets/aurex-logo.webp'
 import iconLogo from '../../assets/aurex-icon.webp'
+import { Link } from 'react-router-dom'
 import styles from './Logo.module.css'
 
 function Logo({ variant = 'header' }) {
   const isCompact = variant === 'footer'
 
   return (
-    <a className={`${styles.logoLink} ${isCompact ? styles.footerLogo : styles.headerLogo}`} href="/">
+    <Link className={`${styles.logoLink} ${isCompact ? styles.footerLogo : styles.headerLogo}`} to="/">
       {isCompact ? (
         <img
           className={styles.iconLogo}
@@ -29,7 +30,7 @@ function Logo({ variant = 'header' }) {
           />
         </picture>
       )}
-    </a>
+    </Link>
   )
 }
 
