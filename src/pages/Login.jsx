@@ -68,7 +68,7 @@ function LoginPage() {
           <span className={styles.formEyebrow}>{isRegistering ? 'CREATE YOUR ACCOUNT' : 'YOUR ACCOUNT'}</span>
           <h2>{isRegistering ? 'Join Aurex' : 'Log in to Aurex'}</h2>
           <p className={styles.formCopy}>Preview registration only: these details stay in this browser tab and are not sent to an online account. Use sample contact details, a made-up username, and a password you do not use elsewhere. No real rewards or transactions are sent.</p>
-          {isRegistering && <p className={styles.bonusNotice}>Preview welcome reward <strong>+200 VEs</strong> (sample value for this browser demo).</p>}
+          {isRegistering && <p className={styles.bonusNotice}>Preview welcome reward <strong>+200 VEs</strong>.</p>}
           <form className={styles.form} onSubmit={handleSubmit}>
             {isRegistering ? (
               <div className={styles.registrationFields}>
