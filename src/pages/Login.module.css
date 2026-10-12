@@ -127,6 +127,22 @@
   font-size: 12px;
 }
 
+.bonusNotice {
+  margin: -17px 0 18px;
+  padding: 10px 12px;
+  border: 1px solid rgba(201, 181, 123, .19);
+  border-radius: 9px;
+  background: rgba(201, 181, 123, .07);
+  color: #c7c2ae;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.bonusNotice strong {
+  color: #e5d19a;
+  font-weight: 700;
+}
+
 .form {
   display: flex;
   flex-direction: column;
@@ -185,7 +201,7 @@
   justify-content: space-between;
 }
 
-.passwordLabel button, .signup button {
+.passwordLabel button, .signup .modeLink {
   padding: 0;
   border: 0;
   background: none;
@@ -194,6 +210,9 @@
   font-size: 10px;
   font-weight: 600;
 }
+.signup .modeLink { text-decoration: none; }
+.signup .modeLink:hover { text-decoration: underline; }
+.signup .modeLink:focus-visible { border-radius: 3px; outline: 2px solid #a78bfa; outline-offset: 3px; }
 
 .passwordInput {
   position: relative;
@@ -267,7 +286,7 @@
   font-size: 11px;
 }
 
-.signup button {
+.signup .modeLink {
   margin-left: 3px;
   font-size: inherit;
 }

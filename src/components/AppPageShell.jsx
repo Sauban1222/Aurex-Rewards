@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { useEffect, useRef, useState } from 'react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { Menu, X } from 'lucide-react'
 import Logo from './Logo/Logo.jsx'
 import AccountMenu from './AccountMenu.jsx'
@@ -16,11 +16,27 @@ const navigation = [
 
 function AppPageShell({ title, category, description, icon: FeatureIcon, accent, children }) {
   const [menuOpen, setMenuOpen] = useState(false)
-  const { pathname } = useLocation()
+  const [helpMessage, setHelpMessage] = useState('')
+const menuButtonRef = useRef(null)
+const { pathname } = useLocation()
+const navigate = useNavigate()
 
-  useEffect(() => {
-    window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
-  }, [pathname])
+useEffect(() => {
+  window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+}, [pathname])
+
+useEffect(() => {
+  if (!menuOpen) return undefined
+
+  const closeOnEscape = (event) => {
+    if (event.key !== 'Escape') return
+    setMenuOpen(false)
+    menuButtonRef.current?.focus()
+  }
+
+  window.addEventListener('keydown', closeOnEscape)
+  return () => window.removeEventListener('keydown', closeOnEscape)
+}, [menuOpen])
 
   return (
     <div className={`${styles.page} ${styles[accent]}`}>
@@ -37,15 +53,26 @@ function AppPageShell({ title, category, description, icon: FeatureIcon, accent,
                   to={item.to}
                   className={`${styles.navLink} ${active ? styles.navActive : ''}`}
                   aria-current={active ? 'page' : undefined}
-                  onClick={() => setMenuOpen(false)}
+                  onClick={(event) => {
+                    setMenuOpen(false)
+                    if (item.to === '/') {
+                      event.preventDefault()
+                      window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+                      navigate('/')
+                    }
+                  }}
                 >
                   {item.label}
                 </Link>
               )
             })}
           </nav>
-          <AccountMenu />
+          <div className={styles.headerActions}>
+            <button className={styles.helpLink} type="button" onClick={() => setHelpMessage('Our support team is here to help.')}>Need help?</button>
+            <AccountMenu />
+          </div>
           <button
+            ref={menuButtonRef}
             type="button"
             className={styles.menuButton}
             aria-label={menuOpen ? 'Close navigation' : 'Open navigation'}
@@ -69,12 +96,24 @@ function AppPageShell({ title, category, description, icon: FeatureIcon, accent,
             <p>{description}</p>
           </div>
         </header>
+        <p className={styles.previewNotice}>
+          Preview mode · Balances and activity are stored in this browser. No financial accounts are connected and no rewards or payouts are delivered.
+        </p>
         {children}
         <footer className={styles.footer}>
           <Logo variant="footer" />
           <span>© 2026 Aurex Rewards</span>
         </footer>
       </main>
+      {helpMessage && (
+        <div className={styles.toast} role="status">
+          <span className={styles.toastDot} />
+          {helpMessage}
+          <button type="button" aria-label="Dismiss notification" onClick={() => setHelpMessage('')}>
+            {'\u00d7'}
+          </button>
+        </div>
+      )}
     </div>
   )
 }

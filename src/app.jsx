@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { lazy, Suspense, useEffect, useRef, useState } from 'react'
+import { Link, Navigate, useLocation } from 'react-router-dom'
 import Logo from './components/Logo/Logo.jsx'
 import Icon from './components/Icon.jsx'
 import AccountMenu from './components/AccountMenu.jsx'
@@ -8,35 +8,51 @@ import SwapCenterBanner from './components/SwapCenterBanner/SwapCenterBanner.jsx
 import BonusVEsBanner from './components/BonusVEsBanner/BonusVEsBanner.jsx'
 import CaptchaTasksBanner from './components/CaptchaTasksBanner/CaptchaTasksBanner.jsx'
 import ExchangeCenterBanner from './components/ExchangeCenterBanner/ExchangeCenterBanner.jsx'
-import LoginPage from './pages/Login.jsx'
-import ReferEarnPage from './pages/ReferEarn.jsx'
-import SwapCenterPage from './pages/SwapCenter.jsx'
-import BonusVEsPage from './pages/BonusVEs.jsx'
-import CaptchaTasksPage from './pages/CaptchaTasks.jsx'
-import ExchangeCenterPage from './pages/ExchangeCenter.jsx'
-import WalletPage from './pages/Wallet.jsx'
 import NotFoundPage from './pages/NotFound.jsx'
 import { useRewards } from './state/RewardsContext.jsx'
-import { ArrowUpRight, Wallet } from 'lucide-react'
+import { ArrowUpRight, Menu, Wallet, X } from 'lucide-react'
+
+const LoginPage = lazy(() => import('./pages/Login.jsx'))
+const ReferEarnPage = lazy(() => import('./pages/ReferEarn.jsx'))
+const SwapCenterPage = lazy(() => import('./pages/SwapCenter.jsx'))
+const BonusVEsPage = lazy(() => import('./pages/BonusVEs.jsx'))
+const CaptchaTasksPage = lazy(() => import('./pages/CaptchaTasks.jsx'))
+const ExchangeCenterPage = lazy(() => import('./pages/ExchangeCenter.jsx'))
+const WalletPage = lazy(() => import('./pages/Wallet.jsx'))
 
 function App() {
   const [toast, setToast] = useState('')
   const [menuOpen, setMenuOpen] = useState(false)
-  const navigate = useNavigate()
-  const { pathname } = useLocation()
-  const { ve, sve } = useRewards()
+  const menuButtonRef = useRef(null)
+  const location = useLocation()
+  const { pathname } = location
+  const { account, ve, sve } = useRewards()
+  const isOverviewActive = pathname === '/'
 
+  useEffect(() => {
+    if (!menuOpen) return undefined
+
+    const closeOnEscape = (event) => {
+      if (event.key !== 'Escape') return
+      setMenuOpen(false)
+      menuButtonRef.current?.focus()
+    }
+
+    window.addEventListener('keydown', closeOnEscape)
+    return () => window.removeEventListener('keydown', closeOnEscape)
+  }, [menuOpen])
+
+  if (pathname !== '/login' && !account) return <Navigate to="/login" replace state={{ from: location }} />
+  if (pathname === '/login' && account) return <Navigate to="/" replace />
   if (pathname === '/404') return <NotFoundPage />
-  if (pathname === '/login') return <LoginPage />
-  if (pathname === '/refer') return <ReferEarnPage />
-  if (pathname === '/swap') return <SwapCenterPage />
-  if (pathname === '/bonus') return <BonusVEsPage />
-  if (pathname === '/captcha') return <CaptchaTasksPage />
-  if (pathname === '/exchange') return <ExchangeCenterPage />
-  if (pathname === '/wallet') return <WalletPage />
+  if (pathname === '/login') return <Suspense fallback={<div className="route-loading" role="status" aria-live="polite">Loading account page…</div>}><LoginPage /></Suspense>
+  if (pathname === '/refer') return <Suspense fallback={<div className="route-loading" role="status" aria-live="polite">Loading referral workspace…</div>}><ReferEarnPage /></Suspense>
+  if (pathname === '/swap') return <Suspense fallback={<div className="route-loading" role="status" aria-live="polite">Loading swap workspace…</div>}><SwapCenterPage /></Suspense>
+  if (pathname === '/bonus') return <Suspense fallback={<div className="route-loading" role="status" aria-live="polite">Loading rewards workspace…</div>}><BonusVEsPage /></Suspense>
+  if (pathname === '/captcha') return <Suspense fallback={<div className="route-loading" role="status" aria-live="polite">Loading captcha tasks…</div>}><CaptchaTasksPage /></Suspense>
+  if (pathname === '/exchange') return <Suspense fallback={<div className="route-loading" role="status" aria-live="polite">Loading redemption workspace…</div>}><ExchangeCenterPage /></Suspense>
+  if (pathname === '/wallet') return <Suspense fallback={<div className="route-loading" role="status" aria-live="polite">Loading wallet…</div>}><WalletPage /></Suspense>
   if (pathname !== '/') return <NotFoundPage />
-
-  const openFeature = (kind) => navigate(`/${kind}`)
 
   return (
     <div id="home" className="app-shell">
@@ -45,8 +61,8 @@ function App() {
         <div className="topbar-inner">
           <Logo />
           <nav className={`main-nav ${menuOpen ? 'nav-open' : ''}`} aria-label="Main navigation">
-            <Link className="nav-link nav-active" to="/" onClick={() => setMenuOpen(false)}>Overview</Link>
-            <Link className="nav-link" to="/#earn" onClick={() => setMenuOpen(false)}>Earn VEs</Link>
+            <Link className={`nav-link ${isOverviewActive ? 'nav-active' : ''}`} aria-current={isOverviewActive ? 'page' : undefined} to="/" onClick={() => { setMenuOpen(false); window.scrollTo({ top: 0, left: 0, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }) }}>Overview</Link>
+            <Link className="nav-link" to="/bonus" onClick={() => setMenuOpen(false)}>Earn VEs</Link>
             <Link className="nav-link" to="/wallet" onClick={() => setMenuOpen(false)}>Wallet</Link>
             <Link className="nav-link" to="/swap" onClick={() => setMenuOpen(false)}>Swap</Link>
             <Link className="nav-link" to="/refer" onClick={() => setMenuOpen(false)}>Refer &amp; Earn</Link>
@@ -56,7 +72,16 @@ function App() {
             <button className="help-link" onClick={() => setToast('Our support team is here to help.')}>Need help?</button>
             <AccountMenu />
           </div>
-          <button className="mobile-menu" aria-label="Toggle navigation" aria-expanded={menuOpen} onClick={() => setMenuOpen(!menuOpen)}><Icon name="menu" /></button>
+          <button
+            ref={menuButtonRef}
+            className="mobile-menu"
+            type="button"
+            aria-label={menuOpen ? 'Close navigation' : 'Open navigation'}
+            aria-expanded={menuOpen}
+            onClick={() => setMenuOpen((open) => !open)}
+          >
+            {menuOpen ? <X size={20} /> : <Menu size={20} />}
+          </button>
         </div>
       </header>
 
@@ -92,10 +117,10 @@ function App() {
             <div><div className="section-kicker">YOUR NEXT OPPORTUNITY</div><h2 id="earn-heading">Earn a little extra</h2></div>
             <a className="text-link" href="#earn">Explore ways to earn <Icon name="arrow" size={16} /></a>
           </div>
-          <ReferEarnBanner onAction={openFeature} />
+          <ReferEarnBanner />
           <div className="feature-grid feature-grid-2">
-            <BonusVEsBanner onAction={openFeature} />
-            <CaptchaTasksBanner onAction={openFeature} />
+            <BonusVEsBanner />
+            <CaptchaTasksBanner />
           </div>
         </section>
 
@@ -105,8 +130,8 @@ function App() {
             <span className="section-aside"><Icon name="shield" size={15} /> Simple. Secure. Yours.</span>
           </div>
           <div className="feature-grid feature-grid-2">
-            <SwapCenterBanner onAction={openFeature} />
-            <ExchangeCenterBanner onAction={openFeature} />
+            <SwapCenterBanner />
+            <ExchangeCenterBanner />
           </div>
         </section>
 

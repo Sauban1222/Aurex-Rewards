@@ -74,7 +74,7 @@
 .maxLink { min-height: auto; margin-top: 8px; padding: 0; border: 0; background: none; color: var(--accent); font-size: 11px; font-weight: 700; }
 .swapDirection { display: flex; align-items: center; justify-content: center; gap: 0; margin: -1px 14px; }
 .swapDirection > span { height: 1px; flex: 1; background: rgba(222, 225, 245, .1); }
-.swapDirection button { display: grid; width: 38px; height: 38px; min-height: 38px; place-items: center; border: 1px solid rgba(var(--accent-rgb), .22); border-radius: 50%; background: #26293a; color: var(--accent); transition: transform .25s ease, background .2s ease; }
+.swapDirection button { display: grid; width: 44px; height: 44px; min-height: 44px; place-items: center; border: 1px solid rgba(var(--accent-rgb), .22); border-radius: 50%; background: #26293a; color: var(--accent); transition: transform .25s ease, background .2s ease; }
 .swapDirection button:hover:not(:disabled) { transform: rotate(180deg); background: rgba(var(--accent-rgb), .14); }
 .quoteLine { display: flex; justify-content: space-between; gap: 12px; margin: 17px 0; color: #aeb0bf; font-size: 12px; }
 .quoteLine strong { color: #e5e6ed; font-size: 12px; }
@@ -120,6 +120,46 @@
 .termsText { margin: 10px 0 0; color: #999cab; font-size: 11px; }
 .stat .sample { display: flex; width: fit-content; margin-top: 8px; }
 .opportunityCard .progressTrack { margin-top: 7px; }
+.checkInAction { flex-wrap: wrap; }
+.checkInCopy { min-width: 180px; flex: 1; }
+.checkInAction .primaryButton { margin-left: auto; }
+.spinIntro { margin: -5px 0 19px; color: #aeb0bf; font-size: 12px; line-height: 1.55; }
+.spinWorkspace { display: flex; align-items: center; gap: 28px; padding: 18px 20px; border: 1px solid rgba(222, 225, 245, .09); border-radius: 13px; background: #202233; }
+.wheelFrame { position: relative; width: 228px; height: 228px; flex: 0 0 auto; }
+.wheelPointer { position: absolute; z-index: 2; top: -3px; left: 50%; width: 0; height: 0; border-right: 10px solid transparent; border-bottom: 0; border-left: 10px solid transparent; border-top: 18px solid #f2d58f; filter: drop-shadow(0 2px 4px rgba(0, 0, 0, .4)); transform: translateX(-50%); }
+.rewardWheel { position: relative; width: 100%; height: 100%; border: 5px solid #34364c; border-radius: 50%; background: conic-gradient(from -36deg, #d7b45f 0deg 72deg, #7460ca 72deg 144deg, #40a5ac 144deg 216deg, #6055a9 216deg 288deg, #c5844b 288deg 360deg); box-shadow: inset 0 0 0 2px rgba(255, 255, 255, .12), 0 12px 28px rgba(5, 7, 17, .3); transition: transform .01ms linear; }
+.rewardWheel::before { position: absolute; inset: 9px; border: 1px solid rgba(255, 255, 255, .34); border-radius: 50%; content: ''; }
+.wheelSpinning { transition: transform 3.2s cubic-bezier(.12, .72, .16, 1); }
+.wheelLabel { position: absolute; top: var(--label-y); left: var(--label-x); display: grid; width: 38px; height: 30px; place-items: center; border-radius: 99px; background: rgba(15, 18, 34, .3); color: #fff; font-size: 12px; font-weight: 800; text-shadow: 0 1px 3px rgba(0, 0, 0, .5); transform: translate(-50%, -50%); }
+.wheelCenter { position: absolute; top: 50%; left: 50%; display: grid; width: 48px; height: 48px; place-items: center; border: 3px solid #e8d7aa; border-radius: 50%; background: #191b2a; color: #f2d58f; font-size: 13px; font-weight: 800; transform: translate(-50%, -50%); }
+.spinCopy { display: grid; justify-items: start; gap: 10px; }
+.spinCopy > strong { color: #f0f1f7; font-size: 17px; }
+.spinCopy > p { margin: 0; color: #aeb0bf; font-size: 12px; line-height: 1.55; }
+.spinCopy .primaryButton { margin-top: 4px; }
+.spinCopy .primaryButton:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.spinCopy .primaryButton:disabled { cursor: not-allowed; opacity: .6; }
+.spinNote { color: #999cab; font-size: 11px; }
+.spinResult { display: flex; align-items: flex-start; gap: 10px; padding: 12px; border: 1px solid rgba(var(--accent-rgb), .2); border-radius: 10px; background: rgba(var(--accent-rgb), .06); color: #aeb0bf; }
+.spinResult > svg { flex: 0 0 auto; color: var(--accent); }
+.spinResult strong { color: #f0f1f7; font-size: 13px; }
+.spinResult p { margin: 4px 0 0; font-size: 11px; line-height: 1.5; }
+.captchaGrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-content: start; gap: 14px; }
+.captchaCard { min-width: 0; padding: 19px; }
+.captchaCard .panelHead { gap: 8px; }
+.captchaCard .panelHead h2 { font-size: 17px; }
+.captchaCard .badge { padding: 6px 8px; font-size: 10px; }
+.captchaComplete { display: flex; min-height: 140px; align-items: center; gap: 12px; color: #aeb0bf; }
+.captchaComplete > svg { flex: 0 0 auto; color: #abd39a; }
+.captchaComplete strong { color: #e1e2e9; font-size: 13px; }
+.captchaComplete p { margin: 5px 0 0; font-size: 12px; line-height: 1.5; }
+.captchaCard .taskMeta { flex-wrap: wrap; gap: 8px 14px; }
+.captchaCard .instruction { min-height: 70px; }
+.captchaCard .taskFooter { align-items: stretch; flex-direction: column; }
+.captchaCard .taskFooter .primaryButton { width: 100%; }
+
+@media (max-width: 1100px) {
+  .captchaGrid { grid-template-columns: minmax(0, 1fr); }
+}
 
 .taskStats { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 .taskStats .statValue { font-size: 21px; }
@@ -196,11 +236,15 @@
 
 @media (max-width: 760px) {
   .opportunityGrid { grid-template-columns: minmax(0, 1fr); }
+  .checkInAction .primaryButton { width: 100%; margin-left: 0; }
   .taskStats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .taskStats .stat { display: block; }
   .taskStats .statValue { margin-top: 7px; }
 }
 @media (max-width: 520px) {
+  .spinWorkspace { align-items: center; flex-direction: column; padding: 16px; }
+  .spinCopy { width: 100%; }
+  .spinCopy .primaryButton { width: 100%; }
   .assetLabel { align-items: flex-start; flex-direction: column; gap: 5px; }
   .assetControls { align-items: stretch; flex-direction: column; }
   .assetControls select { width: 100%; }
@@ -242,4 +286,10 @@
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+}
+
+@media (min-width: 521px) and (max-width: 620px) {
+  .spinWorkspace { align-items: center; flex-direction: column; padding: 16px; }
+  .spinCopy { width: 100%; }
+  .spinCopy .primaryButton { width: 100%; }
 }

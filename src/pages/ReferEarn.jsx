@@ -1,45 +1,69 @@
-import { useState } from 'react'
-import { ArrowDown, ArrowRight, Check, Copy, Gift, Share2, UserPlus, Users, UserCheck } from 'lucide-react'
-import AppPageShell, { workspaceStyles as shell } from '../components/AppPageShell.jsx'
-import { useCopyToClipboard } from '../hooks/useRewardHooks.js'
+import { useEffect, useState } from 'react'
+import { useLocation } from 'react-router-dom'
+import { Copy, Gift, Share2, UserPlus } from 'lucide-react'
+import AppPageShell from '../components/AppPageShell.jsx'
 import { useRewards } from '../state/RewardsContext.jsx'
-import styles from './Workspace.module.css'
+import styles from './ReferEarn.module.css'
 
-const referralSteps = [
-  { label: 'You', icon: Users },
-  { label: 'Invite', icon: Share2 },
-  { label: 'Friend joins', icon: UserPlus },
-  { label: 'Eligibility', icon: UserCheck },
-  { label: 'Reward', icon: Gift },
+const steps = [
+  { title: 'Share your code', description: 'Send your personal code or invite link to a friend.', icon: Share2 },
+  { title: 'Friend joins', description: 'Your friend creates an account using your referral details.', icon: UserPlus },
+  { title: 'Eligible rewards', description: 'Rewards depend on verified activity and program terms.', icon: Gift },
 ]
 
 function ReferEarnPage() {
+  const { hash } = useLocation()
+  const { account, invitesShared, referralActivity, recordInvite } = useRewards()
   const [feedback, setFeedback] = useState('')
-  const { copyToClipboard } = useCopyToClipboard()
-  const { invitesShared, recordInvite } = useRewards()
-  const inviteLink = new URL('/login', window.location.origin).href
+  const referralCode = account.referralCode
+  const inviteLink = new URL(`/login?ref=${encodeURIComponent(referralCode)}`, window.location.origin).href
 
-  const copyInviteLink = async () => {
+  useEffect(() => {
+    if (hash !== '#how-it-works') return undefined
+    const frame = window.requestAnimationFrame(() => {
+      document.getElementById('how-it-works')?.scrollIntoView({ block: 'start' })
+    })
+    return () => window.cancelAnimationFrame(frame)
+  }, [hash])
+
+  const copyValue = async (value, label) => {
     try {
-      await copyToClipboard(inviteLink)
-      recordInvite()
-      setFeedback('Aurex link copied. Friend sign-ups are not tracked yet.')
+      if (!navigator.clipboard?.writeText) throw new Error('Clipboard access is unavailable.')
+      await navigator.clipboard.writeText(value)
     } catch {
-      setFeedback('Clipboard access was unavailable. Select the link and copy it manually.')
+      const temporaryInput = document.createElement('textarea')
+      temporaryInput.value = value
+      temporaryInput.setAttribute('readonly', '')
+      temporaryInput.style.position = 'fixed'
+      temporaryInput.style.opacity = '0'
+      document.body.appendChild(temporaryInput)
+      temporaryInput.select()
+      try {
+        if (!document.execCommand('copy')) throw new Error('Copy command was rejected.')
+      } catch {
+        setFeedback(`Could not copy the ${label.toLowerCase()}. Select it and copy manually.`)
+        temporaryInput.remove()
+        return false
+      }
+      temporaryInput.remove()
     }
+    if (label === 'Invite link') recordInvite('Invite link copied')
+    setFeedback(`${label} copied.`)
+    return true
   }
 
-  const shareInviteLink = async () => {
+  const shareInvite = async () => {
     if (!navigator.share) {
-      setFeedback('Sharing is not available in this browser. Copy the Aurex link instead.')
+      await copyValue(inviteLink, 'Invite link')
       return
     }
+
     try {
-      await navigator.share({ title: 'Aurex Rewards', text: 'Take a look at Aurex Rewards.', url: inviteLink })
-      recordInvite()
-      setFeedback('Aurex link shared. Friend sign-ups are not tracked yet.')
+      await navigator.share({ title: 'Join Aurex Rewards', text: 'Join me on Aurex Rewards.', url: inviteLink })
+      recordInvite('Invite shared')
+      setFeedback('Invite shared.')
     } catch (error) {
-      if (error.name !== 'AbortError') setFeedback('Could not open sharing. Copy the Aurex link instead.')
+      setFeedback(error?.name === 'AbortError' ? 'Sharing cancelled.' : 'Could not open sharing. Copy your invite link instead.')
     }
   }
 
@@ -47,68 +71,108 @@ function ReferEarnPage() {
     <AppPageShell
       title="Refer & Earn"
       category="Referral workspace"
-      description="Invite friends and track your referral progress."
+      description="Invite friends and keep your personal referral details close at hand."
       accent="violet"
-      icon={Users}
+      icon={Share2}
     >
-      <div className={styles.stack}>
-        <div className={shell.twoColumn}>
-          <section className={styles.panel} aria-labelledby="invite-heading">
-            <div className={styles.panelHead}>
-              <div><span className={styles.kicker}>YOUR INVITE</span><h2 id="invite-heading">Share Aurex with a friend</h2></div>
+      <div className={styles.workspace}>
+        <section className={styles.panel} aria-labelledby="referral-details-title">
+          <div className={styles.panelHeader}>
+            <div>
+              <span className={styles.kicker}>YOUR INVITE DETAILS</span>
+              <h2 id="referral-details-title">Share your referral link</h2>
+              <p>Friends can use your code when they create an account.</p>
             </div>
-            <p className={styles.muted}>Share the Aurex sign-up page. Referral tracking is not available yet.</p>
-            <span className={styles.kicker}>AUREX LINK</span>
-            <div className={styles.linkBox}>
-                <span className={styles.linkText}>{inviteLink}</span>
-                <button className={styles.primaryButton} type="button" onClick={copyInviteLink}><Copy size={15} /> Copy invite link</button>
-                <button className={styles.secondaryButton} type="button" onClick={shareInviteLink} aria-label="Share invite"><Share2 size={15} /> Share invite</button>
-              </div>
-              <p className={styles.small} role="status" aria-live="polite">{feedback}</p>
-          </section>
+          </div>
 
-          <aside className={styles.panel} aria-labelledby="progress-heading">
-            <div className={styles.panelHead}>
-              <div><span className={styles.kicker}>REFERRAL PROGRESS</span><h2 id="progress-heading">A clear path to rewards</h2></div>
+          <div className={styles.detailBlock}>
+            <label htmlFor="referral-code">Your referral code</label>
+            <div className={styles.fieldRow}>
+              <input id="referral-code" className={styles.valueField} value={referralCode} readOnly />
+              <button type="button" className={styles.secondaryButton} onClick={() => copyValue(referralCode, 'Referral code')}>
+                <Copy size={16} aria-hidden="true" /> Copy code
+              </button>
             </div>
-            <div className={styles.flow} aria-label="You, invite, friend joins, eligibility, reward">
-              {referralSteps.map(({ label, icon: StepIcon }, index) => (
-                <span className={styles.flowStep} key={label}>
-                  <span className={styles.flowStepIcon}><StepIcon size={17} /></span>
-                  {label}
-                </span>
-              )).flatMap((step, index) => index < referralSteps.length - 1
-                ? [step, <ArrowRight key={`arrow-${index}`} className={styles.flowArrow} size={14} aria-hidden="true" />]
-                : [step])}
-            </div>
-            <div className={shell.statRow}>
-              {[[`Links shared · this browser`, String(invitesShared)], ['Friend joins', 'Not tracked'], ['Eligible rewards', 'Not tracked']].map(([label, value]) => (
-                <div className={styles.stat} key={label}><span className={styles.statLabel}>{label}</span><strong className={styles.statValue}>{value}</strong></div>
-              ))}
-            </div>
-            <p className={`${styles.small} ${styles.muted}`}>Share count is saved in this browser. Friend sign-ups and reward eligibility are not connected.</p>
-          </aside>
-        </div>
+          </div>
 
-        <div className={shell.twoColumn}>
-          <section className={styles.panel} aria-labelledby="activity-heading">
-            <div className={styles.panelHead}><div><span className={styles.kicker}>REFERRAL ACTIVITY</span><h2 id="activity-heading">Recent activity</h2></div></div>
-            <div className={styles.activityEmpty}>
-              <span className={styles.emptyIcon}><Users size={18} /></span>
-              <div><strong>No friend sign-ups to show</strong><p>Link shares are counted locally; referral sign-ups cannot currently be tracked.</p></div>
+          <div className={styles.detailBlock}>
+            <label htmlFor="referral-link">Your invite link</label>
+            <div className={styles.fieldRow}>
+              <input id="referral-link" className={styles.valueField} value={inviteLink} readOnly />
+              <button type="button" className={styles.secondaryButton} onClick={() => copyValue(inviteLink, 'Invite link')}>
+                <Copy size={16} aria-hidden="true" /> Copy link
+              </button>
             </div>
-          </section>
-          <section className={styles.panel} aria-labelledby="how-heading">
-            <div className={styles.panelHead}><div><span className={styles.kicker}>HOW IT WORKS</span><h2 id="how-heading">From invite to reward</h2></div></div>
-            <ol className={styles.steps}>
-              {['Share your invite', 'Friend joins', 'Criteria confirmed', 'Eligible reward'].map((step, index) => (
-                <li key={step}><span className={styles.stepNumber}>{String(index + 1).padStart(2, '0')}</span><strong>{step}</strong><ArrowDown size={14} className={styles.muted} aria-hidden="true" /></li>
-              ))}
-            </ol>
-            <div className={styles.subtleNotice}><Check size={16} /><span>Referral rewards and eligibility follow the published program terms.</span></div>
-          </section>
-        </div>
+          </div>
+
+          <div className={styles.actions}>
+            <button type="button" className={styles.primaryButton} onClick={shareInvite}>
+              <Share2 size={16} aria-hidden="true" /> Share invite
+            </button>
+            <p className={styles.trackingNote}>Referral milestone tracking is not connected.</p>
+          </div>
+          <span className={styles.feedback} role="status" aria-live="polite">{feedback}</span>
+        </section>
+
+        <aside className={styles.panel} aria-labelledby="referral-progress-title">
+          <div className={styles.panelHeader}>
+            <div>
+              <span className={styles.kicker}>REFERRAL PROGRESS</span>
+              <h2 id="referral-progress-title">Your activity</h2>
+            </div>
+          </div>
+          <dl className={styles.progressList}>
+            <div><dt>Invite actions</dt><dd>{invitesShared}</dd></div>
+            <div><dt>Friends joined</dt><dd>Not tracked</dd></div>
+            <div><dt>Eligible rewards</dt><dd>Not tracked</dd></div>
+          </dl>
+        </aside>
       </div>
+
+      <section className={styles.panel} aria-labelledby="referral-activity-title">
+        <div className={styles.panelHeader}>
+          <div>
+            <span className={styles.kicker}>REFERRAL ACTIVITY</span>
+            <h2 id="referral-activity-title">Recent invite actions</h2>
+          </div>
+        </div>
+        {referralActivity.length ? (
+          <ul className={styles.activityList}>
+            {referralActivity.map((item) => (
+              <li key={item.id}>
+                <span>{item.action}</span>
+                <time dateTime={item.createdAt}>{new Date(item.createdAt).toLocaleString()}</time>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <div className={styles.activityEmpty}>
+            <strong>No invite activity yet</strong>
+            <p>Copy your invite link or share an invite to see recent actions here. Friend joins and reward eligibility are not tracked.</p>
+          </div>
+        )}
+      </section>
+
+      <section id="how-it-works" className={styles.panel} aria-labelledby="how-it-works-title">
+        <div className={styles.panelHeader}>
+          <div>
+            <span className={styles.kicker}>HOW IT WORKS</span>
+            <h2 id="how-it-works-title">Three steps to refer</h2>
+          </div>
+        </div>
+        <ol className={styles.steps}>
+          {steps.map(({ title, description, icon: StepIcon }, index) => (
+            <li key={title}>
+              <span className={styles.stepNumber}>{String(index + 1).padStart(2, '0')}</span>
+              <StepIcon size={18} aria-hidden="true" />
+              <div>
+                <strong>{title}</strong>
+                <p>{description}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </section>
     </AppPageShell>
   )
 }

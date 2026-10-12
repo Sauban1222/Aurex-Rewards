@@ -1,0 +1,141 @@
+/* Card tint and border color remain feature-specific; BannerCard owns shared layout. */
+.card {
+  --banner-border: linear-gradient(135deg, rgba(255, 255, 255, .2), rgba(255, 255, 255, .05) 45%, rgba(84, 151, 236, .42));
+  background-image:
+    radial-gradient(60% 70% at 80% 22%, rgba(55, 133, 237, .12), transparent 62%),
+    radial-gradient(50% 60% at 8% 100%, rgba(99, 207, 225, .055), transparent 62%);
+}
+
+.main { display: grid; flex: 1; grid-template-columns: minmax(0, 1fr); }
+.visual { order: -1; display: grid; place-items: center; padding: 8px 10px 0; }
+.art { display: block; width: 100%; height: clamp(155px, 48vw, 190px); overflow: visible; }
+.walletBack { transform-box: fill-box; transform-origin: center; animation: walletDrift 7s ease-in-out infinite; }
+.veCard { transform-box: fill-box; transform-origin: center; animation: cardFloat 5.5s ease-in-out infinite; }
+.sveCard { transform-box: fill-box; transform-origin: center; animation: cardFloat 5.5s ease-in-out .7s infinite; }
+.swapControl { transform-box: fill-box; transform-origin: center; animation: swapPulse 3.2s ease-in-out infinite; }
+.floatCoin { transform-box: fill-box; transform-origin: center; animation: coinFloat 4.6s ease-in-out infinite; }
+.floatCoinSecond { transform-box: fill-box; transform-origin: center; animation: coinFloat 5.2s ease-in-out .8s infinite; }
+.orbit { fill: none; stroke: rgba(233, 199, 128, .2); stroke-width: 1.4; transform-box: fill-box; transform-origin: center; animation: orbit 22s linear infinite; }
+.orbitSoft { fill: none; stroke: rgba(113, 205, 235, .17); stroke-width: 1.2; transform-box: fill-box; transform-origin: center; animation: orbit 28s linear infinite reverse; }
+.spark { transform-box: fill-box; transform-origin: center; animation: sparkPulse 3.7s ease-in-out infinite; }
+
+.copy {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 9px;
+  padding: 8px 20px 20px;
+}
+.pill { display: none; }
+.title { max-width: 15ch; margin: 0; color: #fff; font-size: clamp(1.7rem, 7vw, 2.7rem); font-weight: 800; line-height: 1.08; letter-spacing: -.02em; }
+.grad { background: linear-gradient(90deg, #e7c780, #8dcff6); background-clip: text; color: transparent; -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.text { max-width: 42ch; margin: 0; color: var(--text-2, #b8bdd6); font-size: .95rem; line-height: 1.5; }
+
+.rate {
+  display: flex;
+  min-height: 36px;
+  align-items: center;
+  gap: 8px;
+  color: #a9d9f4;
+  font-size: .8rem;
+}
+.asset { padding: 4px 8px; border: 1px solid rgba(155, 211, 245, .22); border-radius: 7px; background: rgba(42, 80, 125, .25); color: #e7f3ff; font-size: .72rem; font-weight: 700; letter-spacing: .04em; }
+.rate strong { margin-left: 2px; color: #e8d49a; font-size: .79rem; font-weight: 650; white-space: nowrap; }
+
+.cta {
+  display: inline-flex;
+  min-height: 48px;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 0 22px;
+  border: 1px solid rgba(255, 226, 165, .55);
+  border-radius: 12px;
+  background: linear-gradient(100deg, #e6c982, #c5974d);
+  color: #201a2a;
+  font: inherit;
+  font-weight: 750;
+  text-decoration: none;
+  white-space: nowrap;
+  box-shadow: 0 8px 20px rgba(202, 160, 82, .2);
+  transition: transform .2s ease, filter .2s ease, box-shadow .2s ease;
+}
+.cta:hover { color: #201a2a; filter: brightness(1.08); transform: translateY(-2px); box-shadow: 0 12px 26px rgba(202, 160, 82, .28); }
+.cta:active { transform: translateY(1px); }
+.cta:focus-visible { outline: 2px solid #a8d8ff; outline-offset: 3px; }
+.arrow { transition: transform .2s ease; }
+.cta:hover .arrow { transform: translateX(4px); }
+
+.strip { display: none; margin: 0; padding: 0; list-style: none; }
+
+@keyframes walletDrift {
+  0%, 100% { transform: translateY(0); opacity: .96; }
+  50% { transform: translateY(-3px); opacity: 1; }
+}
+@keyframes cardFloat {
+  0%, 100% { transform: translateY(0) rotate(0); opacity: .97; }
+  50% { transform: translateY(-5px) rotate(-.5deg); opacity: 1; }
+}
+@keyframes swapPulse {
+  0%, 100% { transform: scale(1); opacity: .95; }
+  50% { transform: scale(1.055); opacity: 1; }
+}
+@keyframes coinFloat {
+  0%, 100% { transform: translateY(0); opacity: .94; }
+  50% { transform: translateY(-6px); opacity: 1; }
+}
+@keyframes orbit {
+  to { transform: rotate(360deg); opacity: .85; }
+}
+@keyframes sparkPulse {
+  0%, 100% { transform: scale(.94); opacity: .68; }
+  50% { transform: scale(1.06); opacity: 1; }
+}
+
+@media (max-width: 420px) {
+  .cta { width: 100%; padding: 0 14px; font-size: .93rem; }
+  .rate { gap: 6px; font-size: .74rem; }
+  .asset { padding: 4px 6px; font-size: .68rem; }
+  .rate strong { font-size: .73rem; }
+}
+
+@media (min-width: 768px) {
+  .main { grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr); align-items: center; }
+  .visual { order: 0; padding: 12px 12px 0 0; }
+  .art { height: auto; max-height: 270px; }
+  .copy { gap: 10px; padding: 22px 6px 6px 22px; }
+  .pill { display: inline-flex; align-items: center; gap: 8px; padding: 6px 11px; border: 1px solid rgba(130, 198, 244, .25); border-radius: 999px; background: rgba(56, 140, 222, .08); color: #9fd7f3; font-size: .69rem; font-weight: 700; letter-spacing: .08em; }
+  .rate { gap: 7px; }
+  .strip { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin: 8px 18px 14px; border: 1px solid rgba(255, 255, 255, .08); border-radius: 14px; background: rgba(255, 255, 255, .025); }
+  .feature { display: flex; min-width: 0; align-items: center; gap: 7px; padding: 8px 9px; }
+  .feature + .feature { border-left: 1px solid rgba(255, 255, 255, .08); }
+  .featureIcon { display: grid; width: 32px; height: 32px; flex: 0 0 auto; place-items: center; border: 1px solid; border-radius: 50%; }
+  .blue { border-color: rgba(105, 157, 246, .4); background: rgba(59, 130, 246, .13); color: #9dbbff; }
+  .cyan { border-color: rgba(114, 211, 234, .36); background: rgba(56, 189, 248, .1); color: #83d9ec; }
+  .violet { border-color: rgba(184, 160, 255, .4); background: rgba(139, 92, 246, .13); color: #c6b2ff; }
+  .featureBody { display: flex; min-width: 0; flex-direction: column; }
+  .featureBody strong { color: #fff; font-size: .76rem; line-height: 1.3; }
+  .featureBody small { display: none; color: var(--text-2, #b8bdd6); font-size: .68rem; line-height: 1.3; }
+}
+
+@media (min-width: 1024px) {
+  .art { max-height: 286px; }
+  .copy { gap: 8px; padding: 15px 3px 4px 20px; }
+  .title { max-width: none; font-size: clamp(1.28rem, 1.9vw, 1.8rem); }
+  .text { font-size: .81rem; }
+  .rate { min-height: 32px; gap: 6px; }
+  .rate strong { font-size: .7rem; }
+  .asset { padding: 3px 6px; font-size: .66rem; }
+  .cta { min-height: 44px; padding: 0 13px; font-size: .8rem; }
+  .strip { margin: 6px 18px 10px; }
+  .feature { gap: 6px; padding: 7px; }
+  .featureIcon { width: 29px; height: 29px; }
+  .featureBody strong { font-size: .72rem; }
+  .featureBody small { display: block; font-size: .64rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .walletBack, .veCard, .sveCard, .swapControl, .floatCoin, .floatCoinSecond, .orbit, .orbitSoft, .spark { animation: none; }
+  .cta, .arrow { transition: none; }
+}

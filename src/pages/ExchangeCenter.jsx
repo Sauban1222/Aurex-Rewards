@@ -1,13 +1,13 @@
 import { useState } from 'react'
 import { ArrowRight, Check, CreditCard, Gift, Landmark, Smartphone, Wallet } from 'lucide-react'
 import AppPageShell, { workspaceStyles as shell } from '../components/AppPageShell.jsx'
-import { useRewards } from '../state/RewardsContext.jsx'
+import { MIN_WITHDRAWAL_VE, useRewards } from '../state/RewardsContext.jsx'
 import styles from './Workspace.module.css'
 
 const rewards = [
-  { id: 'gift-card', title: 'Digital Gift Card', description: 'Redeem your VEs for a digital reward.', cost: 5, icon: Gift },
-  { id: 'wallet', title: 'Digital Wallet Payout', description: 'Choose a supported payout destination.', cost: 10, icon: Wallet },
-  { id: 'reward-card', title: 'Premium Reward Card', description: 'Redeem a higher-tier reward.', cost: 20, icon: CreditCard },
+  { id: 'gift-card', title: 'Digital Gift Card', description: 'Redeem your VEs for a digital reward.', cost: MIN_WITHDRAWAL_VE, icon: Gift },
+  { id: 'wallet', title: 'Digital Wallet Payout', description: 'Choose a supported payout destination.', cost: 1500, icon: Wallet },
+  { id: 'reward-card', title: 'Premium Reward Card', description: 'Redeem a higher-tier reward.', cost: 2000, icon: CreditCard },
 ]
 const payoutMethods = [
   { id: 'upi', label: 'UPI', description: 'UPI payout preference', icon: Smartphone },
@@ -24,9 +24,13 @@ function ExchangeCenterPage() {
   const [error, setError] = useState('')
   const [receipt, setReceipt] = useState(null)
   const selectedReward = rewards.find((reward) => reward.id === selectedId)
-  const remainingBalance = selectedReward ? Number((ve - selectedReward.cost).toFixed(2)) : ve
+  const remainingBalance = selectedReward ? Math.max(0, Number((ve - selectedReward.cost).toFixed(2))) : ve
 
   const chooseReward = (reward) => {
+    if (reward.cost < MIN_WITHDRAWAL_VE) {
+      setError(`A withdrawal must be at least ${MIN_WITHDRAWAL_VE.toLocaleString('en-US')} VEs.`)
+      return
+    }
     if (reward.cost > ve) {
       setError(`You need ${reward.cost.toLocaleString('en-US')} VEs. Your current balance is ${ve.toLocaleString('en-US')}.`)
       return
@@ -68,6 +72,10 @@ function ExchangeCenterPage() {
           <span><small>AVAILABLE TO REDEEM</small><strong>{ve.toLocaleString('en-US', { maximumFractionDigits: 2 })} <em>VEs</em></strong></span>
           <span className={styles.walletBalanceLabel}>Wallet balance</span>
         </section>
+        <div className={styles.subtleNotice}>
+          <Wallet size={16} />
+          <span>Minimum withdrawal: {MIN_WITHDRAWAL_VE.toLocaleString('en-US')} VEs per redemption.</span>
+        </div>
 
         <div className={`${shell.twoColumn} ${styles.exchangeLayout}`}>
           <section className={styles.panel} aria-labelledby="catalog-heading">
@@ -109,7 +117,7 @@ function ExchangeCenterPage() {
                         <span className={styles.rewardIcon}><RewardIcon size={20} /></span>
                         <span className={styles.rewardCopy}><strong>{title}</strong><small>{description}</small></span>
                         <span className={styles.rewardCost}>{cost.toLocaleString('en-US')} <small>VEs</small></span>
-                        <button className={`${selected ? styles.rewardSelectedButton : styles.secondaryButton} ${styles.selectReward}`} type="button" aria-pressed={selected} disabled={unavailable} onClick={() => chooseReward({ id, title, cost })}>{unavailable ? 'Need more VEs' : selected ? <><Check size={14} /> Selected</> : 'Select'}</button>
+                        <button className={`${selected ? styles.rewardSelectedButton : styles.secondaryButton} ${styles.selectReward}`} type="button" aria-pressed={selected} disabled={unavailable} onClick={() => chooseReward({ id, title, cost })}>{cost > ve ? 'Need more VEs' : selected ? <><Check size={14} /> Selected</> : 'Select'}</button>
                       </article>
                     )
                   })}

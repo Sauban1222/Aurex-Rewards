@@ -1,0 +1,206 @@
+/* Card tint and border color remain feature-specific; BannerCard owns shared layout. */
+.card {
+  --banner-border: linear-gradient(135deg, rgba(255, 255, 255, .2), rgba(255, 255, 255, .05) 45%, rgba(174, 133, 241, .42));
+  background-image:
+    radial-gradient(58% 70% at 82% 22%, rgba(148, 105, 235, .12), transparent 62%),
+    radial-gradient(48% 58% at 8% 100%, rgba(225, 191, 112, .07), transparent 64%);
+}
+
+.main { 
+  display: grid; 
+  flex: 1; 
+  grid-template-columns: minmax(0, 1fr); 
+}
+.visual { 
+  order: -1; 
+  display: grid; 
+  place-items: center; 
+  padding: 8px 10px 0; 
+}
+.art { 
+  display: block; 
+  width: 100%; 
+  height: clamp(155px, 48vw, 190px); 
+  overflow: visible; 
+}
+.wallet { 
+  transform-box: fill-box; 
+  transform-origin: center; 
+  animation: walletFloat 6.5s ease-in-out infinite; 
+}
+.optionCard { 
+  transform-box: fill-box; 
+  transform-origin: center; 
+  animation: optionFloat 4.8s ease-in-out infinite; 
+}
+.optionCardSecond { transform-box: fill-box; 
+  transform-origin: center; 
+  animation: optionFloat 5.4s ease-in-out .35s infinite; 
+}
+.optionCardThird { 
+  transform-box: fill-box; 
+  transform-origin: center; 
+  animation: optionFloat 5.8s ease-in-out .7s infinite; 
+}
+.giftBox { 
+  transform-box: fill-box; 
+  transform-origin: center; 
+  animation: giftFloat 5.2s ease-in-out infinite; 
+}
+.rewardSeal { transform-box: fill-box; 
+  transform-origin: center; 
+  animation: sealPulse 3.5s ease-in-out infinite; 
+}
+.coin { 
+  transform-box: fill-box; 
+  transform-origin: center; 
+  animation: coinFloat 4.5s ease-in-out infinite; 
+}
+.coinSecond { 
+  transform-box: fill-box; 
+  transform-origin: center; 
+  animation: coinFloat 5.2s ease-in-out .8s infinite; 
+}
+.orbit { 
+  fill: none; 
+  stroke: rgba(207, 168, 246, .22); 
+  stroke-width: 1.4; 
+  transform-box: fill-box; 
+  transform-origin: center; 
+  animation: orbit 21s linear infinite; 
+}
+.orbitSoft { 
+  fill: none; 
+  stroke: rgba(231, 199, 130, .16); 
+  stroke-width: 1.2; 
+  transform-box: fill-box; 
+  transform-origin: center; 
+  animation: orbit 27s linear infinite reverse; 
+}
+.spark { 
+  transform-box: fill-box; 
+  transform-origin: center; 
+  animation: sparkPulse 3.5s ease-in-out infinite; }
+
+.copy {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 9px;
+  padding: 8px 20px 20px;
+}
+.pill { 
+  display: none; 
+}
+.title { 
+  max-width: 15ch; 
+  margin: 0; 
+  color: #fff; font-size: clamp(1.7rem, 7vw, 2.7rem); 
+  font-weight: 800; 
+  line-height: 1.08; 
+  letter-spacing: -.02em; 
+}
+.grad { background: linear-gradient(90deg, #c2a0ff, #efd28b); background-clip: text; color: transparent; -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.text { max-width: 42ch; margin: 0; color: var(--text-2, #b8bdd6); font-size: .95rem; line-height: 1.5; }
+
+.catalog { display: flex; min-height: 38px; align-items: center; gap: 9px; color: #ddd2f7; }
+.catalogIcon { display: grid; width: 27px; height: 27px; flex: 0 0 auto; place-items: center; border: 1px solid rgba(197, 170, 255, .36); border-radius: 8px; background: rgba(127, 93, 198, .16); color: #cfb8ff; }
+.catalog > span:last-child { display: grid; gap: 2px; }
+.catalog strong { color: #f1d891; font-size: .78rem; letter-spacing: .04em; }
+.catalog small { color: #aaaabe; font-size: .72rem; }
+
+.cta {
+  display: inline-flex;
+  min-height: 48px;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 0 22px;
+  border: 1px solid rgba(255, 226, 165, .55);
+  border-radius: 12px;
+  background: linear-gradient(100deg, #e6c982, #c5974d);
+  color: #201a2a;
+  font: inherit;
+  font-weight: 750;
+  text-decoration: none;
+  white-space: nowrap;
+  box-shadow: 0 8px 20px rgba(202, 160, 82, .2);
+  transition: transform .2s ease, filter .2s ease, box-shadow .2s ease;
+}
+.cta:hover { color: #201a2a; filter: brightness(1.08); transform: translateY(-2px); box-shadow: 0 12px 26px rgba(202, 160, 82, .28); }
+.cta:active { transform: translateY(1px); }
+.cta:focus-visible { outline: 2px solid #d9c0ff; outline-offset: 3px; }
+.arrow { transition: transform .2s ease; }
+.cta:hover .arrow { transform: translateX(4px); }
+
+.strip { display: none; margin: 0; padding: 0; list-style: none; }
+
+@keyframes walletFloat {
+  0%, 100% { transform: translateY(0); opacity: .97; }
+  50% { transform: translateY(-3px); opacity: 1; }
+}
+@keyframes optionFloat {
+  0%, 100% { transform: translateY(0); opacity: .96; }
+  50% { transform: translateY(-3px); opacity: 1; }
+}
+@keyframes giftFloat {
+  0%, 100% { transform: translateY(0) rotate(0); opacity: .96; }
+  50% { transform: translateY(-6px) rotate(-1deg); opacity: 1; }
+}
+@keyframes sealPulse {
+  0%, 100% { transform: scale(1); opacity: .94; }
+  50% { transform: scale(1.06); opacity: 1; }
+}
+@keyframes coinFloat {
+  0%, 100% { transform: translateY(0); opacity: .93; }
+  50% { transform: translateY(-6px); opacity: 1; }
+}
+@keyframes orbit {
+  to { transform: rotate(360deg); opacity: .84; }
+}
+@keyframes sparkPulse {
+  0%, 100% { transform: scale(.94); opacity: .68; }
+  50% { transform: scale(1.06); opacity: 1; }
+}
+
+@media (max-width: 420px) {
+  .cta { width: 100%; padding: 0 14px; font-size: .93rem; }
+}
+
+@media (min-width: 768px) {
+  .main { grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr); align-items: center; }
+  .visual { order: 0; padding: 12px 12px 0 0; }
+  .art { height: auto; max-height: 270px; }
+  .copy { gap: 10px; padding: 22px 6px 6px 22px; }
+  .pill { display: inline-flex; align-items: center; gap: 8px; padding: 6px 11px; border: 1px solid rgba(193, 160, 237, .26); border-radius: 999px; background: rgba(148, 105, 235, .09); color: #d0b5ff; font-size: .69rem; font-weight: 700; letter-spacing: .08em; }
+  .strip { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin: 8px 18px 14px; border: 1px solid rgba(255, 255, 255, .08); border-radius: 14px; background: rgba(255, 255, 255, .025); }
+  .feature { display: flex; min-width: 0; align-items: center; gap: 7px; padding: 8px 9px; }
+  .feature + .feature { border-left: 1px solid rgba(255, 255, 255, .08); }
+  .featureIcon { display: grid; width: 32px; height: 32px; flex: 0 0 auto; place-items: center; border: 1px solid; border-radius: 50%; }
+  .violet { border-color: rgba(190, 161, 255, .42); background: rgba(139, 92, 246, .14); color: #c7acff; }
+  .gold { border-color: rgba(240, 195, 106, .4); background: rgba(226, 185, 101, .12); color: #f0c36a; }
+  .cyan { border-color: rgba(114, 211, 234, .36); background: rgba(56, 189, 248, .1); color: #83d9ec; }
+  .featureBody { display: flex; min-width: 0; flex-direction: column; }
+  .featureBody strong { color: #fff; font-size: .76rem; line-height: 1.3; }
+  .featureBody small { display: none; color: var(--text-2, #b8bdd6); font-size: .68rem; line-height: 1.3; }
+}
+
+@media (min-width: 1024px) {
+  .art { max-height: 286px; }
+  .copy { gap: 8px; padding: 15px 3px 4px 20px; }
+  .title { max-width: none; font-size: clamp(1.28rem, 1.9vw, 1.8rem); }
+  .text { font-size: .81rem; }
+  .cta { min-height: 44px; padding: 0 13px; font-size: .8rem; }
+  .catalog { min-height: 32px; }
+  .strip { margin: 6px 18px 10px; }
+  .feature { gap: 6px; padding: 7px; }
+  .featureIcon { width: 29px; height: 29px; }
+  .featureBody strong { font-size: .72rem; }
+  .featureBody small { display: block; font-size: .64rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wallet, .optionCard, .optionCardSecond, .optionCardThird, .giftBox, .rewardSeal, .coin, .coinSecond, .orbit, .orbitSoft, .spark { animation: none; }
+  .cta, .arrow { transition: none; }
+}

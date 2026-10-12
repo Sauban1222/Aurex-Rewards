@@ -1,15 +1,23 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import Logo from '../components/Logo/Logo.jsx'
 import { useRewards } from '../state/RewardsContext.jsx'
 import styles from './Login.module.css'
 
 function LoginPage() {
   const navigate = useNavigate()
+  const location = useLocation()
   const { registerAccount, loginAccount } = useRewards()
   const [showPassword, setShowPassword] = useState(false)
   const [message, setMessage] = useState('')
-  const [isRegistering, setIsRegistering] = useState(false)
+  const searchParams = new URLSearchParams(location.search)
+  const referralCode = searchParams.get('ref')?.trim().toUpperCase() || ''
+  const isRegistering = searchParams.get('mode') !== 'signin'
+  const modeHref = isRegistering
+    ? '/login?mode=signin'
+    : referralCode
+      ? `/login?ref=${encodeURIComponent(referralCode)}`
+      : '/login'
 
   const handleSubmit = async (event) => {
     event.preventDefault()
@@ -23,23 +31,22 @@ function LoginPage() {
           username: String(form.get('username') || '').trim(),
           mobile: String(form.get('mobile') || '').trim(),
           email,
+          referredBy: String(form.get('referralCode') || '').trim().toUpperCase(),
         }, password)
         : await loginAccount(email, password)
       if (!result.ok) {
         setMessage(result.message)
         return
       }
-      navigate('/wallet', { replace: true })
+      const destination = location.state?.from
+      const target = !isRegistering && destination
+        ? `${destination.pathname || '/'}${destination.search || ''}${destination.hash || ''}`
+        : '/'
+      navigate(target, { replace: true })
     } catch (error) {
       console.error('Unable to authenticate this local account.', error)
       setMessage(error.message || 'Unable to continue. Please try again.')
     }
-  }
-
-  const changeMode = (registering) => {
-    setIsRegistering(registering)
-    setMessage('')
-    setShowPassword(false)
   }
 
   return (
@@ -47,7 +54,7 @@ function LoginPage() {
       <a className="skip-link" href="#main-content">Skip to content</a>
       <div className={styles.topbar}>
         <Logo />
-        <a className={styles.backLink} href="/">Back to rewards</a>
+        <span className={styles.backLink}>{isRegistering ? 'Create your Aurex account' : 'Secure account access'}</span>
       </div>
 
       <section id="main-content" className={`${styles.layout} ${isRegistering ? styles.registerLayout : ''}`} aria-labelledby="login-title" tabIndex="-1">
@@ -60,7 +67,8 @@ function LoginPage() {
         <div className={styles.formPanel}>
           <span className={styles.formEyebrow}>{isRegistering ? 'CREATE YOUR ACCOUNT' : 'YOUR ACCOUNT'}</span>
           <h2>{isRegistering ? 'Join Aurex' : 'Log in to Aurex'}</h2>
-          <p className={styles.formCopy}>{isRegistering ? 'Your account and wallet stay saved in this browser.' : 'Enter the email address for your Aurex account.'}</p>
+          <p className={styles.formCopy}>{isRegistering ? 'Preview only: account credentials and wallet balances are saved in this browser; no real rewards or transactions are sent.' : 'This demo account is stored in this browser and is not connected to an online account.'}</p>
+          {isRegistering && <p className={styles.bonusNotice}>Preview welcome reward <strong>+200 VEs</strong> (sample value for this browser demo).</p>}
           <form className={styles.form} onSubmit={handleSubmit}>
             {isRegistering ? (
               <div className={styles.registrationFields}>
@@ -79,6 +87,10 @@ function LoginPage() {
                 <div className={styles.field}>
                   <label htmlFor="aurex-register-email">Email address</label>
                   <input id="aurex-register-email" name="email" type="email" autoComplete="email" placeholder="you@example.com" required />
+                </div>
+                <div className={styles.field}>
+                  <label htmlFor="aurex-referral-code">Referral code <span>(optional)</span></label>
+                  <input id="aurex-referral-code" name="referralCode" type="text" autoComplete="off" placeholder="Enter a friend's code" defaultValue={referralCode} maxLength={20} />
                 </div>
                 <div className={`${styles.field} ${styles.fullWidth}`}>
                   <label htmlFor="aurex-register-password">Password</label>
@@ -136,9 +148,12 @@ function LoginPage() {
           </form>
           <p className={styles.signup}>
             {isRegistering ? 'Already have an account?' : 'New to Aurex?'}
-            <button type="button" onClick={() => changeMode(!isRegistering)}>
+            <Link className={styles.modeLink} to={modeHref} onClick={() => {
+              setMessage('')
+              setShowPassword(false)
+            }}>
               {isRegistering ? 'Log in' : 'Create an account'}
-            </button>
+            </Link>
           </p>
         </div>
       </section>

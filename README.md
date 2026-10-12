@@ -103,31 +103,32 @@ Aurex-Rewards/
 │   ├── main.jsx                 # App entry point, Bootstrap + CSS imports
 │   ├── app.jsx                  # Root component with routing logic
 │   ├── components/
-│   │   ├── RewardBanner.jsx      # Shared banner component (Refer, Swap, Bonus, Captcha, Exchange)
-│   │   ├── ReferEarnBanner/      # Refer & Earn banner with custom illustration
-│   │   ├── SwapCenterBanner/     # Swap Center banner with SVG
-│   │   ├── BonusVEsBanner/       # Bonus VEs banner with SVG
-│   │   ├── CaptchaTasksBanner/   # Captcha Tasks banner with SVG
-│   │   ├── ExchangeCenterBanner/ # Exchange Center banner with SVG
-│   │   ├── Icon.jsx              # Icon wrapper for React Icons
-│   │   └── navbar/               # Navigation components
+│   │   ├── AccountMenu.jsx
+│   │   ├── AppPageShell.jsx      # Shared authenticated workspace layout
+│   │   ├── BannerCard/           # Shared shell used by all five banners
+│   │   ├── BonusVEsBanner/
+│   │   ├── CaptchaTasksBanner/
+│   │   ├── ExchangeCenterBanner/
+│   │   ├── ReferEarnBanner/
+│   │   ├── SwapCenterBanner/
+│   │   ├── Icon.jsx
+│   │   └── Logo/
 │   ├── pages/
-│   │   ├── ReferEarn.jsx         # Referral page with invite link functionality
-│   │   ├── SwapCenter.jsx        # Swap demo with balance conversion
-│   │   ├── BonusVEs.jsx          # Bonus exploration page
-│   │   ├── CaptchaTasks.jsx      # Task preview page
-│   │   ├── ExchangeCenter.jsx    # Redemption options page
-│   │   ├── Login.jsx             # Login preview page
-│   │   └── NotFound.jsx          # 404 fallback page
-│   ├── data/
-│   │   └── bannerData.js         # Centralized banner content and labels
-│   ├── hooks/
-│   │   └── useRewardHooks.js     # Custom hooks (useCountUp, useInView, useReducedMotion, useCopyToClipboard)
+│   │   ├── Login.jsx             # Browser-local account preview
+│   │   ├── ReferEarn.jsx         # Referral workspace and local invite actions
+│   │   ├── SwapCenter.jsx        # Browser-local balance conversion
+│   │   ├── BonusVEs.jsx          # Check-in, spin, and earning activities
+│   │   ├── CaptchaTasks.jsx      # Sample symbol-selection tasks
+│   │   ├── ExchangeCenter.jsx    # Reward redemption preview
+│   │   ├── Wallet.jsx            # Local balance and activity ledger
+│   │   └── NotFound.jsx
+│   ├── state/
+│   │   └── RewardsContext.jsx    # Browser-local preview state and actions
 │   ├── styles/
-│   │   ├── variables.css         # Design tokens and Aurex color system
-│   │   ├── global.css            # Shared styles, layout, and responsive breakpoints
-│   │   └── animations.css        # Keyframe animations with reduced-motion support
-│   └── utils/
+│   │   ├── tokens.css
+│   │   ├── variables.css
+│   │   ├── global.css
+│   │   └── animations.css
 ├── index.html                   # HTML template with meta tags and favicon
 ├── vite.config.js              # Vite configuration
 ├── netlify.toml                # Netlify deployment config with SPA fallback
@@ -191,12 +192,8 @@ Aurex Rewards is built with accessibility as a core principle:
 - ✅ **Semantic HTML** with proper heading hierarchy (h1 → h2 → h3)
 - ✅ **ARIA labels** for icon buttons and complex controls
 - ✅ **Keyboard navigation** fully functional with visible focus states
-- ✅ **Color contrast** meets WCAG AA standards across all elements
-- ✅ **Focus management** with keyboard outline (3px gold offset)
-- ✅ **Touch targets** minimum 44px height for mobile usability
+- ✅ **Visible focus indicators** and touch-friendly primary controls
 - ✅ **Reduced motion** support: animations disable automatically
-- ✅ **Dialog management** with Escape key and focus trapping
-- ✅ **Escape key** closes modals and dialogs
 - ✅ **Screen reader support** with descriptive alt text and status regions
 
 ## Performance
@@ -206,9 +203,8 @@ Aurex is lightweight and performant:
 - Minimal dependencies (no unnecessary libraries)
 - Inline SVG illustrations (no image HTTP requests)
 - CSS Modules for scoped, optimized styles
-- Intersection Observer for viewport-based animations
-- Lazy loading of feature pages with React Router
-- Production build: ~280KB JS, ~335KB CSS (gzipped: ~84KB JS, ~54KB CSS)
+- Feature workspaces load on demand with React `lazy` and `Suspense`
+- Current production chunk sizes are reported by `npm run build`
 
 ## Interactions & Demo Features
 
@@ -219,11 +215,10 @@ Aurex is lightweight and performant:
 - Toast notifications for user feedback
 
 ### Refer & Earn Page (`/refer`)
-- Personal referral link preview (non-functional demo)
+- Personal referral link and code for preview sharing
 - Copy-to-clipboard functionality
 - Three-step referral process explanation
-- Referral activity tracking placeholder
-- Clear indication that tracking is not connected
+- Local log of copied links and successfully shared invites; friend joins and eligible rewards are not tracked
 
 ### Swap Center Page (`/swap`)
 - Interactive balance conversion demo
@@ -237,16 +232,17 @@ Aurex is lightweight and performant:
 - Bonus earning opportunities showcase
 - Task lists and bonus structure
 - Eligibility information
+- Daily check-in and spin eligibility follow the browser's local calendar day
 
 ### Captcha Tasks Page (`/captcha`)
-- Task completion preview
+- Client-side sample task completion preview
 - Sample CAPTCHA grid
 - Progress tracking visualization
+- Not a security verification; preview rewards remain in this browser
 
 ### Exchange Center Page (`/exchange`)
-- Redemption options for supported currencies
-- Exchange rate display
-- Eligible rewards preview
+- Sample reward catalog and payout preferences
+- Confirmation updates only the browser-local preview balance; no payout is sent
 
 ### Login Page
 - Professional login form preview
@@ -290,12 +286,9 @@ To deploy your own instance:
 
 ## Code Quality
 
-- **No build warnings or errors**
-- **No console errors in development or production**
-- **Clean, well-organized component structure**
-- **Consistent naming conventions** for components and utilities
-- **Removed unused imports and dead code**
-- **Linted and formatted for professional standards**
+- **Production build:** validated with `npm run build`
+- **No dedicated lint or test script is currently configured**
+- **Reward balances, sample tasks, and account data are browser-local demo state, not authoritative**
 
 ## Troubleshooting
 

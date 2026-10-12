@@ -1,6 +1,19 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
 
 const STORAGE_KEY = 'aurex-rewards-state-v1'
+export const MIN_WITHDRAWAL_VE = 1000
+// Preview reward values; enforce approved reward rules on the server when connected.
+export const DAILY_CHECK_IN_REWARD = 20
+export const CAPTCHA_TASK_REWARD = 40
+export const DAILY_SPIN_REWARDS = [10, 20, 30, 40, 50]
+
+export function getRewardDayKey(date = new Date()) {
+  const year = date.getFullYear()
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const day = String(date.getDate()).padStart(2, '0')
+  return `${year}-${month}-${day}`
+}
+
 const INITIAL_STATE = {
   account: null,
   profile: null,
@@ -10,25 +23,56 @@ const INITIAL_STATE = {
   sve: 0,
   activity: [],
   captchaCompletedOn: '',
+  captchaSecondCompletedOn: '',
+  dailyCheckInOn: '',
+  dailySpinOn: '',
+  dailySpinReward: 0,
+  dailySpinPending: null,
   invitesShared: 0,
+  referralActivity: [],
+  welcomeBonusGranted: false,
 }
 
 const RewardsContext = createContext(null)
+
+function createReferralCode(username = '') {
+  const prefix = username.replace(/[^a-z0-9]/gi, '').slice(0, 8).toUpperCase() || 'AUREX'
+  const suffix = Array.from(window.crypto.getRandomValues(new Uint8Array(3)), (byte) => byte.toString(16).padStart(2, '0')).join('').toUpperCase()
+  return `${prefix}${suffix}`
+}
 
 function loadState() {
   try {
     const stored = window.localStorage.getItem(STORAGE_KEY)
     if (!stored) return INITIAL_STATE
     const parsed = JSON.parse(stored)
+    const profile = parsed.profile && typeof parsed.profile === 'object'
+      ? { ...parsed.profile, referralCode: parsed.profile.referralCode || createReferralCode(parsed.profile.username) }
+      : null
+    const account = parsed.account && typeof parsed.account === 'object'
+      ? { ...parsed.account, referralCode: parsed.account.referralCode || profile?.referralCode || createReferralCode(parsed.account.username) }
+      : null
+    const legacyWelcomeBonus = Boolean(profile && parsed.welcomeBonusGranted !== true)
+    const activity = Array.isArray(parsed.activity) ? parsed.activity.slice(0, 30) : []
+    const referralActivity = Array.isArray(parsed.referralActivity)
+      ? parsed.referralActivity.filter((item) => (
+        item
+        && typeof item.id === 'string'
+        && typeof item.action === 'string'
+        && typeof item.createdAt === 'string'
+      )).slice(0, 10)
+      : []
     return {
       ...INITIAL_STATE,
       ...parsed,
-      account: parsed.account && typeof parsed.account === 'object' ? parsed.account : null,
-      profile: parsed.profile && typeof parsed.profile === 'object' ? parsed.profile : null,
-      ve: Number.isFinite(parsed.ve) && parsed.ve >= 0 ? parsed.ve : 0,
+      account,
+      profile,
+      ve: (Number.isFinite(parsed.ve) && parsed.ve >= 0 ? parsed.ve : 0) + (legacyWelcomeBonus ? 200 : 0),
       sve: Number.isFinite(parsed.sve) && parsed.sve >= 0 ? parsed.sve : 0,
       invitesShared: Number.isInteger(parsed.invitesShared) && parsed.invitesShared >= 0 ? parsed.invitesShared : 0,
-      activity: Array.isArray(parsed.activity) ? parsed.activity.slice(0, 30) : [],
+      referralActivity,
+      activity: legacyWelcomeBonus ? addActivity({ activity }, { type: 'earn', title: 'Welcome bonus', amount: 200, asset: 'VE', createdAt: new Date().toISOString() }) : activity,
+      welcomeBonusGranted: Boolean(parsed.welcomeBonusGranted || legacyWelcomeBonus),
     }
   } catch (error) {
     console.error('Could not read the Aurex wallet saved in this browser.', error)
@@ -74,7 +118,17 @@ export function RewardsProvider({ children }) {
       const credentialSalt = Array.from(window.crypto.getRandomValues(new Uint8Array(16)), (byte) => byte.toString(16).padStart(2, '0')).join('')
       const credentialHash = await hashPassword(password, credentialSalt)
       if (stateRef.current.profile?.email === account.email) return { ok: false, message: 'An account with this email already exists in this browser. Please log in.' }
-      updateState((current) => ({ ...current, account, profile: account, credentialSalt, credentialHash }))
+      const profile = { ...account, referralCode: createReferralCode(account.username) }
+      updateState((current) => ({
+        ...current,
+        account: profile,
+        profile,
+        credentialSalt,
+        credentialHash,
+        ve: current.ve + 200,
+        activity: addActivity(current, { type: 'earn', title: 'Welcome bonus', amount: 200, asset: 'VE', createdAt: new Date().toISOString() }),
+        welcomeBonusGranted: true,
+      }))
       return { ok: true }
     },
     async loginAccount(email, password) {
@@ -88,23 +142,77 @@ export function RewardsProvider({ children }) {
     logout() {
       updateState((current) => ({ ...current, account: null }))
     },
-    recordInvite() {
-      updateState((current) => ({ ...current, invitesShared: current.invitesShared + 1 }))
+    recordInvite(action = 'Invite shared') {
+      updateState((current) => ({
+        ...current,
+        invitesShared: current.invitesShared + 1,
+        referralActivity: [{
+          id: `${Date.now()}-${Math.random()}`,
+          action,
+          createdAt: new Date().toISOString(),
+        }, ...current.referralActivity].slice(0, 10),
+      }))
     },
-    completeCaptcha() {
-      const today = new Date().toISOString().slice(0, 10)
+    completeCaptcha(taskNumber) {
+      const today = getRewardDayKey()
+      if (taskNumber !== 1 && taskNumber !== 2) throw new Error('Unknown captcha task.')
       let earned = false
       updateState((current) => {
-        if (current.captchaCompletedOn === today) return current
+        const completionKey = taskNumber === 1 ? 'captchaCompletedOn' : 'captchaSecondCompletedOn'
+        if (current[completionKey] === today) return current
         earned = true
         return {
         ...current,
-        ve: current.ve + 10,
-        captchaCompletedOn: today,
-        activity: addActivity(current, { type: 'earn', title: 'Captcha task completed', amount: 10, asset: 'VE', createdAt: new Date().toISOString() }),
+        ve: current.ve + CAPTCHA_TASK_REWARD,
+        [completionKey]: today,
+        activity: addActivity(current, { type: 'earn', title: `Captcha task ${taskNumber} completed`, amount: CAPTCHA_TASK_REWARD, asset: 'VE', createdAt: new Date().toISOString() }),
         }
       })
       return earned
+    },
+    claimDailyCheckIn() {
+      const today = getRewardDayKey()
+      let earned = false
+      updateState((current) => {
+        if (current.dailyCheckInOn === today) return current
+        earned = true
+        return {
+          ...current,
+          ve: current.ve + DAILY_CHECK_IN_REWARD,
+          dailyCheckInOn: today,
+          activity: addActivity(current, { type: 'earn', title: 'Daily check-in', amount: DAILY_CHECK_IN_REWARD, asset: 'VE', createdAt: new Date().toISOString() }),
+        }
+      })
+      return earned
+    },
+    startDailySpin() {
+      const today = getRewardDayKey()
+      const current = stateRef.current
+      if (current.dailySpinOn === today) return { ok: false, reward: current.dailySpinReward }
+      if (current.dailySpinPending?.date === today) return { ok: true, ...current.dailySpinPending }
+      const randomValue = new Uint32Array(1)
+      window.crypto.getRandomValues(randomValue)
+      const segmentIndex = randomValue[0] % DAILY_SPIN_REWARDS.length
+      const reward = DAILY_SPIN_REWARDS[segmentIndex]
+      const pendingSpin = { date: today, reward, segmentIndex }
+      updateState((state) => ({ ...state, dailySpinPending: pendingSpin }))
+      return { ok: true, ...pendingSpin }
+    },
+    completeDailySpin() {
+      const today = getRewardDayKey()
+      const current = stateRef.current
+      const pendingSpin = current.dailySpinPending
+      if (current.dailySpinOn === today) return { ok: false, reward: current.dailySpinReward }
+      if (!pendingSpin || pendingSpin.date !== today) return { ok: false, reward: 0 }
+      updateState((state) => ({
+        ...state,
+        ve: state.ve + pendingSpin.reward,
+        dailySpinOn: today,
+        dailySpinReward: pendingSpin.reward,
+        dailySpinPending: null,
+        activity: addActivity(state, { type: 'earn', title: 'Daily reward spin', amount: pendingSpin.reward, asset: 'VE', createdAt: new Date().toISOString() }),
+      }))
+      return { ok: true, reward: pendingSpin.reward }
     },
     swap({ from, amount, output }) {
       const available = stateRef.current[from]
@@ -121,8 +229,9 @@ export function RewardsProvider({ children }) {
     },
     redeem({ amount, reward, method }) {
       if (!method) return { ok: false, message: 'Select a payout method.' }
-      if (!Number.isFinite(amount) || amount <= 0) return { ok: false, message: 'Select a valid reward.' }
-      if (amount > stateRef.current.ve) return { ok: false, message: `You have ${stateRef.current.ve.toLocaleString('en-US', { maximumFractionDigits: 2 })} VEs available.` }
+      if (!Number.isFinite(amount) || amount < MIN_WITHDRAWAL_VE) return { ok: false, message: `The minimum withdrawal is ${MIN_WITHDRAWAL_VE.toLocaleString('en-US')} VEs.` }
+      const current = stateRef.current
+      if (amount > current.ve) return { ok: false, message: `You have ${current.ve.toLocaleString('en-US', { maximumFractionDigits: 2 })} VEs available.` }
       updateState((current) => ({
         ...current,
         ve: Number((current.ve - amount).toFixed(2)),
