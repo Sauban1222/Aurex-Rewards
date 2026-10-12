@@ -10,12 +10,12 @@ function AccountMenu() {
 
   return (
     <details className={styles.account}>
-      <summary aria-label={`Account menu for ${account.name || account.email}`}>
+      <summary aria-label={`Account menu for ${account.name || account.username}`}>
         <span className={styles.avatar} aria-hidden="true">A</span>
         <ChevronDown size={14} />
       </summary>
       <div className={styles.menu}>
-        <span className={styles.identity}><User size={15} />{account.name || account.email}</span>
+        <span className={styles.identity}><User size={15} />{account.name || account.username}</span>
         <Link to="/wallet"><User size={15} />Wallet &amp; activity</Link>
         <button type="button" onClick={logout}><LogOut size={15} />Log out</button>
       </div>

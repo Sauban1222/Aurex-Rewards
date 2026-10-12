@@ -151,7 +151,7 @@ function BonusVEsPage() {
             <ol className={styles.steps}>
               {[['Find an activity', Compass], ['Complete the task', CalendarCheck], ['Verify your work', CheckCircle2], ['Receive VEs', Gift]].map(([label, StepIcon], index) => <li key={label}><span className={styles.stepNumber}><StepIcon size={14} /></span><strong>{label}</strong><span className={styles.listAside}>{String(index + 1).padStart(2, '0')}</span></li>)}
             </ol>
-            <div className={styles.subtleNotice}><CheckCircle2 size={16} /><span>Earned task VEs are stored in this browser and appear in your wallet.</span></div>
+            <div className={styles.subtleNotice}><CheckCircle2 size={16} /><span>Earned preview VEs stay in this browser tab and appear in your wallet.</span></div>
           </section>
         </div>
       </div>

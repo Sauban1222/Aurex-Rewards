@@ -15,7 +15,7 @@ Aurex Rewards is a modern rewards dashboard concept featuring:
 - **Clean fintech design** using a centralized color token system and premium visual hierarchy
 - **Demo-only environment** with clearly labeled sample balances and placeholder data
 
-All interactions and balances are examples for demonstration purposes. No real transactions, rewards, or referral tracking occur.
+All interactions and balances are examples for demonstration purposes. No real transactions, rewards, or referral tracking occur. Accounts and reward state exist only in the current browser tab's session storage; there is no online account system or cross-device account access. Use made-up credentials and do not enter real personal information.
 
 ## Features
 
@@ -114,7 +114,7 @@ Aurex-Rewards/
 │   │   ├── Icon.jsx
 │   │   └── Logo/
 │   ├── pages/
-│   │   ├── Login.jsx             # Browser-local account preview
+│   │   ├── Login.jsx             # Tab-scoped account preview
 │   │   ├── ReferEarn.jsx         # Referral workspace and local invite actions
 │   │   ├── SwapCenter.jsx        # Browser-local balance conversion
 │   │   ├── BonusVEs.jsx          # Check-in, spin, and earning activities
@@ -123,7 +123,7 @@ Aurex-Rewards/
 │   │   ├── Wallet.jsx            # Local balance and activity ledger
 │   │   └── NotFound.jsx
 │   ├── state/
-│   │   └── RewardsContext.jsx    # Browser-local preview state and actions
+│   │   └── RewardsContext.jsx    # Tab-scoped preview state and actions
 │   ├── styles/
 │   │   ├── tokens.css
 │   │   ├── variables.css
@@ -208,6 +208,13 @@ Aurex is lightweight and performant:
 
 ## Interactions & Demo Features
 
+### Account and Session Preview
+- A first visit without an active tab session opens the registration form at `/login`.
+- Demo account and reward data are scoped to the current tab with `sessionStorage`; they are not synced across tabs, browser profiles, or devices.
+- The former persistent `localStorage` demo record is cleared on startup; this intentionally removes old demo balances and activity.
+- This frontend does not provide secure authentication or real account isolation. Use only made-up usernames/passwords and no real personal information.
+- Closing the tab normally ends its preview session. A real online account system requires server-side authentication and per-user authorization.
+
 ### Home Page
 - Welcome section with animated demo balance counter
 - Five promotional banners with smooth entrance animations
@@ -238,16 +245,16 @@ Aurex is lightweight and performant:
 - Client-side sample task completion preview
 - Sample CAPTCHA grid
 - Progress tracking visualization
-- Not a security verification; preview rewards remain in this browser
+- Not a security verification; preview rewards remain in the current browser tab
 
 ### Exchange Center Page (`/exchange`)
 - Sample reward catalog and payout preferences
-- Confirmation updates only the browser-local preview balance; no payout is sent
+- Confirmation updates only the tab-scoped preview balance; no payout is sent
 
 ### Login Page
-- Professional login form preview
-- Remember me option
-- Forgot password link
+- Registration is the first screen for a new browser-tab session
+- Login can resume a preview account only in the tab where it was created
+- No real email or phone number is requested
 
 ## Browser Support
 
@@ -288,7 +295,7 @@ To deploy your own instance:
 
 - **Production build:** validated with `npm run build`
 - **No dedicated lint or test script is currently configured**
-- **Reward balances, sample tasks, and account data are browser-local demo state, not authoritative**
+- **Reward balances, sample tasks, and account data are tab-scoped demo state, not authoritative**
 
 ## Troubleshooting
 

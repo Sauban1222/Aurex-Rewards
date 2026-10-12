@@ -201,7 +201,7 @@
   justify-content: space-between;
 }
 
-.passwordLabel button, .signup .modeLink {
+.signup .modeLink {
   padding: 0;
   border: 0;
   background: none;
@@ -233,22 +233,6 @@
   color: #a78bfa;
   font-size: 10px;
   font-weight: 700;
-}
-
-.remember {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin: 8px 0 9px;
-  color: #b8bac7 !important;
-  font-weight: 500 !important;
-}
-
-.remember input {
-  width: 14px;
-  height: 14px;
-  margin: 0;
-  accent-color: #8b5cf6;
 }
 
 .submit {

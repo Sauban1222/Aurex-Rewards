@@ -1,6 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
 
-const STORAGE_KEY = 'aurex-rewards-state-v1'
+const STORAGE_KEY = 'aurex-rewards-tab-state-v2'
+const LEGACY_STORAGE_KEYS = ['aurex-rewards-tab-state-v1', 'aurex-rewards-state-v1']
 export const MIN_WITHDRAWAL_VE = 1000
 // Preview reward values; enforce approved reward rules on the server when connected.
 export const DAILY_CHECK_IN_REWARD = 20
@@ -42,8 +43,17 @@ function createReferralCode(username = '') {
 }
 
 function loadState() {
+  for (const key of LEGACY_STORAGE_KEYS) {
+    try {
+      window.localStorage.removeItem(key)
+      window.sessionStorage.removeItem(key)
+    } catch (error) {
+      console.error('Could not clear older Aurex demo account data from this browser.', error)
+    }
+  }
+
   try {
-    const stored = window.localStorage.getItem(STORAGE_KEY)
+    const stored = window.sessionStorage.getItem(STORAGE_KEY)
     if (!stored) return INITIAL_STATE
     const parsed = JSON.parse(stored)
     const profile = parsed.profile && typeof parsed.profile === 'object'
@@ -75,7 +85,7 @@ function loadState() {
       welcomeBonusGranted: Boolean(parsed.welcomeBonusGranted || legacyWelcomeBonus),
     }
   } catch (error) {
-    console.error('Could not read the Aurex wallet saved in this browser.', error)
+    console.error('Could not read the Aurex preview saved in this browser tab.', error)
     return INITIAL_STATE
   }
 }
@@ -107,9 +117,9 @@ export function RewardsProvider({ children }) {
 
   useEffect(() => {
     try {
-      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(state))
+      window.sessionStorage.setItem(STORAGE_KEY, JSON.stringify(state))
     } catch (error) {
-      console.error('Could not save the Aurex wallet in this browser.', error)
+      console.error('Could not save the Aurex preview in this browser tab.', error)
     }
   }, [state])
 
@@ -117,7 +127,7 @@ export function RewardsProvider({ children }) {
     async registerAccount(account, password) {
       const credentialSalt = Array.from(window.crypto.getRandomValues(new Uint8Array(16)), (byte) => byte.toString(16).padStart(2, '0')).join('')
       const credentialHash = await hashPassword(password, credentialSalt)
-      if (stateRef.current.profile?.email === account.email) return { ok: false, message: 'An account with this email already exists in this browser. Please log in.' }
+      if (stateRef.current.profile?.username === account.username) return { ok: false, message: 'This username already exists in this browser tab. Please log in.' }
       const profile = { ...account, referralCode: createReferralCode(account.username) }
       updateState((current) => ({
         ...current,
@@ -131,11 +141,11 @@ export function RewardsProvider({ children }) {
       }))
       return { ok: true }
     },
-    async loginAccount(email, password) {
+    async loginAccount(username, password) {
       const current = stateRef.current
-      if (!current.profile || current.profile.email !== email) return { ok: false, message: 'No account with this email was found in this browser. Create an account first.' }
+      if (!current.profile || current.profile.username !== username) return { ok: false, message: 'No account with this username was found in this browser tab. Create an account first.' }
       const enteredHash = await hashPassword(password, current.credentialSalt)
-      if (enteredHash !== current.credentialHash) return { ok: false, message: 'That password does not match this local account.' }
+      if (enteredHash !== current.credentialHash) return { ok: false, message: 'That password does not match this preview account.' }
       updateState((value) => ({ ...value, account: current.profile }))
       return { ok: true }
     },

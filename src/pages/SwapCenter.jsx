@@ -77,7 +77,7 @@ function SwapCenterPage() {
               <span className={styles.kicker}>WALLET UPDATED</span>
               <h2 id="swap-heading">Conversion complete</h2>
               <p className={styles.resultAmounts}>{formatAmount(receipt.input)} {receipt.from.symbol} <ArrowRightLeft size={18} /> {formatAmount(receipt.output)} {receipt.to.symbol}</p>
-              <p className={styles.muted}>Your balances and wallet activity have been updated in this browser.</p>
+              <p className={styles.muted}>Your preview balances and wallet activity have been updated in this browser tab.</p>
               <button className={styles.primaryButton} type="button" onClick={resetSwap}>Make another conversion</button>
             </div>
           ) : (
@@ -136,7 +136,7 @@ function SwapCenterPage() {
               <div><dt>SVE balance</dt><dd>{formatAmount(sve)} SVEs</dd></div>
               <div><dt>Fee</dt><dd>No fee</dd></div>
             </dl>
-            <p className={styles.subtleNotice}><HelpCircle size={16} /> Conversions update the wallet saved in this browser. No external transfer is made.</p>
+            <p className={styles.subtleNotice}><HelpCircle size={16} /> Conversions update the preview wallet in this browser tab. No external transfer is made.</p>
           </section>
           <section className={styles.panel} aria-labelledby="steps-heading">
             <div className={styles.panelHead}><div><span className={styles.kicker}>HOW CONVERSION WORKS</span><h2 id="steps-heading">Four clear steps</h2></div></div>

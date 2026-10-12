@@ -16,7 +16,7 @@ function ReferEarnPage() {
   const { account, invitesShared, referralActivity, recordInvite } = useRewards()
   const [feedback, setFeedback] = useState('')
   const referralCode = account.referralCode
-  const inviteLink = new URL(`/login?ref=${encodeURIComponent(referralCode)}`, window.location.origin).href
+  const inviteLink = new URL(`/login?mode=register&ref=${encodeURIComponent(referralCode)}`, window.location.origin).href
 
   useEffect(() => {
     if (hash !== '#how-it-works') return undefined

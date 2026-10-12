@@ -40,7 +40,7 @@ function WalletPage() {
           ) : (
             <div className={styles.activityEmpty}><span className={styles.emptyIcon}><WalletIcon size={17} /></span><div><strong>Your wallet is ready</strong><p>Complete an eligible task to see your first VE credit here.</p></div></div>
           )}
-          <p className={styles.walletNote}>Balances and activity are saved locally in this browser. This frontend does not connect to a financial account or transfer funds.</p>
+          <p className={styles.walletNote}>Balances and activity stay in this browser tab. This frontend does not provide online accounts, connect to financial accounts, or transfer funds.</p>
         </section>
       </div>
     </AppPageShell>

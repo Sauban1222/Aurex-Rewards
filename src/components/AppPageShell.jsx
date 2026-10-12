@@ -97,7 +97,7 @@ useEffect(() => {
           </div>
         </header>
         <p className={styles.previewNotice}>
-          Preview mode · Balances and activity are stored in this browser. No financial accounts are connected and no rewards or payouts are delivered.
+          Preview mode · Balances and activity stay in this browser tab. No financial accounts are connected and no rewards or payouts are delivered.
         </p>
         {children}
         <footer className={styles.footer}>
