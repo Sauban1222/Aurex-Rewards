@@ -27,8 +27,10 @@ function LoginPage() {
     try {
       const result = isRegistering
         ? await registerAccount({
-          name: String(form.get('username') || '').trim(),
+          name: String(form.get('name') || '').trim(),
           username,
+          mobile: String(form.get('mobile') || '').trim(),
+          email: String(form.get('email') || '').trim().toLowerCase(),
           referredBy: String(form.get('referralCode') || '').trim().toUpperCase(),
         }, password)
         : await loginAccount(username, password)
@@ -65,21 +67,33 @@ function LoginPage() {
         <div className={styles.formPanel}>
           <span className={styles.formEyebrow}>{isRegistering ? 'CREATE YOUR ACCOUNT' : 'YOUR ACCOUNT'}</span>
           <h2>{isRegistering ? 'Join Aurex' : 'Log in to Aurex'}</h2>
-          <p className={styles.formCopy}>Demo only: this preview is stored in this browser tab and is not an online account. Use a made-up username and password; do not enter real personal information or a password you use elsewhere. No real rewards or transactions are sent.</p>
+          <p className={styles.formCopy}>Preview registration only: these details stay in this browser tab and are not sent to an online account. Use sample contact details, a made-up username, and a password you do not use elsewhere. No real rewards or transactions are sent.</p>
           {isRegistering && <p className={styles.bonusNotice}>Preview welcome reward <strong>+200 VEs</strong> (sample value for this browser demo).</p>}
           <form className={styles.form} onSubmit={handleSubmit}>
             {isRegistering ? (
               <div className={styles.registrationFields}>
                 <div className={styles.field}>
+                  <label htmlFor="aurex-full-name">Full name</label>
+                  <input id="aurex-full-name" name="name" type="text" autoComplete="name" placeholder="Your name" maxLength={100} required />
+                </div>
+                <div className={styles.field}>
                   <label htmlFor="aurex-username">Username</label>
                   <input id="aurex-username" name="username" type="text" autoComplete="username" placeholder="Choose a username" minLength={3} maxLength={24} pattern="[A-Za-z0-9_]{3,24}" title="Use 3–24 letters, numbers, or underscores." required />
+                </div>
+                <div className={styles.field}>
+                  <label htmlFor="aurex-mobile">Mobile number</label>
+                  <input id="aurex-mobile" name="mobile" type="tel" autoComplete="tel" placeholder="Sample mobile number" minLength={7} maxLength={24} required />
+                </div>
+                <div className={styles.field}>
+                  <label htmlFor="aurex-register-email">Email address</label>
+                  <input id="aurex-register-email" name="email" type="email" autoComplete="email" placeholder="sample@example.com" required />
                 </div>
                 <div className={styles.field}>
                   <label htmlFor="aurex-referral-code">Referral code <span>(optional)</span></label>
                   <input id="aurex-referral-code" name="referralCode" type="text" autoComplete="off" placeholder="Enter a friend's code" defaultValue={referralCode} maxLength={20} />
                 </div>
                 <div className={`${styles.field} ${styles.fullWidth}`}>
-                  <label htmlFor="aurex-register-password">Demo password</label>
+                  <label htmlFor="aurex-register-password">Password</label>
                   <div className={styles.passwordInput}>
                     <input id="aurex-register-password" name="password" type={showPassword ? 'text' : 'password'} autoComplete="new-password" placeholder="Create a made-up password" minLength={8} required />
                     <button
@@ -104,7 +118,7 @@ function LoginPage() {
 
                 <div className={styles.field}>
                   <div className={styles.passwordLabel}>
-                    <label htmlFor="aurex-password">Demo password</label>
+                    <label htmlFor="aurex-password">Password</label>
                   </div>
                   <div className={styles.passwordInput}>
                     <input id="aurex-password" name="password" type={showPassword ? 'text' : 'password'} autoComplete="current-password" placeholder="Your made-up password" required />
