@@ -2,7 +2,7 @@ import { ArrowRight, BadgeCheck, Gift, PackageCheck, Sparkles } from 'lucide-rea
 import { Link } from 'react-router-dom'
 import BannerCard from '../BannerCard/BannerCard.jsx'
 import BannerPhoto from '../BannerPhoto/BannerPhoto.jsx'
-import rewardsPhoto from '../../assets/banner-photos/rewards.jpg'
+import rewardsPhoto from '../../assets/banner-photos/rewards.avif'
 import styles from './ExchangeCenterBanner.module.css'
 
 // Reward options and program claims are placeholders until approved.

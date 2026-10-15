@@ -2,7 +2,7 @@ import { ArrowRight, CheckCircle2, ShieldCheck, Zap } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import BannerCard from '../BannerCard/BannerCard.jsx'
 import BannerPhoto from '../BannerPhoto/BannerPhoto.jsx'
-import captchaPhoto from '../../assets/banner-photos/captcha.jpg'
+import captchaPhoto from '../../assets/banner-photos/captcha.png'
 import styles from './CaptchaTasksBanner.module.css'
 
 // Reward values and program claims are placeholders until approved.
