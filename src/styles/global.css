@@ -419,7 +419,7 @@ h1 span { color: #d0bd8c; }
 .detail-tag { font-size: 8px; letter-spacing: .12em; }
 
 @media (min-width: 1024px) {
-  .feature-grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+  .feature-grid-2 { grid-template-columns: minmax(0, 1fr); gap: 18px; }
   .feature-grid-2 .card-copy { width: 57%; }
   .feature-grid-2 .feature-card h2 { font-size: clamp(24px, 2vw, 29px); }
   .feature-grid-2 .feature-card p { font-size: 13px; }
