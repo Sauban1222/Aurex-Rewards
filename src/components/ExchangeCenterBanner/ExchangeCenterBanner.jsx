@@ -1,6 +1,8 @@
 import { ArrowRight, BadgeCheck, Gift, PackageCheck, Sparkles } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import BannerCard from '../BannerCard/BannerCard.jsx'
+import BannerPhoto from '../BannerPhoto/BannerPhoto.jsx'
+import rewardsPhoto from '../../assets/banner-photos/rewards.jpg'
 import styles from './ExchangeCenterBanner.module.css'
 
 // Reward options and program claims are placeholders until approved.
@@ -14,14 +16,14 @@ const EXCHANGE = {
 }
 
 const REWARDS = [
-  { Icon: Gift, tone: 'violet', label: 'Digital gift card' },
-  { Icon: Sparkles, tone: 'gold', label: 'Premium reward' },
-  { Icon: PackageCheck, tone: 'cyan', label: 'Wallet payout' },
+  { Icon: Gift, tone: 'violet', label: 'Gift card category' },
+  { Icon: Sparkles, tone: 'gold', label: 'Digital rewards' },
+  { Icon: PackageCheck, tone: 'cyan', label: 'Other options' },
 ]
 
 function ExchangeIllustration() {
   return (
-    <svg className={styles.art} viewBox="0 0 440 340" role="img" aria-label="A rewards wallet with three selectable reward options">
+    <svg className={styles.art} viewBox="0 0 440 340" role="img" aria-label="Illustrative preview of reward categories">
       <defs>
         <linearGradient id="exchange-wallet" x1="0" y1="0" x2="1" y2="1">
           <stop stopColor="#30274f" />
@@ -39,6 +41,11 @@ function ExchangeIllustration() {
           <stop stopColor="#9ae5f3" />
           <stop offset="1" stopColor="#397fae" />
         </linearGradient>
+        <linearGradient id="exchange-gloss" x1="0" y1="0" x2="1" y2="1">
+          <stop stopColor="#fff" stopOpacity=".2" />
+          <stop offset=".55" stopColor="#fff" stopOpacity=".035" />
+          <stop offset="1" stopColor="#fff" stopOpacity="0" />
+        </linearGradient>
         <radialGradient id="exchange-halo">
           <stop stopColor="#8a6be0" stopOpacity=".26" />
           <stop offset="1" stopColor="#8a6be0" stopOpacity="0" />
@@ -54,6 +61,7 @@ function ExchangeIllustration() {
 
       <g className={styles.wallet} filter="url(#exchange-shadow)">
         <rect x="107" y="39" width="226" height="258" rx="24" fill="url(#exchange-wallet)" stroke="#ae99ee" strokeOpacity=".66" strokeWidth="2" />
+        <path d="M129 43h177q20 0 20 20v15q-92 19-219 4V63q0-20 22-20Z" fill="url(#exchange-gloss)" opacity=".35" />
         <path d="M128 72h184" stroke="#e5dcff" strokeOpacity=".18" />
         <text x="132" y="61" fill="#ded4ff" fontSize="10" fontWeight="700" letterSpacing="1.4">REWARD WALLET</text>
         <circle cx="294" cy="57" r="3" fill="#bba7fb" /><circle cx="304" cy="57" r="3" fill="#bba7fb" fillOpacity=".65" /><circle cx="314" cy="57" r="3" fill="#bba7fb" fillOpacity=".4" />
@@ -63,8 +71,8 @@ function ExchangeIllustration() {
           <rect x="127" y="108" width="186" height="47" rx="11" fill="#211f3d" stroke="#b8a0ff" strokeOpacity=".44" />
           <rect x="137" y="117" width="30" height="29" rx="8" fill="#3d2e67" stroke="#c0aaff" strokeOpacity=".55" />
           <path d="M152 122v18m-8-13h16v11h-16zm4-4q0-5 4-5t4 5" fill="none" stroke="#e4d9ff" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
-          <text x="177" y="128" fill="#fff" fontSize="10" fontWeight="700">Digital gift card</text>
-          <text x="177" y="141" fill="#bcb5d2" fontSize="8.5">Choose a reward</text>
+          <text x="177" y="128" fill="#fff" fontSize="10" fontWeight="700">Gift card category</text>
+          <text x="177" y="141" fill="#d0c9e2" fontSize="8.5">Preview only</text>
           <circle cx="295" cy="131" r="7" fill="#4c3f7d" stroke="#c3b1ff" strokeOpacity=".8" />
           <path d="m292 131 2 2 4-5" fill="none" stroke="#fff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
         </g>
@@ -73,8 +81,8 @@ function ExchangeIllustration() {
           <rect x="127" y="164" width="186" height="47" rx="11" fill="#211f3d" stroke="#e0c479" strokeOpacity=".36" />
           <rect x="137" y="173" width="30" height="29" rx="8" fill="#51402a" stroke="#e2c579" strokeOpacity=".5" />
           <path d="m152 177 2.4 5 5.5.6-4 3.7 1.1 5.2-5-2.7-5 2.7 1.1-5.2-4-3.7 5.5-.6z" fill="url(#exchange-gold)" />
-          <text x="177" y="184" fill="#fff" fontSize="10" fontWeight="700">Premium reward</text>
-          <text x="177" y="197" fill="#bcb5d2" fontSize="8.5">Explore the catalog</text>
+          <text x="177" y="184" fill="#fff" fontSize="10" fontWeight="700">Digital rewards</text>
+          <text x="177" y="197" fill="#d0c9e2" fontSize="8.5">Browse categories</text>
           <circle cx="295" cy="187" r="7" fill="#3a3344" stroke="#d4bd7c" strokeOpacity=".72" />
           <path d="m292 187 2 2 4-5" fill="none" stroke="#f8e6b2" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
         </g>
@@ -84,17 +92,18 @@ function ExchangeIllustration() {
           <rect x="137" y="229" width="30" height="29" rx="8" fill="#244458" stroke="#8ddced" strokeOpacity=".48" />
           <rect x="144" y="236" width="16" height="13" rx="2" fill="none" stroke="#d5f9ff" strokeWidth="1.5" />
           <path d="M147 240h10m-10 4h7" stroke="#d5f9ff" strokeWidth="1.2" strokeLinecap="round" />
-          <text x="177" y="240" fill="#fff" fontSize="10" fontWeight="700">Wallet payout</text>
-          <text x="177" y="253" fill="#bcb5d2" fontSize="8.5">Review your preference</text>
+          <text x="177" y="240" fill="#fff" fontSize="10" fontWeight="700">Other options</text>
+          <text x="177" y="253" fill="#d0c9e2" fontSize="8.5">Availability varies</text>
           <circle cx="295" cy="243" r="7" fill="#263d49" stroke="#8ddced" strokeOpacity=".68" />
           <path d="m292 243 2 2 4-5" fill="none" stroke="#d5f9ff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
         </g>
       </g>
 
       <g className={styles.giftBox} filter="url(#exchange-shadow)">
-        <path d="m43 205 47-22 48 23-48 25z" fill="#b79aff" stroke="#e4d9ff" strokeOpacity=".75" />
+        <path d="m43 205 47-22 48 23-48 25z" fill="url(#exchange-gift)" stroke="#f1eaff" strokeOpacity=".82" />
         <path d="M43 205v49l47 25v-48z" fill="url(#exchange-gift)" stroke="#d5c5ff" strokeOpacity=".72" />
         <path d="m138 206v48l-48 25v-48z" fill="#593caa" stroke="#bba8ff" strokeOpacity=".7" />
+        <path d="m49 207 40 20v43" fill="none" stroke="#fff" strokeOpacity=".22" strokeWidth="2" strokeLinecap="round" />
         <path d="m81 188 10-10 10 10-10 7z" fill="url(#exchange-gold)" stroke="#fff0c1" strokeOpacity=".8" />
         <path d="M86 192v84m9-79v79" stroke="url(#exchange-gold)" strokeWidth="6" />
         <path d="M91 188c-20-3-25-16-15-20 10-4 18 10 15 20Zm0 0c20-3 25-16 15-20-10-4-18 10-15 20Z" fill="none" stroke="url(#exchange-gold)" strokeWidth="4" />
@@ -131,7 +140,7 @@ function ExchangeCenterBanner() {
           <p className={styles.text}>{EXCHANGE.description}</p>
           <div className={styles.catalog}>
             <span className={styles.catalogIcon}><BadgeCheck size={15} aria-hidden="true" /></span>
-            <span><strong>{EXCHANGE.catalogLabel}</strong><small>Choose from available options</small></span>
+            <span><strong>{EXCHANGE.catalogLabel}</strong><small>Preview of possible categories</small></span>
           </div>
           <Link to="/exchange" className={styles.cta}>
             <span>{EXCHANGE.action}</span>
@@ -139,14 +148,14 @@ function ExchangeCenterBanner() {
           </Link>
         </div>
         <div className={styles.visual}>
-          <ExchangeIllustration />
+          <BannerPhoto src={rewardsPhoto} alt="A selection of wrapped gifts ready to be redeemed" caption="Choose a reward that feels right." tone="exchange" />
         </div>
       </div>
       <ul className={styles.strip}>
         {REWARDS.map(({ Icon, tone, label }) => (
           <li key={label} className={styles.feature}>
             <span className={`${styles.featureIcon} ${styles[tone]}`}><Icon size={18} aria-hidden="true" /></span>
-            <span className={styles.featureBody}><strong>{label}</strong><small>Eligible options may vary.</small></span>
+            <span className={styles.featureBody}><strong>{label}</strong><small>Illustrative category only.</small></span>
           </li>
         ))}
       </ul>

@@ -1,142 +1,176 @@
-import { Users, ArrowRight, Gift, Zap, ShieldCheck, Trophy } from 'lucide-react';
-import { Link } from 'react-router-dom';
-import BannerCard from '../BannerCard/BannerCard.jsx';
-import styles from './ReferEarnBanner.module.css';
+import { ArrowRight, Info, Send, Users } from 'lucide-react'
+import { Link } from 'react-router-dom'
+import BannerCard from '../BannerCard/BannerCard.jsx'
+import BannerPhoto from '../BannerPhoto/BannerPhoto.jsx'
+import referralPhoto from '../../assets/banner-photos/referrals.jpg'
+import styles from './ReferEarnBanner.module.css'
 
-// Referral values and feature copy are placeholders until approved.
-const BRAND = 'Aurex Rewards';
-const REFERRAL = { earn: '50', friend: '200' };
-
-const FEATURES = [
-  { key: 'share', Icon: Zap, tone: 'blue', title: 'Easy to Share', text: 'Share your link or code in just one click.' },
-  { key: 'rewards', Icon: Gift, tone: 'pink', title: 'Milestone Rewards', text: 'Rewards depend on eligible referral activity.' },
-  { key: 'secure', Icon: ShieldCheck, tone: 'cyan', title: 'Eligibility Matters', text: 'Program requirements apply before rewards qualify.' },
-  { key: 'earn', Icon: Trophy, tone: 'gold', title: 'Share Your Code', text: 'Invite friends with your personal Aurex link.' },
-];
-
-const CONFETTI = [
-  [150, 30, 7, '#8B6CF0', 20], [300, 20, 6, '#D46BE6', -15], [405, 120, 7, '#4FB3FF', 30],
-  [36, 110, 6, '#D46BE6', 10], [72, 20, 5, '#4FB3FF', 40], [420, 60, 5, '#8B6CF0', -20],
-  [388, 258, 6, '#D46BE6', 25], [52, 300, 5, '#8B6CF0', -10],
-];
-
-function VCoin({ cx, cy, r, className }) {
+function ReferralIllustration() {
   return (
-    <g className={className}>
-      <circle cx={cx + 2.5} cy={cy + 3} r={r} fill="#0B1250" />
-      <circle cx={cx} cy={cy} r={r} fill="url(#rf-blue)" stroke="#8FB2FF" strokeWidth="2" />
-      <circle cx={cx} cy={cy} r={r * 0.72} fill="none" stroke="#fff" strokeOpacity=".25" />
-      <text x={cx} y={cy + r * 0.36} textAnchor="middle" fontSize={r * 1.05} fontWeight="800" fill="#fff">V</text>
-    </g>
-  );
-}
-
-function Tile({ x, y, rot, children }) {
-  return (
-    <g transform={`rotate(${rot} ${x + 17} ${y + 17})`}>
-      <rect x={x} y={y} width="34" height="34" rx="9" fill="#2C3A9E" fillOpacity=".7" stroke="#7F96FF" strokeOpacity=".6" />
-      <g fill="none" stroke="#DDE5FF" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">{children}</g>
-    </g>
-  );
-}
-
-function Illustration() {
-  return (
-    <svg className={styles.art} viewBox="0 0 440 340" role="group" aria-label="Two friends sharing a gift box and a referral code">
+    <svg
+      className={styles.art}
+      viewBox="0 42 520 280"
+      role="img"
+      aria-labelledby="referral-illustration-title referral-illustration-description"
+    >
+      <title id="referral-illustration-title">Aurex referral invitation</title>
+      <desc id="referral-illustration-description">You invite a friend, they join Aurex, and a reward is unlocked.</desc>
       <defs>
-        <linearGradient id="rf-gold" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor="#F8E3AE" /><stop offset=".55" stopColor="#E2B965" /><stop offset="1" stopColor="#B8863A" />
+        <linearGradient id="referral-orbit" x1="0" y1="0" x2="1" y2="0">
+          <stop stopColor="#249fe8" />
+          <stop offset="1" stopColor="#8265ed" />
         </linearGradient>
-        <linearGradient id="rf-blue" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor="#4D7BFF" /><stop offset="1" stopColor="#1B2A9A" />
+        <linearGradient id="referral-ribbon" x1="0" y1="0" x2="1" y2="0">
+          <stop stopColor="#f4d88d" />
+          <stop offset="1" stopColor="#bb8c42" />
         </linearGradient>
-        <linearGradient id="rf-top" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#B3A6FF" /><stop offset="1" stopColor="#8878F2" /></linearGradient>
-        <linearGradient id="rf-left" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#7261E8" /><stop offset="1" stopColor="#4B3FB5" /></linearGradient>
-        <linearGradient id="rf-right" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#5646C4" /><stop offset="1" stopColor="#32288A" /></linearGradient>
-        <linearGradient id="rf-ring" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stopColor="#38BDF8" /><stop offset="1" stopColor="#A06BF5" /></linearGradient>
-        <linearGradient id="rf-hood" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#4466E8" /><stop offset="1" stopColor="#2B3FA8" /></linearGradient>
-        <linearGradient id="rf-top2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#8B5CF0" /><stop offset="1" stopColor="#5B34B8" /></linearGradient>
-        <radialGradient id="rf-glow" cx=".5" cy=".5" r=".5"><stop offset="0" stopColor="#6D5BF0" stopOpacity=".35" /><stop offset="1" stopColor="#6D5BF0" stopOpacity="0" /></radialGradient>
+        <linearGradient id="referral-box-front" x1="0" y1="0" x2="1" y2="1">
+          <stop stopColor="#596de4" />
+          <stop offset="1" stopColor="#3444ae" />
+        </linearGradient>
+        <linearGradient id="referral-box-side" x1="0" y1="0" x2="1" y2="1">
+          <stop stopColor="#4e43bb" />
+          <stop offset="1" stopColor="#292875" />
+        </linearGradient>
+        <linearGradient id="referral-box-lid" x1="0" y1="0" x2="1" y2="1">
+          <stop stopColor="#8975ff" />
+          <stop offset="1" stopColor="#5146c3" />
+        </linearGradient>
+        <linearGradient id="referral-profile-blue" x1="0" y1="0" x2="1" y2="1">
+          <stop stopColor="#1c9fbf" />
+          <stop offset="1" stopColor="#2453a3" />
+        </linearGradient>
+        <linearGradient id="referral-profile-violet" x1="0" y1="0" x2="1" y2="1">
+          <stop stopColor="#a477e8" />
+          <stop offset="1" stopColor="#5944ae" />
+        </linearGradient>
+        <radialGradient id="referral-halo">
+          <stop stopColor="#275bca" stopOpacity=".24" />
+          <stop offset="1" stopColor="#275bca" stopOpacity="0" />
+        </radialGradient>
+        <radialGradient id="referral-avatar-glow">
+          <stop stopColor="#5cbfff" stopOpacity=".22" />
+          <stop offset="1" stopColor="#5cbfff" stopOpacity="0" />
+        </radialGradient>
+        <clipPath id="referral-boy-clip">
+          <circle cx="111" cy="150" r="49" />
+        </clipPath>
+        <clipPath id="referral-girl-clip">
+          <circle cx="409" cy="201" r="43" />
+        </clipPath>
+        <filter id="referral-shadow" x="-30%" y="-30%" width="160%" height="175%">
+          <feDropShadow dx="0" dy="10" stdDeviation="9" floodColor="#070b20" floodOpacity=".55" />
+        </filter>
       </defs>
 
-      <ellipse cx="220" cy="190" rx="190" ry="150" fill="url(#rf-glow)" />
-      {CONFETTI.map(([x, y, s, c, r]) => (
-        <rect key={`${x}-${y}`} x={x} y={y} width={s} height={s} fill={c} transform={`rotate(${r} ${x} ${y})`} opacity=".85" />
-      ))}
+      <ellipse cx="275" cy="174" rx="235" ry="148" fill="url(#referral-halo)" />
+      <ellipse
+        className={styles.orbit}
+        cx="264"
+        cy="205"
+        rx="96"
+        ry="61"
+        transform="rotate(-18 264 205)"
+        fill="none"
+        stroke="#8c9bff"
+        strokeOpacity=".34"
+        strokeWidth="1.4"
+        strokeDasharray="3 7"
+      />
+      <path
+        className={styles.connection}
+        d="M111 168c43-97 101-111 158-66 33 26 51 75 108 62 37-8 58 10 76 37"
+        fill="none"
+        stroke="url(#referral-orbit)"
+        strokeOpacity=".58"
+        strokeWidth="2"
+        strokeDasharray="5 8"
+        strokeLinecap="round"
+      />
+      <path d="m371 158 10 5-10 4m54 29 11 4-9 7" fill="none" stroke="#79bcff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
 
-      {/* platform */}
-      <ellipse cx="220" cy="262" rx="176" ry="32" fill="#10122A" stroke="url(#rf-ring)" strokeWidth="3" />
-      <ellipse cx="220" cy="262" rx="132" ry="22" fill="none" stroke="url(#rf-ring)" strokeOpacity=".4" />
-
-      {/* boy */}
-      <g>
-        <path d="M58 276 Q58 214 100 208 Q142 214 142 276 Z" fill="url(#rf-hood)" />
-        <path d="M80 210 Q100 232 120 210" fill="none" stroke="#2B3FA8" strokeWidth="4" strokeLinecap="round" />
-        <rect x="94" y="194" width="12" height="16" rx="5" fill="#E8A57F" />
-        <circle cx="100" cy="176" r="23" fill="#F2B48E" />
-        <path d="M77 174 Q76 148 102 148 Q126 148 123 172 Q112 158 96 160 Q84 162 77 174 Z" fill="#2B1B1B" />
-        <circle cx="92" cy="178" r="2.2" fill="#2B1B1B" /><circle cx="109" cy="178" r="2.2" fill="#2B1B1B" />
-        <path d="M93 187 Q101 194 109 187" stroke="#8A3A2A" strokeWidth="2" fill="none" strokeLinecap="round" />
-        <rect x="118" y="238" width="16" height="28" rx="3" transform="rotate(18 126 252)" fill="#10122A" stroke="#6D7BFF" strokeWidth="1.5" />
-        <circle cx="122" cy="264" r="6" fill="#F2B48E" />
+      <g className={styles.profileLeft} filter="url(#referral-shadow)">
+        <circle cx="111" cy="150" r="57" fill="url(#referral-avatar-glow)" />
+        <circle cx="111" cy="150" r="53" fill="url(#referral-profile-blue)" stroke="#80dcf4" strokeWidth="2" />
+        <g clipPath="url(#referral-boy-clip)">
+          <rect x="61" y="100" width="100" height="100" fill="url(#referral-profile-blue)" />
+          <circle cx="86" cy="120" r="36" fill="#8de6f3" fillOpacity=".15" />
+          <path d="M67 206c4-24 20-38 44-38s40 14 44 38v18H67z" fill="#182d51" />
+          <path d="m97 169 14 13 14-13 9 8-9 10 10 27H87l10-27-9-10z" fill="#62d3e7" />
+          <path d="M103 158h16v17l-8 8-8-8z" fill="#d69b77" />
+          <path d="M91 128c0-17 8-28 21-28 15 0 23 12 21 29l-4 18c-2 12-9 20-18 20s-17-8-19-20z" fill="#f0bd96" />
+          <path d="M89 131c-2-19 7-34 22-36 19-2 29 13 25 34l-8-9c-10 2-20-1-27-7-3 8-7 14-12 18z" fill="#17233f" />
+          <path d="M98 139h.5m23 0h.5" fill="none" stroke="#3b2b2d" strokeWidth="3" strokeLinecap="round" />
+          <path d="M104 150c4 4 10 4 14 0" fill="none" stroke="#9d5a55" strokeWidth="1.8" strokeLinecap="round" />
+          <path d="m93 144-4 4 4 4m36-8 4 4-4 4" fill="#e8ad88" />
+        </g>
+        <circle cx="111" cy="150" r="49" fill="none" stroke="#d2f7ff" strokeOpacity=".76" strokeWidth="1.5" />
       </g>
 
-      {/* girl */}
-      <g>
-        <path d="M300 182 Q298 146 332 146 Q366 146 364 182 L368 232 Q332 244 296 232 Z" fill="#2A1830" />
-        <path d="M286 276 Q286 214 330 208 Q374 214 374 276 Z" fill="url(#rf-top2)" />
-        <rect x="324" y="194" width="12" height="16" rx="5" fill="#C98B68" />
-        <circle cx="330" cy="177" r="22" fill="#D79A76" />
-        <path d="M308 173 Q312 152 332 152 Q352 152 352 173 Q340 163 326 165 Q314 167 308 173 Z" fill="#2A1830" />
-        <circle cx="322" cy="179" r="2.1" fill="#2A1830" /><circle cx="339" cy="179" r="2.1" fill="#2A1830" />
-        <path d="M323 187 Q331 194 339 187" stroke="#8A3A2A" strokeWidth="2" fill="none" strokeLinecap="round" />
-        <rect x="302" y="240" width="16" height="28" rx="3" transform="rotate(-18 310 254)" fill="#10122A" stroke="#B58BFF" strokeWidth="1.5" />
-        <circle cx="314" cy="266" r="6" fill="#D79A76" />
+      <g className={styles.profileRight} filter="url(#referral-shadow)">
+        <circle cx="409" cy="201" r="50" fill="url(#referral-avatar-glow)" />
+        <circle cx="409" cy="201" r="47" fill="url(#referral-profile-violet)" stroke="#d3b4ff" strokeWidth="2" />
+        <g clipPath="url(#referral-girl-clip)">
+          <rect x="365" y="157" width="88" height="88" fill="url(#referral-profile-violet)" />
+          <circle cx="433" cy="175" r="31" fill="#f0d6ff" fillOpacity=".16" />
+          <path d="M367 250c3-21 18-34 42-34s39 13 43 34v17h-85z" fill="#352d68" />
+          <path d="m394 214 15 13 15-13 9 8-9 11 8 25h-46l8-25-9-11z" fill="#b99aff" />
+          <path d="M402 207h15v16l-8 8-7-8z" fill="#bd8068" />
+          <path d="M388 186c-1-17 7-29 21-29s23 11 23 28l-3 17c-2 13-9 21-20 21s-18-9-20-21z" fill="#e9b89a" />
+          <path d="M386 187c-1-19 7-34 22-35 18-1 28 13 25 32l-7-5-5-13c-7 8-17 12-31 12z" fill="#342549" />
+          <path d="M396 191h.5m22 0h.5" fill="none" stroke="#452e35" strokeWidth="2.8" strokeLinecap="round" />
+          <path d="M401 202c4 4 9 4 13 0" fill="none" stroke="#ad645b" strokeWidth="1.7" strokeLinecap="round" />
+          <circle cx="389" cy="178" r="7" fill="#342549" />
+          <circle cx="428" cy="178" r="7" fill="#342549" />
+        </g>
+        <circle cx="409" cy="201" r="43" fill="none" stroke="#f1e7ff" strokeOpacity=".78" strokeWidth="1.5" />
       </g>
 
-      {/* gift */}
-      <g className={styles.float} transform="translate(10 -4)">
-        <ellipse cx="210" cy="254" rx="64" ry="11" fill="#000" opacity=".35" />
-        <polygon points="152,145 210,174 210,252 152,223" fill="url(#rf-left)" />
-        <polygon points="268,145 210,174 210,252 268,223" fill="url(#rf-right)" />
-        <polygon points="210,116 268,145 210,174 152,145" fill="url(#rf-top)" />
-        <polygon points="174,156 188,163 188,241 174,234" fill="#E2B965" />
-        <polygon points="232,163 246,156 246,234 232,241" fill="#B8863A" />
-        <polygon points="174.7,156.4 187.3,162.6 245.3,133.6 232.7,127.4" fill="#F8E3AE" />
-        <polygon points="232.7,162.6 245.3,156.4 187.3,127.4 174.7,133.6" fill="#F1D08A" />
-        <ellipse cx="192" cy="132" rx="21" ry="11" transform="rotate(-28 192 132)" fill="url(#rf-gold)" />
-        <ellipse cx="228" cy="132" rx="21" ry="11" transform="rotate(28 228 132)" fill="url(#rf-gold)" />
-        <circle cx="210" cy="139" r="8.5" fill="url(#rf-gold)" />
+      <g className={styles.invite} filter="url(#referral-shadow)">
+        <rect x="190" y="61" width="161" height="45" rx="22.5" fill="#172b59" stroke="#4e79dc" strokeOpacity=".82" />
+        <path d="m208 82 10-10a7 7 0 0 1 10 10l-5 5m-1-1-10 10a7 7 0 0 1-10-10l5-5m5 6 12-12" fill="none" stroke="#a9d7ff" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round" />
+        <text x="254" y="88" fill="#edf4ff" fontSize="13" fontWeight="650">Invite a friend</text>
       </g>
 
-      {/* earn card + chip */}
-      <g>
-        <rect x="122" y="238" width="196" height="46" rx="12" fill="#1B1E4E" fillOpacity=".92" stroke="#A9A0FF" strokeOpacity=".4" />
-        <line x1="220" y1="246" x2="220" y2="276" stroke="#fff" strokeOpacity=".15" />
-        <text x="134" y="253" fontSize="12" fill="#C9C4FF">You Earn</text>
-        <circle cx="142" cy="268" r="8" fill="url(#rf-gold)" /><text x="142" y="272" textAnchor="middle" fontSize="10" fontWeight="800" fill="#6B4510">V</text>
-        <text x="154" y="274" fontSize="18" fontWeight="800" fill="#fff">{REFERRAL.earn}<tspan fontSize="11" fontWeight="600" dx="3">VEs</tspan></text>
-        <text x="232" y="253" fontSize="12" fill="#C9C4FF">Your Friend Gets</text>
-        <circle cx="240" cy="268" r="8" fill="url(#rf-gold)" /><text x="240" y="272" textAnchor="middle" fontSize="10" fontWeight="800" fill="#6B4510">V</text>
-        <text x="252" y="274" fontSize="18" fontWeight="800" fill="#fff">{REFERRAL.friend}<tspan fontSize="11" fontWeight="600" dx="3">VEs</tspan></text>
-
-        <rect x="140" y="296" width="160" height="28" rx="14" fill="#262A6E" fillOpacity=".9" stroke="#A9A0FF" strokeOpacity=".4" />
-        <text x="220" y="315" textAnchor="middle" fontSize="12.5" fontWeight="600" fill="#fff">Share • Qualify • Get Rewarded</text>
+      <g className={styles.gift} filter="url(#referral-shadow)">
+        <ellipse cx="264" cy="278" rx="94" ry="13" fill="#070c20" opacity=".62" />
+        <path d="m192 194 72 36v48l-72-36z" fill="url(#referral-box-front)" stroke="#aebaff" strokeOpacity=".9" strokeWidth="1.5" />
+        <path d="m336 194-72 36v48l72-36z" fill="url(#referral-box-side)" stroke="#c2b6ff" strokeOpacity=".92" strokeWidth="1.5" />
+        <path d="m192 194 72 36 72-36" fill="none" stroke="#e0e4ff" strokeOpacity=".66" strokeWidth="2" />
+        <path d="m164 168 100-48 100 48-100 50z" fill="url(#referral-box-lid)" stroke="#d8d1ff" strokeWidth="2" />
+        <path d="m164 168 100 50v17l-100-48z" fill="#5e50d0" stroke="#b0a5ff" strokeOpacity=".92" strokeWidth="1.4" />
+        <path d="m364 168-100 50v17l100-48z" fill="#443ba8" stroke="#c4b7ff" strokeOpacity=".9" strokeWidth="1.4" />
+        <path d="m243 207 21 11v59l-21-10z" fill="url(#referral-ribbon)" />
+        <path d="m264 218 21-11v60l-21 10z" fill="#d4a452" />
+        <path d="m244 168 20-10 20 10-20 10z" fill="#ffe9ad" stroke="#fff6d8" strokeOpacity=".9" />
+        <path d="m244 168 20 10v41l-20-10z" fill="#f4d88d" />
+        <path d="m264 178 20-10v41l-20 10z" fill="#c88f42" />
+        <path d="M260 158c-14-5-26-16-21-24 6-10 23 0 27 18 4-18 21-28 27-18 5 8-7 19-21 24z" fill="#f4d88d" stroke="#fff0c5" strokeWidth="1.8" />
+        <path d="M260 154c-9-5-15-12-12-16 4-5 12 1 16 12m0 4c9-5 15-12 12-16-4-5-12 1-16 12" fill="none" stroke="#fff4d1" strokeOpacity=".92" strokeWidth="2" strokeLinecap="round" />
+        <ellipse cx="264" cy="158" rx="8" ry="6" fill="#ffe8a6" stroke="#fff7dd" strokeWidth="1.2" />
+        <path className={styles.giftSheen} d="m181 169 73 37m-59-43 54 28" fill="none" stroke="#e1dcff" strokeOpacity=".86" strokeWidth="2.2" strokeLinecap="round" />
       </g>
 
-      <VCoin cx={96} cy={62} r={22} className={styles.coinA} />
-      <VCoin cx={362} cy={70} r={21} className={styles.coinB} />
-      <VCoin cx={66} cy={258} r={19} className={styles.coinC} />
-      <VCoin cx={376} cy={262} r={19} className={styles.coinA} />
+      <g className={styles.rewardCoin}>
+        <circle cx="169" cy="239" r="17" fill="#d8b86d" stroke="#f5e6b7" strokeOpacity=".85" />
+        <circle cx="169" cy="239" r="12" fill="none" stroke="#fff4d2" strokeOpacity=".52" />
+        <text x="169" y="245" textAnchor="middle" fill="#46371e" fontSize="15" fontWeight="800">A</text>
+      </g>
+      <g className={styles.rewardCoinSecond}>
+        <circle cx="363" cy="113" r="14" fill="#c99f55" stroke="#f5e6b7" strokeOpacity=".82" />
+        <text x="363" y="118" textAnchor="middle" fill="#46371e" fontSize="12" fontWeight="800">A</text>
+      </g>
+      <circle className={styles.spark} cx="180" cy="94" r="3" fill="#a9c8ff" />
+      <circle className={styles.sparkSecond} cx="350" cy="274" r="3" fill="#b59aff" />
 
-      <Tile x={14} y={190} rot={-10}>
-        <circle cx="28" cy="203" r="4.5" /><path d="M20 218 Q28 209 36 218" /><path d="M40 200 v8 M36 204 h8" />
-      </Tile>
-      <Tile x={392} y={190} rot={10}>
-        <path d="M399 212 L411 200" /><path d="M403 200 H411 V208" />
-      </Tile>
+      <g className={styles.joined}>
+        <rect x="160" y="286" width="208" height="31" rx="15.5" fill="#142b45" stroke="#3d8bc0" strokeOpacity=".7" />
+        <circle cx="180" cy="301.5" r="9" fill="#287ca9" stroke="#82dafa" strokeWidth="1" />
+        <path d="m176 301 3 3 5-6" fill="none" stroke="#effcff" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+        <text x="198" y="305" fill="#e6f4ff" fontSize="9.5" fontWeight="650">Friend joins · reward unlocks</text>
+      </g>
     </svg>
-  );
+  )
 }
 
 export default function ReferEarnBanner() {
@@ -144,36 +178,44 @@ export default function ReferEarnBanner() {
     <BannerCard className={styles.card} aria-labelledby="refer-title">
       <div className={styles.main}>
         <div className={styles.copy}>
-          <span className={styles.pill}><Users size={15} aria-hidden="true" />REFER &amp; EARN</span>
+          <span className={styles.pill}><Users size={16} aria-hidden="true" />REFER &amp; EARN</span>
           <h2 id="refer-title" className={styles.title}>
-            Invite Friends.
-            <span className={styles.grad}> Earn Rewards.</span>
+            Refer Friends,
+            <span className={styles.grad}> Earn Rewards</span>
           </h2>
-          <p className={styles.text}>Preview rewards: {REFERRAL.earn} VEs for you and {REFERRAL.friend} for a friend when eligible referral milestones are completed.</p>
+          <p className={styles.text}>Your friend gets 200 VEs. You get 50 VEs when they qualify, plus 20% whenever they earn eligible VEs.</p>
+          <div className={styles.rewardSplit} aria-label="Referral rewards: your friend gets 200 VEs when eligible; you get 50 VEs when they qualify, plus 20% of each eligible VE earning">
+            <div className={styles.reward}>
+              <span>FOR YOUR FRIEND</span>
+              <strong>200 <small>VEs</small></strong>
+              <p>One-time reward when eligible</p>
+            </div>
+            <div className={styles.reward}>
+              <span>FOR YOU</span>
+              <div className={styles.rewardValue}>
+                <strong>50 <small>VEs</small></strong>
+                <span>+ 20%</span>
+              </div>
+              <p>Every time they earn eligible VEs</p>
+            </div>
+          </div>
           <div className={styles.actions}>
             <Link to="/refer" className={styles.cta}>
-              <span>Open referral workspace</span>
-              <ArrowRight size={18} aria-hidden="true" className={styles.arrow} />
+              <Send size={17} aria-hidden="true" />
+              <span>Invite Friends</span>
+              <ArrowRight size={17} aria-hidden="true" className={styles.arrow} />
             </Link>
             <Link to="/refer#how-it-works" className={styles.ghost}>
-              <Gift size={16} aria-hidden="true" />
+              <Info size={17} aria-hidden="true" />
               <span>How It Works</span>
             </Link>
           </div>
+          <p className={styles.note}><Info size={14} aria-hidden="true" />Preview only. Eligibility and program terms apply.</p>
         </div>
         <div className={styles.visual}>
-          <Illustration />
+          <BannerPhoto src={referralPhoto} alt="Friends sharing a phone and exploring something together" caption="Invite a friend. Earn together." tone="referral" />
         </div>
       </div>
-
-      <ul className={styles.strip}>
-        {FEATURES.map(({ key, Icon, tone, title, text }) => (
-          <li key={key} className={styles.feature}>
-            <span className={`${styles.featureIcon} ${styles[tone]}`}><Icon size={18} aria-hidden="true" /></span>
-            <span className={styles.featureBody}><strong>{title}</strong><small>{text}</small></span>
-          </li>
-        ))}
-      </ul>
     </BannerCard>
-  );
+  )
 }

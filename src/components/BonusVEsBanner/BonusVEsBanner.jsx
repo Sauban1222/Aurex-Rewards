@@ -1,6 +1,8 @@
 import { ArrowRight, CalendarCheck, CheckCircle2, Users } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import BannerCard from '../BannerCard/BannerCard.jsx'
+import BannerPhoto from '../BannerPhoto/BannerPhoto.jsx'
+import bonusPhoto from '../../assets/banner-photos/bonus.jpg'
 import styles from './BonusVEsBanner.module.css'
 
 // Reward values and program claims are placeholders until approved.
@@ -49,6 +51,10 @@ function BonusIllustration() {
           <stop offset=".55" stopColor="#20243f" />
           <stop offset="1" stopColor="#12172d" />
         </linearGradient>
+        <linearGradient id="bonus-gloss" x1="0" y1="0" x2="0" y2="1">
+          <stop stopColor="#fff" stopOpacity=".2" />
+          <stop offset="1" stopColor="#fff" stopOpacity="0" />
+        </linearGradient>
         <filter id="bonus-shadow" x="-40%" y="-40%" width="180%" height="190%">
           <feDropShadow dx="0" dy="8" stdDeviation="7" floodColor="#050815" floodOpacity=".55" />
         </filter>
@@ -64,6 +70,7 @@ function BonusIllustration() {
         <path d="M54 97h13v15H54zM57 94h7M57 102h7M57 107h5" fill="none" stroke="#c9beff" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
         <text x="83" y="99" fill="#fff" fontSize="10.5" fontWeight="700">Daily Check-in</text>
         <text x="83" y="115" fill="#b9b4d3" fontSize="9">Stay active</text>
+        <path d="M48 80h113" stroke="url(#bonus-gloss)" strokeWidth="1.4" />
         <circle cx="163" cy="105" r="9" fill="#4358bd" stroke="#91a9ff" strokeOpacity=".75" />
         <path d="m159 105 3 3 5-6" fill="none" stroke="#e4edff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
       </g>
@@ -75,6 +82,7 @@ function BonusIllustration() {
         <path d="M38 183q1-9 6-9t6 9m1 0q1-9 6-9t6 9" fill="none" stroke="#c9beff" strokeWidth="1.5" strokeLinecap="round" />
         <text x="71" y="168" fill="#fff" fontSize="10.5" fontWeight="700">Invite Friends</text>
         <text x="71" y="184" fill="#b9b4d3" fontSize="9">Grow together</text>
+        <path d="M36 149h125" stroke="url(#bonus-gloss)" strokeWidth="1.4" />
         <circle cx="162" cy="174" r="9" fill="#4358bd" stroke="#91a9ff" strokeOpacity=".7" />
         <path d="m158 174 3 3 5-6" fill="none" stroke="#e4edff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
       </g>
@@ -85,6 +93,7 @@ function BonusIllustration() {
         <path d="M53 250v-8l5-4 4 2 5-7M63 233h4v4" fill="none" stroke="#9fc9ff" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
         <text x="84" y="237" fill="#fff" fontSize="10.5" fontWeight="700">Complete Tasks</text>
         <text x="84" y="253" fill="#b9b4d3" fontSize="9">Track your progress</text>
+        <path d="M49 218h120" stroke="url(#bonus-gloss)" strokeWidth="1.4" />
         <circle cx="166" cy="243" r="9" fill="#4358bd" stroke="#91a9ff" strokeOpacity=".65" />
         <path d="m162 243 3 3 5-6" fill="none" stroke="#e4edff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
       </g>
@@ -98,6 +107,7 @@ function BonusIllustration() {
         <path d="M261 251h137" stroke="#e4c77d" strokeOpacity=".56" strokeWidth="2" />
         <circle cx="329" cy="259" r="39" fill="#11172c" stroke="url(#bonus-gold)" strokeWidth="5" />
         <circle cx="329" cy="259" r="31" fill="#242440" stroke="#f6d889" strokeOpacity=".55" strokeWidth="1.5" />
+        <path d="M297 249a34 34 0 0 1 55-12" fill="none" stroke="#fff5d3" strokeOpacity=".46" strokeWidth="2.5" strokeLinecap="round" />
         <text x="329" y="253" textAnchor="middle" fill="#eac979" fontSize="10" fontWeight="700" letterSpacing="1.5">BONUS</text>
         <text x="329" y="273" textAnchor="middle" fill="#fff1c5" fontSize="20" fontWeight="800">VE</text>
         <path d="M251 300h154q-4 14-18 14H270q-14 0-19-14Z" fill="#242640" stroke="#8f83e1" strokeOpacity=".62" />
@@ -135,7 +145,7 @@ function BonusVEsBanner() {
           </Link>
         </div>
         <div className={styles.visual}>
-          <BonusIllustration />
+          <BannerPhoto src={bonusPhoto} alt="A tablet displaying a rising performance chart" caption="Make every activity count." tone="bonus" />
         </div>
       </div>
       <ul className={styles.strip}>

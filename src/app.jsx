@@ -87,7 +87,12 @@ function App() {
 
       <main id="main-content" className="page-content">
         <section className="home-intro" aria-labelledby="welcome-title">
-          <h1 id="welcome-title">Earn, swap and redeem rewards</h1>
+          <p className="home-kicker">
+            <span className="home-kicker-brand">AUREX REWARDS</span>
+            <span className="home-kicker-separator" aria-hidden="true">/</span>
+            <span className="home-kicker-context">PREVIEW DASHBOARD</span>
+          </p>
+          <h1 id="welcome-title">Earn, swap and redeem <span>rewards</span></h1>
           <p>Explore the ways Aurex Rewards helps you make the most of every opportunity.</p>
         </section>
 
@@ -115,7 +120,7 @@ function App() {
         <section id="earn" className="section-block" aria-labelledby="earn-heading">
           <div className="section-heading">
             <div><div className="section-kicker">YOUR NEXT OPPORTUNITY</div><h2 id="earn-heading">Earn a little extra</h2></div>
-            <a className="text-link" href="#earn">Explore ways to earn <Icon name="arrow" size={16} /></a>
+            <Link className="text-link" to="/bonus">Explore ways to earn <Icon name="arrow" size={16} /></Link>
           </div>
           <ReferEarnBanner />
           <div className="feature-grid feature-grid-2">

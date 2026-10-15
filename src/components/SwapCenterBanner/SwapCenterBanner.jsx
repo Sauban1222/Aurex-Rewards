@@ -1,6 +1,8 @@
 import { ArrowLeftRight, ArrowRight, CircleDollarSign, RefreshCw, Wallet } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import BannerCard from '../BannerCard/BannerCard.jsx'
+import BannerPhoto from '../BannerPhoto/BannerPhoto.jsx'
+import swapPhoto from '../../assets/banner-photos/swap.jpg'
 import styles from './SwapCenterBanner.module.css'
 
 // Rates and product claims are illustrative placeholders until approved.
@@ -11,7 +13,7 @@ const SWAP = {
   description: 'Convert between eligible VE and SVE wallet balances.',
   sourceAsset: 'VE',
   destinationAsset: 'SVE',
-  rate: '1 VE = 0.65 SVE',
+  rate: 'Preview rate shown before confirmation',
   action: 'Open Swap Center',
 }
 
@@ -32,6 +34,11 @@ function SwapIllustration() {
         <linearGradient id="swap-sve" x1="0" y1="0" x2="1" y2="1">
           <stop stopColor="#284a79" />
           <stop offset="1" stopColor="#171b35" />
+        </linearGradient>
+        <linearGradient id="swap-card-gloss" x1="0" y1="0" x2="1" y2="1">
+          <stop stopColor="#fff" stopOpacity=".2" />
+          <stop offset=".52" stopColor="#fff" stopOpacity=".035" />
+          <stop offset="1" stopColor="#fff" stopOpacity="0" />
         </linearGradient>
         <linearGradient id="swap-gold" x1="0" y1="0" x2="1" y2="1">
           <stop stopColor="#ffe7a1" />
@@ -75,6 +82,7 @@ function SwapIllustration() {
 
       <g className={styles.veCard} filter="url(#swap-shadow)">
         <path d="m33 113 26-21h111l25 22v103l-25 21H59l-26-22z" fill="url(#swap-ve)" stroke="#e8c982" strokeOpacity=".78" strokeWidth="2" />
+        <path d="m39 115 23-18h101q18 0 25 18H39z" fill="url(#swap-card-gloss)" />
         <path d="M42 118h143" stroke="#ffe4a2" strokeOpacity=".16" />
         <text x="55" y="140" fill="#e9d194" fontSize="10" fontWeight="700" letterSpacing="1.2">VE</text>
         <text x="55" y="155" fill="#c3b58f" fontSize="8" letterSpacing=".7">REWARD BALANCE</text>
@@ -87,6 +95,7 @@ function SwapIllustration() {
 
       <g className={styles.sveCard} filter="url(#swap-shadow)">
         <path d="m250 113 25-21h111l26 22v103l-26 21H275l-25-22z" fill="url(#swap-sve)" stroke="#77c8f3" strokeOpacity=".82" strokeWidth="2" />
+        <path d="m256 115 22-18h100q18 0 25 18H256z" fill="url(#swap-card-gloss)" />
         <path d="M259 118h143" stroke="#c4eaff" strokeOpacity=".18" />
         <text x="273" y="140" fill="#a6dcf7" fontSize="10" fontWeight="700" letterSpacing="1.2">SVE</text>
         <text x="273" y="155" fill="#a1b8ce" fontSize="8" letterSpacing=".7">REWARD BALANCE</text>
@@ -139,7 +148,7 @@ function SwapCenterBanner() {
           </Link>
         </div>
         <div className={styles.visual}>
-          <SwapIllustration />
+          <BannerPhoto src={swapPhoto} alt="Cash and a calculator arranged for a currency conversion" caption="Convert with confidence." tone="swap" />
         </div>
       </div>
       <ul className={styles.strip}>

@@ -150,7 +150,7 @@ function LoginPage() {
           </p>
         </div>
       </section>
-      <footer className={styles.footer}>© 2026 Aurex Rewards <span>Demo details stay in this browser tab</span></footer>
+      <footer className={styles.footer}>© 2026 Aurex Rewards <span>Details stay in this browser tab</span></footer>
     </main>
   )
 }

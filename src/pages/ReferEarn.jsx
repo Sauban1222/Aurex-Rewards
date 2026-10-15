@@ -7,8 +7,8 @@ import styles from './ReferEarn.module.css'
 
 const steps = [
   { title: 'Share your code', description: 'Send your personal code or invite link to a friend.', icon: Share2 },
-  { title: 'Friend joins', description: 'Your friend creates an account using your referral details.', icon: UserPlus },
-  { title: 'Eligible rewards', description: 'Rewards depend on verified activity and program terms.', icon: Gift },
+  { title: 'Friend joins', description: 'Your friend creates an account using your referral details and meets the program terms.', icon: UserPlus },
+  { title: 'You both earn', description: 'They get 200 VEs; you get 50 VEs when they qualify, plus 20% of each eligible VE earning.', icon: Gift },
 ]
 
 function ReferEarnPage() {
@@ -71,7 +71,7 @@ function ReferEarnPage() {
     <AppPageShell
       title="Refer & Earn"
       category="Referral workspace"
-      description="Invite friends and keep your personal referral details close at hand."
+      description="Your friend gets 200 VEs. You get 50 VEs when they qualify, plus 20% of their eligible VE earnings each time they earn."
       accent="violet"
       icon={Share2}
     >
@@ -81,7 +81,21 @@ function ReferEarnPage() {
             <div>
               <span className={styles.kicker}>YOUR INVITE DETAILS</span>
               <h2 id="referral-details-title">Share your referral link</h2>
-              <p>Friends can use your code when they create an account.</p>
+              <p>Share your code and earn together. Your friend gets 200 VEs when eligible; you get 50 VEs when they qualify, plus 20% of every eligible VE earning they make.</p>
+            </div>
+          </div>
+
+          <div className={styles.rewardBreakdown} aria-label="Referral reward breakdown">
+            <div className={`${styles.rewardCard} ${styles.friendReward}`}>
+              <span className={styles.rewardLabel}>YOUR FRIEND</span>
+              <strong className={styles.rewardAmount}>200 <span>VEs</span></strong>
+              <p>One-time welcome reward when they qualify.</p>
+            </div>
+            <div className={`${styles.rewardCard} ${styles.inviterReward}`}>
+              <span className={styles.rewardLabel}>YOU EARN</span>
+              <strong className={styles.rewardAmount}>50 <span>VEs</span></strong>
+              <span className={styles.recurringReward}>+ 20% each time</span>
+              <p>Of your friend's eligible VE earnings.</p>
             </div>
           </div>
 
@@ -109,7 +123,7 @@ function ReferEarnPage() {
             <button type="button" className={styles.primaryButton} onClick={shareInvite}>
               <Share2 size={16} aria-hidden="true" /> Share invite
             </button>
-            <p className={styles.trackingNote}>Referral milestone tracking is not connected.</p>
+            <p className={styles.trackingNote}>Preview only · Referral tracking and rewards are not connected.</p>
           </div>
           <span className={styles.feedback} role="status" aria-live="polite">{feedback}</span>
         </section>
