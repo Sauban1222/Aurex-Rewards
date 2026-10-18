@@ -1,144 +1,20 @@
-/* Card tint and border color remain feature-specific; BannerCard owns shared layout. */
 .card {
-  --banner-border: linear-gradient(130deg, rgba(184, 160, 255, .62), rgba(255, 255, 255, .08) 48%, rgba(226, 185, 101, .42));
-  background-color: #201e33;
-  background-image:
-    radial-gradient(66% 76% at 78% 24%, rgba(133, 94, 221, .22), transparent 66%),
-    radial-gradient(46% 56% at 9% 100%, rgba(226, 185, 101, .12), transparent 65%),
-    linear-gradient(135deg, #222039, #191c30 72%);
+  --banner-wash: rgba(166, 128, 58, .14);
+  --banner-accent: #e3d09b;
+  --banner-accent-rgb: 194, 158, 89;
+  --banner-border: linear-gradient(125deg, rgba(216, 187, 118, .3), rgba(255, 255, 255, .05) 55%, rgba(151, 132, 92, .18));
 }
 
-.main { display: grid; flex: 1; grid-template-columns: minmax(0, 1fr); }
-.visual { display: grid; place-items: center; padding: 8px 10px 0; }
-.art { display: block; width: 100%; height: clamp(155px, 48vw, 190px); overflow: visible; }
-.activityCard { transform-box: fill-box; transform-origin: center; animation: rise 5s ease-in-out infinite; }
-.activityCardSecond { transform-box: fill-box; transform-origin: center; animation: rise 5.8s ease-in-out .45s infinite; }
-.activityCardThird { transform-box: fill-box; transform-origin: center; animation: rise 6.2s ease-in-out .9s infinite; }
-.vault { transform-box: fill-box; transform-origin: center; animation: vaultPulse 4.8s ease-in-out infinite; }
-.rewardCoin { transform-box: fill-box; transform-origin: center; animation: coinFloat 4.2s ease-in-out infinite; }
-.rewardCoinSecond { transform-box: fill-box; transform-origin: center; animation: coinFloat 5.5s ease-in-out .75s infinite; }
-.orbit { fill: none; stroke: rgba(211, 181, 110, .24); stroke-width: 1.4; transform-box: fill-box; transform-origin: center; animation: orbit 21s linear infinite; }
-.orbitSoft { fill: none; stroke: rgba(165, 145, 250, .17); stroke-width: 1.2; transform-box: fill-box; transform-origin: center; animation: orbit 27s linear infinite reverse; }
-.flow { animation: flowPulse 3s ease-in-out infinite; }
-.spark { transform-box: fill-box; transform-origin: center; animation: sparkPulse 3.4s ease-in-out infinite; }
+.main { min-width: 0; }
+.copy { min-width: 0; }
+.eyebrow { align-self: flex-start; }
+.title { position: relative; }
+.text { position: relative; }
+.cta { position: relative; }
 
-.copy {
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 10px;
-  padding: 8px 20px 20px;
-}
-.pill { display: inline-flex; align-items: center; gap: 8px; padding: 6px 10px; border: 1px solid rgba(199, 179, 255, .32); border-radius: 999px; background: rgba(139, 92, 246, .12); color: #d3c5ff; font-size: .67rem; font-weight: 700; letter-spacing: .085em; }
-.title { max-width: 15ch; margin: 0; color: #f7f8fc; font-size: clamp(1.7rem, 7vw, 2.7rem); font-weight: 760; line-height: 1.06; letter-spacing: -.035em; }
-.grad { background: linear-gradient(95deg, #ffe39a 0%, #d3b7ff 88%); background-clip: text; color: transparent; -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-.text { max-width: 42ch; margin: 0; color: #e1e5f0; font-size: .95rem; line-height: 1.52; }
+.title span { color: #e5cc8e; }
+.visual { --art-float-delay: -5s; background: radial-gradient(ellipse at 52% 52%, rgba(154, 116, 46, .12), transparent 67%); }
 
-.cta {
-  display: inline-flex;
-  min-height: 48px;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  padding: 0 22px;
-  border: 1px solid var(--banner-cta-border);
-  border-radius: 12px;
-  background: var(--banner-cta-background);
-  color: #fff;
-  font: inherit;
-  font-weight: 750;
-  text-decoration: none;
-  white-space: nowrap;
-  box-shadow: 0 8px 22px rgba(41, 76, 196, .24), inset 0 1px 0 rgba(255, 255, 255, .14);
-  transition: transform .18s ease, background .18s ease, box-shadow .18s ease;
-}
-.cta:hover { color: #fff; background: var(--banner-cta-hover-background); transform: translateY(-1px); box-shadow: 0 11px 25px rgba(41, 76, 196, .32); }
-.cta:active { transform: translateY(1px); }
-.cta:focus-visible { outline: 2px solid #d3c1ff; outline-offset: 3px; }
-.arrow { transition: transform .2s ease; }
-.cta:hover .arrow { transform: translateX(4px); }
-
-.strip { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin: 0 14px 12px; padding: 9px 0 0; border-top: 1px solid rgba(255, 255, 255, .1); list-style: none; }
-.feature { display: flex; min-width: 0; align-items: center; gap: 5px; padding: 2px 3px; }
-.featureIcon { display: grid; width: 24px; height: 24px; flex: 0 0 auto; place-items: center; border: 1px solid; border-radius: 50%; }
-.featureBody { display: flex; min-width: 0; flex-direction: column; }
-.featureBody strong { color: #f5f7ff; font-size: .67rem; line-height: 1.25; }
-.featureBody small { display: none; }
-.violet { border-color: rgba(184, 160, 255, .4); background: rgba(139, 92, 246, .13); color: #d0bfff; }
-.cyan { border-color: rgba(114, 211, 234, .36); background: rgba(56, 189, 248, .1); color: #a6e9f4; }
-.gold { border-color: rgba(240, 195, 106, .4); background: rgba(226, 185, 101, .12); color: #ffdc94; }
-
-@keyframes rise {
-  0%, 100% { transform: translateY(0); opacity: .98; }
-  50% { transform: translateY(-4px); opacity: 1; }
-}
-@keyframes vaultPulse {
-  0%, 100% { transform: scale(1); opacity: .97; }
-  50% { transform: scale(1.025); opacity: 1; }
-}
-@keyframes coinFloat {
-  0%, 100% { transform: translateY(0); opacity: .94; }
-  50% { transform: translateY(-7px); opacity: 1; }
-}
-@keyframes orbit {
-  to { transform: rotate(360deg); opacity: .85; }
-}
-@keyframes flowPulse {
-  0%, 100% { opacity: .48; }
-  50% { opacity: .95; }
-}
-@keyframes sparkPulse {
-  0%, 100% { transform: scale(.94); opacity: .68; }
-  50% { transform: scale(1.07); opacity: 1; }
-}
-
-@media (max-width: 420px) {
-  .cta { width: 100%; padding: 0 14px; font-size: .93rem; }
-}
-
-@media (max-width: 767px) {
-  .main { display: flex; flex-direction: column; align-items: stretch; gap: 8px; }
-  .copy { display: contents; }
-  .main .pill { order: 1; align-self: flex-start; margin: 8px 20px 0; }
-  .main .title { order: 2; margin-right: 20px; margin-left: 20px; }
-  .main .text { order: 3; margin-right: 20px; margin-left: 20px; }
-  .visual { order: 4; padding: 0 10px; }
-  .main .cta { order: 5; width: auto; align-self: stretch; margin: 0 17px 16px; }
-}
-
-@media (min-width: 768px) {
-  .main { grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr); align-items: center; }
-  .visual { order: 0; padding: 12px 12px 0 0; }
-  .art { height: auto; max-height: 270px; }
-  .copy { gap: 11px; padding: 24px 8px 6px 26px; }
-  .pill { padding: 6px 11px; font-size: .7rem; }
-  .strip { margin: 8px 18px 14px; padding: 9px 0 0; border: 0; border-top: 1px solid rgba(255, 255, 255, .1); border-radius: 0; background: transparent; }
-  .feature { flex-direction: row; align-items: center; gap: 7px; padding: 4px 7px; }
-  .feature + .feature { border-left: 1px solid rgba(255, 255, 255, .08); }
-  .featureIcon { display: grid; width: 32px; height: 32px; flex: 0 0 auto; place-items: center; border: 1px solid; border-radius: 50%; }
-  .violet { border-color: rgba(184, 160, 255, .4); background: rgba(139, 92, 246, .13); color: #c6b2ff; }
-  .cyan { border-color: rgba(114, 211, 234, .36); background: rgba(56, 189, 248, .1); color: #83d9ec; }
-  .gold { border-color: rgba(240, 195, 106, .4); background: rgba(226, 185, 101, .12); color: #f0c36a; }
-  .featureBody { display: flex; min-width: 0; flex-direction: column; }
-  .featureBody strong { color: #fff; font-size: .76rem; line-height: 1.3; }
-  .featureBody small { display: none; color: #c6cede; font-size: .68rem; line-height: 1.3; }
-}
-
-@media (min-width: 1024px) {
-  .art { max-height: 286px; }
-  .copy { gap: 9px; padding: 16px 4px 4px 24px; }
-  .title { max-width: none; font-size: clamp(1.45rem, 2vw, 1.9rem); }
-  .text { font-size: .9rem; }
-  .cta { min-height: 44px; padding: 0 16px; font-size: .85rem; }
-  .strip { margin: 6px 18px 10px; }
-  .feature { gap: 6px; padding: 7px; }
-  .featureIcon { width: 29px; height: 29px; }
-  .featureBody strong { font-size: .72rem; }
-  .featureBody small { display: block; font-size: .68rem; color: #c6cede; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .activityCard, .activityCardSecond, .activityCardThird, .vault, .rewardCoin, .rewardCoinSecond, .orbit, .orbitSoft, .flow, .spark { animation: none; }
-  .cta, .arrow { transition: none; }
+@media (max-width: 599px) {
+  .visual { padding-top: 0; }
 }

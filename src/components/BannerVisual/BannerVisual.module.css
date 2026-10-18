@@ -1,0 +1,41 @@
+.visual {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 18px;
+}
+
+.artwork {
+  display: block;
+  width: min(100%, var(--art-max-width, 100%));
+  max-height: 100%;
+  object-fit: contain;
+  mix-blend-mode: lighten;
+  filter: saturate(.9) contrast(1.02);
+  animation:
+    artwork-reveal .72s cubic-bezier(.2, .7, .25, 1) .08s both,
+    artwork-drift 8s ease-in-out var(--art-float-delay, 0s) infinite;
+  transition: filter .4s ease;
+}
+
+.visual:hover .artwork {
+  filter: saturate(.98) contrast(1.04) brightness(1.01);
+}
+
+@keyframes artwork-reveal {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes artwork-drift {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(0, -4px, 0) scale(1.008); }
+}
+
+@media (max-width: 599px) {
+  .visual { border-radius: 13px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .artwork { animation: none; transition: none; }
+}

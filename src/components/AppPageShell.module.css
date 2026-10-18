@@ -129,13 +129,7 @@
 :global(button), :global(a) { -webkit-tap-highlight-color: transparent; }
 :global(button:focus-visible), :global(a:focus-visible), :global(input:focus-visible), :global(select:focus-visible) { outline: 3px solid var(--accent); outline-offset: 3px; }
 
-@media (min-width: 761px) and (max-width: 850px) {
-  .topbarInner { padding: 0 18px; }
-  .navigation { gap: 12px; margin-left: 28px; }
-  .navLink { font-size: 11px; }
-  .headerActions { gap: 13px; }
-}
-@media (max-width: 760px) {
+@media (max-width: 850px) {
   .topbar { height: 56px; min-height: 56px; }
   .topbarInner { padding: 0 18px; }
   .menuButton { display: inline-flex; }

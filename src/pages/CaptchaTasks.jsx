@@ -1,145 +1,233 @@
 import { useState } from 'react'
-import { ArrowRight, Check, CheckCircle2, ClipboardCheck, Clock3, ShieldCheck, Sparkles } from 'lucide-react'
+import { ArrowRight, BadgeCheck, Check, CheckCircle2, Clock3, Keyboard, RotateCw, ShieldCheck, Sparkles } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import AppPageShell from '../components/AppPageShell.jsx'
-import { CAPTCHA_TASK_REWARD, getRewardDayKey, useRewards } from '../state/RewardsContext.jsx'
-import styles from './Workspace.module.css'
+import { CAPTCHA_TASK_COUNT, CAPTCHA_TASK_REWARD, getRewardDayKey, useRewards } from '../state/RewardsContext.jsx'
+import styles from './CaptchaTasks.module.css'
 
-const CAPTCHA_TASKS = [
-  {
-    number: 1,
-    instruction: 'Select all shield symbols.',
-    correctTiles: [1, 4],
-    symbols: ['ring', 'shield', 'diamond', 'spark', 'shield', 'ring'],
-  },
-  {
-    number: 2,
-    instruction: 'Select all diamond symbols.',
-    correctTiles: [1, 3, 5],
-    symbols: ['shield', 'diamond', 'ring', 'diamond', 'spark', 'diamond'],
-  },
-]
+const CAPTCHA_ALPHABET = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'
 
-function TaskTile({ index, symbol, selected, onClick }) {
-  return (
-    <button className={`${styles.taskTile} ${styles[symbol]} ${selected ? styles.tileSelected : ''}`} type="button" aria-label={`Tile ${index + 1}${selected ? ', selected' : ''}`} aria-pressed={selected} onClick={onClick}>
-      <span className={styles.tileCheckbox}>{selected && <Check size={14} />}</span>
-      {symbol === 'shield' ? (
-        <svg viewBox="0 0 40 44" aria-hidden="true"><path d="M20 3 35 9v11c0 10-6 17-15 21C11 37 5 30 5 20V9z" /><path className={styles.symbolDetail} d="m13 21 5 5 10-11" /></svg>
-      ) : symbol === 'diamond' ? (
-        <svg viewBox="0 0 40 44" aria-hidden="true"><path d="m20 4 15 18-15 18L5 22z" /><path className={styles.symbolDetail} d="m5 22 30 0M20 4l-5 18 5 18 5-18z" /></svg>
-      ) : symbol === 'spark' ? (
-        <svg viewBox="0 0 40 44" aria-hidden="true"><path d="m20 3 4.2 12.8L37 20l-12.8 4.2L20 37l-4.2-12.8L3 20l12.8-4.2z" /><circle cx="31" cy="34" r="3" /></svg>
-      ) : (
-        <svg viewBox="0 0 40 44" aria-hidden="true"><circle cx="20" cy="22" r="14" /><circle className={styles.symbolDetail} cx="20" cy="22" r="7" /></svg>
-      )}
-    </button>
-  )
+function createChallenge() {
+  const random = window.crypto.getRandomValues(new Uint8Array(15))
+  const code = Array.from(random.slice(0, 5), (value) => CAPTCHA_ALPHABET[value % CAPTCHA_ALPHABET.length]).join('')
+  return { code, noise: Array.from(random.slice(5)) }
 }
 
-function CaptchaChallenge({ task, completedOn, completeCaptcha }) {
-  const today = getRewardDayKey()
-  const complete = completedOn === today
-  const [selectedTiles, setSelectedTiles] = useState([])
-  const [feedback, setFeedback] = useState('')
-  const [earnedNow, setEarnedNow] = useState(false)
-
-  const verifyTask = () => {
-    const isCorrect = selectedTiles.length === task.correctTiles.length && task.correctTiles.every((tile) => selectedTiles.includes(tile))
-    if (!isCorrect) {
-      setFeedback('Some selections are incorrect. Review the task and try again.')
-      return
-    }
-    const earned = completeCaptcha(task.number)
-    setEarnedNow(earned)
-    setFeedback(earned ? `${CAPTCHA_TASK_REWARD} VEs have been added to your wallet.` : 'You have already completed this task today.')
-  }
-
+function CaptchaImage({ challenge }) {
   return (
-    <section className={`${styles.panel} ${styles.captchaCard}`} aria-labelledby={`captcha-task-${task.number}`}>
-      <div className={styles.panelHead}>
-        <div><span className={styles.kicker}>DAILY CAPTCHA · TASK 0{task.number}</span><h2 id={`captcha-task-${task.number}`}>{complete ? 'Completed today' : `Verification task ${task.number}`}</h2></div>
-        <span className={styles.badge}><i className={styles.availableDot} />{complete ? 'Credited' : 'Available'}</span>
-      </div>
-      {complete ? (
-        <div className={styles.captchaComplete} role="status">
-          <CheckCircle2 size={19} />
-          <div><strong>{earnedNow ? 'Task verified' : 'Task completed today'}</strong><p>{feedback || 'This task has already been completed today. Check wallet activity for the amount credited.'}</p></div>
-        </div>
-      ) : (
-        <>
-          <div className={styles.taskMeta}><span><Clock3 size={15} /> Short task</span><span><Sparkles size={15} /> +{CAPTCHA_TASK_REWARD} VEs</span></div>
-          <div className={styles.instruction}><span className={styles.kicker}>INSTRUCTION</span><strong>{task.instruction}</strong><small>{selectedTiles.length} of {task.correctTiles.length} selected</small></div>
-          <div className={styles.tileGrid} role="group" aria-label={`Captcha task ${task.number} symbols`}>
-            {task.symbols.map((symbol, index) => <TaskTile key={index} index={index} symbol={symbol} selected={selectedTiles.includes(index)} onClick={() => {
-              setSelectedTiles((current) => current.includes(index) ? current.filter((tile) => tile !== index) : [...current, index])
-              setFeedback('')
-            }} />)}
-          </div>
-          {feedback && <p className={styles.formError} role="alert">{feedback}</p>}
-          <div className={styles.taskFooter}>
-            <span className={styles.small}><ShieldCheck size={15} /> One reward per task each day</span>
-            <button className={styles.primaryButton} type="button" onClick={verifyTask} disabled={selectedTiles.length === 0}>Verify selection <ArrowRight size={16} /></button>
-          </div>
-        </>
-      )}
-    </section>
+    <svg className={styles.captchaImage} viewBox="0 0 360 112" role="img" aria-label={`Sample CAPTCHA code: ${challenge.code}`}>
+      <defs>
+        <linearGradient id="captcha-surface" x1="0" y1="0" x2="1" y2="1">
+          <stop stopColor="#182844" />
+          <stop offset="1" stopColor="#25243d" />
+        </linearGradient>
+      </defs>
+      <rect x="1" y="1" width="358" height="110" rx="14" fill="url(#captcha-surface)" stroke="#58648d" strokeOpacity=".65" />
+      {challenge.noise.slice(0, 5).map((value, index) => (
+        <path
+          key={`line-${index}`}
+          d={`M${12 + (value % 70) * 4} ${16 + index * 17} Q${80 + (value % 60) * 3} ${92 - index * 8} ${330 - (value % 70) * 3} ${22 + index * 13}`}
+          fill="none"
+          stroke={index % 2 ? '#8a83ed' : '#63c9e2'}
+          strokeOpacity=".2"
+          strokeWidth="2"
+        />
+      ))}
+      {challenge.code.split('').map((character, index) => {
+        const rotation = (challenge.noise[index] % 19) - 9
+        const y = 68 + (challenge.noise[index + 5] % 13) - 6
+        return (
+          <text
+            key={`${character}-${index}`}
+            x={48 + index * 66}
+            y={y}
+            transform={`rotate(${rotation} ${48 + index * 66} ${y})`}
+            fill={index % 2 ? '#b5b7ff' : '#b7e5f4'}
+            fontFamily="ui-monospace, SFMono-Regular, Consolas, monospace"
+            fontSize="39"
+            fontWeight="700"
+            textAnchor="middle"
+          >
+            {character}
+          </text>
+        )
+      })}
+      {challenge.noise.slice(5, 10).map((value, index) => (
+        <circle key={`dot-${index}`} cx={18 + (value % 105) * 3} cy={22 + index * 16} r="2" fill="#d9d9ff" fillOpacity=".34" />
+      ))}
+    </svg>
   )
 }
 
 function CaptchaTasksPage() {
-  const { captchaCompletedOn, captchaSecondCompletedOn, completeCaptcha, activity } = useRewards()
+  const { captchaProgressOn, captchaTasksCompleted, completeCaptcha, activity } = useRewards()
   const today = getRewardDayKey()
-  const completionDates = [captchaCompletedOn, captchaSecondCompletedOn]
-  const completedCount = completionDates.filter((date) => date === today).length
-  const todaysCaptchaEarnings = activity
-    .filter((item) => item.type === 'earn' && item.title.startsWith('Captcha task') && getRewardDayKey(new Date(item.createdAt)) === today)
-    .reduce((total, item) => total + item.amount, 0)
-  const todaysCaptchaActivity = activity
-    .filter((item) => item.type === 'earn' && item.title.startsWith('Captcha task') && getRewardDayKey(new Date(item.createdAt)) === today)
+  const completedCount = captchaProgressOn === today ? captchaTasksCompleted : 0
+  const currentTask = completedCount + 1
+  const finished = completedCount >= CAPTCHA_TASK_COUNT
+  const [challenge, setChallenge] = useState(createChallenge)
+  const [answer, setAnswer] = useState('')
+  const [result, setResult] = useState(null)
+  const [error, setError] = useState('')
+
+  const todaysCaptchaActivity = activity.filter((item) => (
+    item.type === 'earn'
+    && item.title.startsWith('Captcha entry ')
+    && getRewardDayKey(new Date(item.createdAt)) === today
+  ))
+  const todaysCaptchaEarnings = todaysCaptchaActivity.reduce((total, item) => total + item.amount, 0)
+
+  const handleSubmit = (event) => {
+    event.preventDefault()
+    if (result || finished) return
+
+    const isCorrect = answer.trim().toUpperCase() === challenge.code
+    const completion = completeCaptcha(currentTask, isCorrect)
+    if (!completion.ok) {
+      setError('Your task progress changed. Reload the page to continue with the next task.')
+      return
+    }
+    setError('')
+    setResult({ isCorrect, reward: completion.reward, task: currentTask })
+  }
+
+  const handleNext = () => {
+    setAnswer('')
+    setError('')
+    setResult(null)
+    setChallenge(createChallenge())
+  }
 
   return (
-    <AppPageShell title="Captcha Tasks" category="Earn VEs · Verification tasks" description="Complete either or both daily verification tasks to earn VEs." accent="teal" icon={ShieldCheck}>
-      <div className={styles.stack}>
-        <section className={`${styles.statRow} ${styles.taskStats}`} aria-label="Task summary">
+    <AppPageShell
+      title="Captcha Tasks"
+      category="Earn VEs · Verification tasks"
+      description={`Complete up to ${CAPTCHA_TASK_COUNT} short CAPTCHA tasks today. Each correct answer earns ${CAPTCHA_TASK_REWARD} VEs.`}
+      accent="teal"
+      icon={ShieldCheck}
+    >
+      <div className={styles.workspace}>
+        <section className={styles.stats} aria-label="Today’s CAPTCHA progress">
           {[
-            ['Available tasks', String(2 - completedCount)],
-            ['Completed today', String(completedCount)],
+            ['Tasks remaining', String(CAPTCHA_TASK_COUNT - completedCount)],
+            ['Submitted today', `${completedCount}/${CAPTCHA_TASK_COUNT}`],
+            ['Correct answers', String(todaysCaptchaActivity.length)],
             ['Earned today', `${todaysCaptchaEarnings} VEs`],
-            ['Reward per task', `${CAPTCHA_TASK_REWARD} VEs`],
-          ].map(([label, value]) => <div className={styles.stat} key={label}><span className={styles.statLabel}>{label}</span><strong className={styles.statValue}>{value}</strong></div>)}
+          ].map(([label, value]) => (
+            <div className={styles.stat} key={label}>
+              <span>{label}</span>
+              <strong>{value}</strong>
+            </div>
+          ))}
         </section>
-        <div className={styles.twoColumn}>
-          <div className={styles.captchaGrid}>
-            {CAPTCHA_TASKS.map((task, index) => (
-              <CaptchaChallenge key={task.number} task={task} completedOn={completionDates[index]} completeCaptcha={completeCaptcha} />
-            ))}
-          </div>
-          <aside className={styles.sideColumn}>
-            <section className={styles.panel} aria-labelledby="how-tasks-heading">
-              <div className={styles.panelHead}><div><span className={styles.kicker}>HOW TASKS WORK</span><h2 id="how-tasks-heading">Complete one or both</h2></div><ClipboardCheck size={18} className={styles.accentIcon} /></div>
+
+        <div className={styles.columns}>
+          <section className={styles.taskPanel} aria-labelledby="captcha-challenge-title">
+            <header className={styles.taskHeader}>
+              <div className={styles.taskIcon}><Keyboard size={18} aria-hidden="true" /></div>
+              <div className={styles.taskHeading}>
+                <span className={styles.kicker}>DAILY CAPTCHA</span>
+                <h2 id="captcha-challenge-title">{finished ? 'Today’s tasks complete' : `Task ${currentTask} of ${CAPTCHA_TASK_COUNT}`}</h2>
+              </div>
+              <span className={styles.rewardBadge}><Sparkles size={14} aria-hidden="true" />{CAPTCHA_TASK_REWARD} VEs</span>
+            </header>
+
+            <div className={styles.progressTrack} role="progressbar" aria-label="Daily task progress" aria-valuemin="0" aria-valuemax={CAPTCHA_TASK_COUNT} aria-valuenow={completedCount}>
+              <span style={{ width: `${(completedCount / CAPTCHA_TASK_COUNT) * 100}%` }} />
+            </div>
+            <div className={styles.progressCaption}>
+              <span>{completedCount} of {CAPTCHA_TASK_COUNT} tasks submitted</span>
+              <span>{CAPTCHA_TASK_COUNT - completedCount} remaining</span>
+            </div>
+
+            {finished ? (
+              <div className={styles.completeState} role="status">
+                <span className={styles.completeIcon}><CheckCircle2 size={23} aria-hidden="true" /></span>
+                <div>
+                  <strong>You’ve finished all 10 tasks today</strong>
+                  <p>You answered {todaysCaptchaActivity.length} correctly and earned {todaysCaptchaEarnings} VEs. Come back tomorrow for a new set.</p>
+                </div>
+              </div>
+            ) : result ? (
+              <div className={`${styles.resultState} ${result.isCorrect ? styles.resultCorrect : styles.resultWrong}`} role="status">
+                <span className={styles.resultIcon}>{result.isCorrect ? <CheckCircle2 size={22} aria-hidden="true" /> : <RotateCw size={20} aria-hidden="true" />}</span>
+                <div className={styles.resultCopy}>
+                  <strong>{result.isCorrect ? `Correct — +${result.reward} VEs` : 'Not quite — 0 VEs'}</strong>
+                  <p>{result.isCorrect ? 'Your reward was added to your preview VE balance.' : 'This task is submitted with no reward. Continue to the next CAPTCHA.'}</p>
+                </div>
+                <button className={styles.primaryButton} type="button" onClick={handleNext}>
+                  {result.task === CAPTCHA_TASK_COUNT ? 'View summary' : 'Next task'}
+                  <ArrowRight size={16} aria-hidden="true" />
+                </button>
+              </div>
+            ) : (
+              <form className={styles.answerForm} onSubmit={handleSubmit}>
+                <label className={styles.instruction} htmlFor="captcha-answer">
+                  <span>Type the characters shown</span>
+                  <small>Letters are not case-sensitive</small>
+                </label>
+                <CaptchaImage challenge={challenge} />
+                <div className={styles.inputRow}>
+                  <input
+                    id="captcha-answer"
+                    name="captcha-answer"
+                    type="text"
+                    value={answer}
+                    onChange={(event) => setAnswer(event.target.value)}
+                    placeholder="Enter the 5 characters"
+                    autoComplete="off"
+                    autoCapitalize="characters"
+                    spellCheck="false"
+                    maxLength={5}
+                    required
+                    aria-describedby={error ? 'captcha-error captcha-preview-note' : 'captcha-preview-note'}
+                  />
+                  <button className={styles.primaryButton} type="submit">
+                    Submit answer
+                    <ArrowRight size={16} aria-hidden="true" />
+                  </button>
+                </div>
+                {error && <p className={styles.error} id="captcha-error" role="alert">{error}</p>}
+                <p className={styles.previewNote} id="captcha-preview-note"><ShieldCheck size={14} aria-hidden="true" />This is a browser preview challenge, not a security verification.</p>
+              </form>
+            )}
+          </section>
+
+          <aside className={styles.sidePanel}>
+            <section className={styles.infoPanel} aria-labelledby="how-captcha-works">
+              <span className={styles.kicker}>HOW IT WORKS</span>
+              <h2 id="how-captcha-works">One at a time</h2>
               <ol className={styles.steps}>
-                {['Choose a captcha task', 'Follow the symbol instruction', 'Verify your selection', 'Receive 40 VEs per task'].map((step, index) => <li key={step}><span className={styles.stepNumber}>{index + 1}</span><strong>{step}</strong></li>)}
+                <li><span>01</span><p>Read the characters in the image</p></li>
+                <li><span>02</span><p>Enter your answer and submit</p></li>
+                <li><span>03</span><p>Correct earns 10 VEs; incorrect earns 0</p></li>
               </ol>
-              <div className={styles.subtleNotice}><Sparkles size={16} /><span>This sample challenge runs in the browser, so it is not a security verification. Preview rewards are stored locally only.</span></div>
+              <p className={styles.dailyLimit}><Clock3 size={15} aria-hidden="true" />10 tasks available per day</p>
             </section>
-            <section className={styles.panel} aria-labelledby="task-history-heading">
-              <div className={styles.panelHead}><div><span className={styles.kicker}>TODAY</span><h2 id="task-history-heading">Task progress</h2></div></div>
+
+            <section className={styles.infoPanel} aria-labelledby="captcha-history-title">
+              <div className={styles.historyHead}>
+                <div><span className={styles.kicker}>TODAY</span><h2 id="captcha-history-title">Your results</h2></div>
+                <BadgeCheck size={18} aria-hidden="true" />
+              </div>
               {todaysCaptchaActivity.length ? (
-                <ul className={styles.list}>
+                <ul className={styles.historyList}>
                   {todaysCaptchaActivity.map((item) => (
-                    <li className={styles.listItem} key={item.id}><span className={styles.listIcon}><Check size={17} /></span><div><strong>{item.title}</strong><p>Completed today</p></div><span className={`${styles.listAside} ${styles.ledgerCredit}`}>+{item.amount} VEs</span></li>
+                    <li key={item.id}>
+                      <span className={styles.historyCheck}><Check size={14} aria-hidden="true" /></span>
+                      <span>Task {item.title.replace('Captcha entry ', '')}</span>
+                      <strong>+{item.amount} VEs</strong>
+                    </li>
                   ))}
                 </ul>
-              ) : completedCount ? (
-                <div className={styles.activityEmpty}><span className={styles.emptyIcon}><Check size={17} /></span><div><strong>Captcha completed today</strong><p>Check wallet activity for the amount credited.</p></div></div>
               ) : (
-                <div className={styles.activityEmpty}><span className={styles.emptyIcon}><ClipboardCheck size={17} /></span><div><strong>No completed tasks yet</strong><p>Complete a captcha to add its reward to your wallet.</p></div></div>
+                <p className={styles.emptyHistory}>Correct answers and VE credits will show here.</p>
               )}
             </section>
           </aside>
         </div>
-        <Link className={styles.panelLink} to="/wallet">View wallet activity <ArrowRight size={14} /></Link>
+
+        <Link className={styles.walletLink} to="/wallet">View wallet activity <ArrowRight size={15} aria-hidden="true" /></Link>
       </div>
     </AppPageShell>
   )

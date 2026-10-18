@@ -97,15 +97,18 @@ Aurex-Rewards/
 │   ├── icon-512.png             # PWA icon
 │   ├── site.webmanifest         # Web app metadata
 │   └── og-image.png             # Open Graph image for social sharing
+├── images/                      # Source artwork used by the five feature banners
 ├── src/
 │   ├── assets/
+│   │   ├── aurex-icon.webp      # Aurex icon
 │   │   └── aurex-logo.webp      # Optimized Aurex Rewards logo
 │   ├── main.jsx                 # App entry point, Bootstrap + CSS imports
 │   ├── app.jsx                  # Root component with routing logic
 │   ├── components/
 │   │   ├── AccountMenu.jsx
 │   │   ├── AppPageShell.jsx      # Shared authenticated workspace layout
-│   │   ├── BannerCard/           # Shared shell used by all five banners
+│   │   ├── BannerCard/           # Shared card and footer for all five banners
+│   │   ├── BannerVisual/         # Shared feature artwork container
 │   │   ├── BonusVEsBanner/
 │   │   ├── CaptchaTasksBanner/
 │   │   ├── ExchangeCenterBanner/
@@ -118,7 +121,7 @@ Aurex-Rewards/
 │   │   ├── ReferEarn.jsx         # Referral workspace and local invite actions
 │   │   ├── SwapCenter.jsx        # Browser-local balance conversion
 │   │   ├── BonusVEs.jsx          # Check-in, spin, and earning activities
-│   │   ├── CaptchaTasks.jsx      # Sample symbol-selection tasks
+│   │   ├── CaptchaTasks.jsx      # Daily text-entry task preview
 │   │   ├── ExchangeCenter.jsx    # Reward redemption preview
 │   │   ├── Wallet.jsx            # Local balance and activity ledger
 │   │   └── NotFound.jsx
@@ -201,12 +204,12 @@ Aurex Rewards is built with accessibility as a core principle:
 Aurex is lightweight and performant:
 
 - Minimal dependencies (no unnecessary libraries)
-- Inline SVG illustrations (no image HTTP requests)
+- Bundled banner artwork and inline SVG illustrations
 - CSS Modules for scoped, optimized styles
 - Feature workspaces load on demand with React `lazy` and `Suspense`
 - Current production chunk sizes are reported by `npm run build`
 
-## Interactions & Demo Features
+## Interactions & Features
 
 ### Account and Session Preview
 - A first visit without an active tab session opens the registration form at `/login`.
@@ -242,8 +245,8 @@ Aurex is lightweight and performant:
 - Daily check-in and spin eligibility follow the browser's local calendar day
 
 ### Captcha Tasks Page (`/captcha`)
-- Client-side sample task completion preview
-- Sample CAPTCHA grid
+- Ten randomized text-entry challenges per day, shown one at a time
+- Correct answers earn 10 preview VEs; incorrect answers earn zero
 - Progress tracking visualization
 - Not a security verification; preview rewards remain in the current browser tab
 
@@ -254,7 +257,8 @@ Aurex is lightweight and performant:
 ### Login Page
 - Registration is the first screen for a new browser-tab session
 - Login can resume a preview account only in the tab where it was created
-- No real email or phone number is requested
+- Registration details are stored only in the current browser tab and are not sent to an online account
+- Use sample contact details and do not enter real personal information
 
 ## Browser Support
 

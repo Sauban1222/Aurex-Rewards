@@ -10,7 +10,7 @@ import CaptchaTasksBanner from './components/CaptchaTasksBanner/CaptchaTasksBann
 import ExchangeCenterBanner from './components/ExchangeCenterBanner/ExchangeCenterBanner.jsx'
 import NotFoundPage from './pages/NotFound.jsx'
 import { useRewards } from './state/RewardsContext.jsx'
-import { ArrowUpRight, Menu, Wallet, X } from 'lucide-react'
+import { ArrowRight, ArrowUpRight, Gift, Menu, Wallet, X } from 'lucide-react'
 
 const LoginPage = lazy(() => import('./pages/Login.jsx'))
 const ReferEarnPage = lazy(() => import('./pages/ReferEarn.jsx'))
@@ -86,36 +86,42 @@ function App() {
       </header>
 
       <main id="main-content" className="page-content">
-        <section className="home-intro" aria-labelledby="welcome-title">
-          <p className="home-kicker">
-            <span className="home-kicker-brand">AUREX REWARDS</span>
-            <span className="home-kicker-separator" aria-hidden="true">/</span>
-            <span className="home-kicker-context">PREVIEW DASHBOARD</span>
-          </p>
-          <h1 id="welcome-title">Earn, swap and redeem <span>rewards</span></h1>
-          <p>Explore the ways Aurex Rewards helps you make the most of every opportunity.</p>
-        </section>
+        <div className="home-overview">
+          <section className="home-intro" aria-labelledby="welcome-title">
+            <p className="home-kicker">
+              <span className="home-kicker-brand">AUREX REWARDS</span>
+              <span className="home-kicker-separator" aria-hidden="true">/</span>
+              <span className="home-kicker-context">YOUR REWARDS DASHBOARD</span>
+            </p>
+            <h1 id="welcome-title">Make every reward <span>count.</span></h1>
+            <p>Earn VEs, move balances, and discover rewards—all from one place.</p>
+            <div className="home-intro-actions">
+              <Link className="home-primary-action" to="/bonus">Explore ways to earn <ArrowRight size={16} aria-hidden="true" /></Link>
+              <Link className="home-secondary-action" to="/exchange"><Gift size={16} aria-hidden="true" /> Browse rewards</Link>
+            </div>
+          </section>
 
-        <section className="home-wallet-card" aria-labelledby="home-wallet-title">
-          <div className="home-wallet-heading">
-            <span className="home-wallet-icon"><Wallet size={19} aria-hidden="true" /></span>
-            <div>
-              <h2 id="home-wallet-title">Your wallet</h2>
-              <p>Available reward balance</p>
+          <section className="home-wallet-card" aria-labelledby="home-wallet-title">
+            <div className="home-wallet-heading">
+              <span className="home-wallet-icon"><Wallet size={19} aria-hidden="true" /></span>
+              <div>
+                <h2 id="home-wallet-title">Your balances</h2>
+                <p>Available to use</p>
+              </div>
             </div>
-          </div>
-          <dl className="home-wallet-balances" aria-label="Available reward balances">
-            <div>
-              <dt>VE balance</dt>
-              <dd>{ve.toLocaleString('en-US', { maximumFractionDigits: 2 })} <span>VEs</span></dd>
-            </div>
-            <div>
-              <dt>SVE balance</dt>
-              <dd>{sve.toLocaleString('en-US', { maximumFractionDigits: 2 })} <span>SVEs</span></dd>
-            </div>
-          </dl>
-          <Link className="home-wallet-link" to="/wallet">View wallet <ArrowUpRight size={16} aria-hidden="true" /></Link>
-        </section>
+            <dl className="home-wallet-balances" aria-label="Available reward balances">
+              <div>
+                <dt>VE balance</dt>
+                <dd>{ve.toLocaleString('en-US', { maximumFractionDigits: 2 })} <span>VEs</span></dd>
+              </div>
+              <div>
+                <dt>SVE balance</dt>
+                <dd>{sve.toLocaleString('en-US', { maximumFractionDigits: 2 })} <span>SVEs</span></dd>
+              </div>
+            </dl>
+            <Link className="home-wallet-link" to="/wallet">View wallet <ArrowUpRight size={16} aria-hidden="true" /></Link>
+          </section>
+        </div>
 
         <section id="earn" className="section-block" aria-labelledby="earn-heading">
           <div className="section-heading">

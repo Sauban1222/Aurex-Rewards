@@ -1,0 +1,58 @@
+.footer {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  min-height: 52px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: center;
+  margin: 0 28px 13px;
+  border: 1px solid #34394b;
+  border-radius: 11px;
+  background: #252a3a;
+}
+
+.item {
+  display: flex;
+  min-width: 0;
+  min-height: 32px;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 5px 9px;
+}
+
+.item + .item { border-left: 1px solid rgba(159, 174, 202, .15); }
+
+.icon {
+  display: grid;
+  width: 24px;
+  height: 24px;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 1px solid rgba(var(--banner-accent-rgb), .38);
+  border-radius: 7px;
+  background: rgba(var(--banner-accent-rgb), .18);
+  color: var(--banner-accent);
+}
+
+.label { display: block; min-width: 0; }
+.label strong { display: block; color: #e5e8ef; font-size: .66rem; font-weight: 680; }
+.label small { display: block; margin-top: 1px; color: #aeb4c2; font-size: .56rem; line-height: 1.25; }
+
+@media (min-width: 600px) and (max-width: 1023px) {
+  .footer { margin-inline: 20px; }
+}
+
+@media (max-width: 599px) {
+  .footer { min-height: 46px; margin: 0 14px 11px; border-radius: 9px; }
+  .item { gap: 5px; padding: 4px; }
+  .icon { width: 22px; height: 22px; }
+  .icon svg { width: 13px; height: 13px; }
+  .label strong { font-size: .56rem; }
+  .label small { display: none; }
+}
+
+@media (max-width: 359px) {
+  .item { flex-direction: column; gap: 3px; }
+  .label strong { font-size: .52rem; white-space: nowrap; }
+}

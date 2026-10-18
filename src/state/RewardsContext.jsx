@@ -5,7 +5,8 @@ const LEGACY_STORAGE_KEYS = ['aurex-rewards-tab-state-v1', 'aurex-rewards-state-
 export const MIN_WITHDRAWAL_VE = 1000
 // Preview reward values; enforce approved reward rules on the server when connected.
 export const DAILY_CHECK_IN_REWARD = 20
-export const CAPTCHA_TASK_REWARD = 40
+export const CAPTCHA_TASK_REWARD = 10
+export const CAPTCHA_TASK_COUNT = 10
 export const DAILY_SPIN_REWARDS = [10, 20, 30, 40, 50]
 
 export function getRewardDayKey(date = new Date()) {
@@ -25,6 +26,8 @@ const INITIAL_STATE = {
   activity: [],
   captchaCompletedOn: '',
   captchaSecondCompletedOn: '',
+  captchaProgressOn: '',
+  captchaTasksCompleted: 0,
   dailyCheckInOn: '',
   dailySpinOn: '',
   dailySpinReward: 0,
@@ -80,6 +83,10 @@ function loadState() {
       ve: (Number.isFinite(parsed.ve) && parsed.ve >= 0 ? parsed.ve : 0) + (legacyWelcomeBonus ? 200 : 0),
       sve: Number.isFinite(parsed.sve) && parsed.sve >= 0 ? parsed.sve : 0,
       invitesShared: Number.isInteger(parsed.invitesShared) && parsed.invitesShared >= 0 ? parsed.invitesShared : 0,
+      captchaProgressOn: typeof parsed.captchaProgressOn === 'string' ? parsed.captchaProgressOn : '',
+      captchaTasksCompleted: Number.isInteger(parsed.captchaTasksCompleted) && parsed.captchaTasksCompleted >= 0 && parsed.captchaTasksCompleted <= CAPTCHA_TASK_COUNT
+        ? parsed.captchaTasksCompleted
+        : 0,
       referralActivity,
       activity: legacyWelcomeBonus ? addActivity({ activity }, { type: 'earn', title: 'Welcome bonus', amount: 200, asset: 'VE', createdAt: new Date().toISOString() }) : activity,
       welcomeBonusGranted: Boolean(parsed.welcomeBonusGranted || legacyWelcomeBonus),
@@ -163,22 +170,29 @@ export function RewardsProvider({ children }) {
         }, ...current.referralActivity].slice(0, 10),
       }))
     },
-    completeCaptcha(taskNumber) {
+    completeCaptcha(taskNumber, isCorrect) {
       const today = getRewardDayKey()
-      if (taskNumber !== 1 && taskNumber !== 2) throw new Error('Unknown captcha task.')
-      let earned = false
+      if (!Number.isInteger(taskNumber) || taskNumber < 1 || taskNumber > CAPTCHA_TASK_COUNT) {
+        throw new Error('Unknown captcha task.')
+      }
+      if (typeof isCorrect !== 'boolean') throw new Error('Captcha result must be correct or incorrect.')
+      let result = { ok: false, completedCount: 0, reward: 0 }
       updateState((current) => {
-        const completionKey = taskNumber === 1 ? 'captchaCompletedOn' : 'captchaSecondCompletedOn'
-        if (current[completionKey] === today) return current
-        earned = true
+        const completedCount = current.captchaProgressOn === today ? current.captchaTasksCompleted : 0
+        if (taskNumber !== completedCount + 1 || completedCount >= CAPTCHA_TASK_COUNT) return current
+        const reward = isCorrect ? CAPTCHA_TASK_REWARD : 0
+        result = { ok: true, completedCount: taskNumber, reward }
         return {
-        ...current,
-        ve: current.ve + CAPTCHA_TASK_REWARD,
-        [completionKey]: today,
-        activity: addActivity(current, { type: 'earn', title: `Captcha task ${taskNumber} completed`, amount: CAPTCHA_TASK_REWARD, asset: 'VE', createdAt: new Date().toISOString() }),
+          ...current,
+          captchaProgressOn: today,
+          captchaTasksCompleted: taskNumber,
+          ...(isCorrect ? {
+            ve: current.ve + CAPTCHA_TASK_REWARD,
+            activity: addActivity(current, { type: 'earn', title: `Captcha entry ${taskNumber}`, amount: CAPTCHA_TASK_REWARD, asset: 'VE', createdAt: new Date().toISOString() }),
+          } : {}),
         }
       })
-      return earned
+      return result
     },
     claimDailyCheckIn() {
       const today = getRewardDayKey()

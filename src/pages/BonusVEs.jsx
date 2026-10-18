@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { ArrowRight, BadgeCheck, CalendarCheck, CheckCircle2, Compass, Gift, Sparkles, Users, Wallet } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import AppPageShell, { workspaceStyles as shell } from '../components/AppPageShell.jsx'
-import { DAILY_CHECK_IN_REWARD, DAILY_SPIN_REWARDS, getRewardDayKey, useRewards } from '../state/RewardsContext.jsx'
+import { CAPTCHA_TASK_COUNT, CAPTCHA_TASK_REWARD, DAILY_CHECK_IN_REWARD, DAILY_SPIN_REWARDS, getRewardDayKey, useRewards } from '../state/RewardsContext.jsx'
 import styles from './Workspace.module.css'
 
 const SPIN_SEGMENT_ANGLE = 360 / DAILY_SPIN_REWARDS.length
@@ -13,9 +13,9 @@ function getWheelRotationForReward(reward) {
 }
 
 function BonusVEsPage() {
-  const { ve, activity, captchaCompletedOn, captchaSecondCompletedOn, dailyCheckInOn, dailySpinOn, dailySpinReward, dailySpinPending, claimDailyCheckIn, startDailySpin, completeDailySpin } = useRewards()
+  const { ve, activity, captchaProgressOn, captchaTasksCompleted, dailyCheckInOn, dailySpinOn, dailySpinReward, dailySpinPending, claimDailyCheckIn, startDailySpin, completeDailySpin } = useRewards()
   const today = getRewardDayKey()
-  const completedCaptchaTasks = [captchaCompletedOn, captchaSecondCompletedOn].filter((date) => date === today).length
+  const completedCaptchaTasks = captchaProgressOn === today ? captchaTasksCompleted : 0
   const checkedInToday = dailyCheckInOn === today
   const spunToday = dailySpinOn === today
   const [spinning, setSpinning] = useState(false)
@@ -23,7 +23,7 @@ function BonusVEsPage() {
   const completedTasks = activity.filter((item) => item.type === 'earn')
   const recentVeCredits = completedTasks.reduce((total, item) => total + item.amount, 0)
   const opportunities = [
-    { title: 'Daily captcha tasks', description: 'Complete either or both symbol verification tasks.', icon: CalendarCheck, status: `${completedCaptchaTasks}/2 completed`, reward: '40 VEs each', action: 'Open tasks', to: '/captcha' },
+    { title: 'Daily captcha tasks', description: 'Complete up to ten text verification tasks, one at a time.', icon: CalendarCheck, status: `${completedCaptchaTasks}/${CAPTCHA_TASK_COUNT} completed`, reward: `${CAPTCHA_TASK_REWARD} VEs per correct answer`, action: 'Open tasks', to: '/captcha' },
     { title: 'Invite friends', description: 'Share Aurex with friends and follow your referral progress.', icon: Users, status: 'Available', reward: 'Referral program', action: 'Refer & earn', to: '/refer' },
     { title: 'Convert your balance', description: 'Move between VE and SVE balances at the current conversion rate.', icon: Wallet, status: 'Wallet tool', reward: '1 VE = 0.65 SVE', action: 'Open swap', to: '/swap' },
   ]
